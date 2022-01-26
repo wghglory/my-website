@@ -1,0 +1,10 @@
+{
+  "extends": "next/core-web-vitals",
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "react/jsx-filename-extension": [0, {"extensions": [".tsx", ".ts"]}],
+    "import/extensions": [0, "never"],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
+}

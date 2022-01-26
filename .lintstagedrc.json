@@ -1,0 +1,4 @@
+{
+  "src/**/*.+(vue|js|jsx|ts|tsx)": ["npx prettier --write", "npx eslint --fix"],
+  "src/**/*.+(css)": ["npx prettier --write"]
+}
