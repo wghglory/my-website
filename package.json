@@ -10,7 +10,8 @@
     "fix": "npx eslint --fix --ext .js,.ts,.tsx .",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(vue|js|jsx|ts|tsx|json|css|scss|md|html)\"",
     "prepare": "husky install",
-    "commit": "commit"
+    "commit": "commit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "latest",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
+    "@playwright/test": "^1.18.0",
     "@types/node": "17.0.4",
     "@types/react": "17.0.38",
     "autoprefixer": "^10.4.0",
