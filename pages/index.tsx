@@ -1,16 +1,23 @@
 import Head from 'next/head';
 
+import TheHeader from '@/components/header/TheHeader';
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div>
       <Head>
         <title>Derek Website</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <TheHeader />
+
       <main>
         <h1>Hi</h1>
+        <p>Web Developer</p>
       </main>
+
+      <footer>Footer</footer>
     </div>
   );
 }
