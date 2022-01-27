@@ -11,6 +11,14 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
   moduleDirectories: ['node_modules', '<rootDir>/'],
+  moduleNameMapper: {
+    // Handle module aliases (this will be automatically configured for you soon)
+    // https://github.com/vercel/next.js/blob/canary/examples/with-jest/jest.config.js
+    '^@/components/(.*)$': '<rootDir>/components/$1',
+    '^@/pages/(.*)$': '<rootDir>/pages/$1',
+    '^@/lib/(.*)$': '<rootDir>/lib/$1',
+    '^@/styles/(.*)$': '<rootDir>/styles/$1',
+  },
   testEnvironment: 'jest-environment-jsdom',
 };
 
