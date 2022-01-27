@@ -2,10 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/components/*": ["./src/components/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/atoms/*": ["./src/atoms/*"],
-      "@/lib/*": ["./src/lib/*"]
+      "@/components/*": ["./components/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/atoms/*": ["./atoms/*"],
+      "@/lib/*": ["./lib/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
