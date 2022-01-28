@@ -22,11 +22,11 @@ body {
   body {
     @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
     @apply transition duration-500;
-    @apply overflow-hidden;
+    /* @apply overflow-hidden; */
   }
 
   ::selection {
-    @apply bg-yellow-500 text-white;
+    @apply bg-yellow-600 text-white;
   }
 }
 
