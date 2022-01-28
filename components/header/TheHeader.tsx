@@ -3,7 +3,7 @@
 
 import cn from 'classnames';
 import Link from 'next/link';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import PlaneIcon from '/public/telegram-plane.svg';
 
@@ -14,11 +14,35 @@ export default function TheHeader() {
   const [showMenu, setShowMenu] = useState(false);
 
   // ECS to quit small nav menu
-  function keyPress(e: React.KeyboardEvent) {
-    if (e.code === 'Escape') {
-      setShowMenu(false);
+  // function keyPress(e: React.KeyboardEvent) {
+  //   if (e.code === 'Escape') {
+  //     setShowMenu(false);
+  //   }
+  // }
+
+  // ECS to quit small nav menu
+  useEffect(() => {
+    function handleEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setShowMenu(false);
+        event.stopPropagation();
+      }
     }
-  }
+
+    document.addEventListener('keyup', handleEscape);
+    return () => {
+      document.removeEventListener('keyup', handleEscape);
+    };
+  }, [setShowMenu]);
+
+  // disable scroll when opening
+  useEffect(() => {
+    if (showMenu) {
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = 'auto';
+    }
+  }, [showMenu]);
 
   return (
     // h-screen + body overflow hidden to display the menu in the screen
@@ -65,7 +89,7 @@ export default function TheHeader() {
             <PlaneIcon className="w-5" />
           </button>
         </div>
-        <div className="block lg:hidden">
+        <div className="inline-flex lg:hidden">
           <MenuButton
             onClick={() => {
               setShowMenu(!showMenu);
@@ -76,11 +100,12 @@ export default function TheHeader() {
 
       {
         /* Small screen menu open!!! Menu open: "block", Menu closed: "hidden" */
-        <div
-          tabIndex={0}
-          className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}
-          onKeyUp={keyPress}
-        >
+        // <div
+        //   tabIndex={0}
+        //   className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}
+        //   onKeyUp={keyPress}
+        // >
+        <div className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}>
           <nav className="mt-auto">
             <ul>
               <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">

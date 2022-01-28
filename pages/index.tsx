@@ -1,6 +1,5 @@
 import Head from 'next/head';
 
-import AppModalTest from '@/components/AppModalTest';
 import TheHeader from '@/components/header/TheHeader';
 
 export default function Home() {
@@ -13,10 +12,8 @@ export default function Home() {
 
       <TheHeader />
 
-      <AppModalTest />
-
       <main className="">
-        <section className=" bg-gray-100">
+        <section className="bg-gray-100 dark:bg-gray-900">
           <div className="container m-auto px-6 py-12">
             <h1>Hi</h1>
             <p>Web Developer</p>
