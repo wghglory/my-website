@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import TheHeader from '@/components/header/TheHeader';
+import TheFooter from '@/components/TheFooter';
 
 export default function Home() {
   return (
@@ -33,15 +34,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer>
-        <p>Footer</p>
-        <p>Footer</p>
-        <p>Footer</p>
-        <p>Footer</p>
-        <p>Footer</p>
-        <p>Footer</p>
-        <p>Footer</p>
-      </footer>
+      <TheFooter />
     </div>
   );
 }
