@@ -1,12 +1,11 @@
 import Link from 'next/link';
 import React from 'react';
 
-import EmailIcon from '/public/email.svg';
-import GithubIcon from '/public/github.svg';
-import LinkedInIcon from '/public/linkedin.svg';
 import PlaneIcon from '/public/telegram-plane.svg';
 
 import AppLogo from './AppLogo';
+import SocialIcons from './SocialIcons';
+
 export default function TheFooter() {
   return (
     <footer className="bg-king-400 pt-20 pb-10 dark:bg-king-700">
@@ -19,28 +18,7 @@ export default function TheFooter() {
           <section className="flex flex-col gap-2">
             <div className="text-xl font-bold">Contact</div>
             <a href="mailto:guanghui-wang@foxmail.com">guanghui-wang@foxmail.com</a>
-            <ul className="flex justify-center gap-2 lg:justify-start">
-              <li>
-                <a target={'_blank'} href="https://github.com/wghglory" className="btn-icon" rel="noreferrer">
-                  <GithubIcon className="w-8" />
-                </a>
-              </li>
-              <li>
-                <a
-                  target={'_blank'}
-                  href="https://www.linkedin.com/in/guanghuiwang/"
-                  className="btn-icon"
-                  rel="noreferrer"
-                >
-                  <LinkedInIcon className="w-8" />
-                </a>
-              </li>
-              <li>
-                <a href="mailto:guanghui-wang@foxmail.com" className="btn-icon">
-                  <EmailIcon className="w-8" />
-                </a>
-              </li>
-            </ul>
+            <SocialIcons />
             <div className="flex justify-center lg:justify-start">
               <button className="btn-accent">
                 Contact
