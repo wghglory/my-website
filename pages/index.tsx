@@ -1,9 +1,9 @@
 import Head from 'next/head';
 
+import ExperienceSection from '@/components/ExperienceSection';
 import TheHeader from '@/components/header/TheHeader';
 import HeroSection from '@/components/HeroSection';
 import TheFooter from '@/components/TheFooter';
-import TheHero from '@/components/TheHero';
 
 export default function Home() {
   return (
@@ -17,6 +17,7 @@ export default function Home() {
 
       <main>
         <HeroSection />
+        <ExperienceSection />
       </main>
 
       <TheFooter />
