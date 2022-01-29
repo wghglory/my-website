@@ -9,7 +9,7 @@ import PlaneIcon from '/public/telegram-plane.svg';
 import AppLogo from './AppLogo';
 export default function TheFooter() {
   return (
-    <footer className="bg-yellow-400 pt-20 pb-10 dark:bg-yellow-700">
+    <footer className="bg-king-400 pt-20 pb-10 dark:bg-king-700">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 gap-20 text-center lg:grid-cols-2 lg:text-left">
           <section>
