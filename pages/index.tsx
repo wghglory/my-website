@@ -1,6 +1,7 @@
 import Head from 'next/head';
 
 import TheHeader from '@/components/header/TheHeader';
+import HeroSection from '@/components/HeroSection';
 import TheFooter from '@/components/TheFooter';
 import TheHero from '@/components/TheHero';
 
@@ -14,10 +15,8 @@ export default function Home() {
 
       <TheHeader />
 
-      <main className="">
-        <section className="bg-gray-100 dark:bg-gray-900">
-          <TheHero />
-        </section>
+      <main>
+        <HeroSection />
       </main>
 
       <TheFooter />
