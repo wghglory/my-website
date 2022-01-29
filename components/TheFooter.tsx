@@ -18,7 +18,7 @@ export default function TheFooter() {
           <section className="flex flex-col gap-2">
             <div className="text-xl font-bold">Contact</div>
             <a href="mailto:guanghui-wang@foxmail.com">guanghui-wang@foxmail.com</a>
-            <SocialIcons />
+            <SocialIcons iconClass="btn-icon-accent" />
             <div className="flex justify-center lg:justify-start">
               <button className="btn-accent">
                 Contact

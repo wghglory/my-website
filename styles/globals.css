@@ -37,14 +37,6 @@ body {
 }
 
 @layer components {
-  .btn-icon {
-    @apply btn-layout;
-    @apply border border-gray-900 text-gray-900 ring-gray-900;
-    @apply dark:border-gray-100 dark:text-gray-100;
-    @apply hover:bg-gray-900 hover:text-king-400 focus:bg-gray-900 focus:text-king-400 active:bg-gray-800 active:text-king-500;
-    @apply dark:hover:border-gray-900 dark:hover:text-king-700 dark:focus:text-king-700 dark:active:text-king-600;
-  }
-
   .btn-primary {
     @apply btn-layout;
     @apply py-2 px-6;
@@ -54,17 +46,31 @@ body {
     @apply dark:hover:bg-king-700 dark:hover:text-gray-100 dark:focus:bg-king-700 dark:focus:ring-gray-100 dark:active:bg-king-600;
   }
 
-  .btn-secondary {
+  .btn-icon {
     @apply btn-layout;
-    @apply py-2 px-6;
     @apply border border-gray-900 text-gray-900 ring-gray-900;
     @apply dark:border-gray-100 dark:text-gray-100 dark:ring-gray-100;
     @apply hover:bg-king-400 hover:text-gray-900 focus:bg-king-400 focus:text-gray-900 active:bg-king-500;
     @apply dark:hover:bg-king-700 dark:hover:text-gray-100 dark:focus:bg-king-700 dark:focus:text-gray-100 dark:focus:ring-gray-100 dark:active:bg-king-600;
   }
 
-  .btn-accent {
+  .btn-secondary {
     @apply py-2 px-6;
     @apply btn-icon;
+  }
+
+  /* accent used only in footer section where it has colorful background */
+  .btn-icon-accent {
+    @apply btn-layout;
+    @apply border border-gray-900 text-gray-900 ring-gray-900;
+    @apply dark:border-gray-100 dark:text-gray-100;
+    @apply hover:bg-gray-900 hover:text-king-400 focus:bg-gray-900 focus:text-king-400 active:bg-gray-800 active:text-king-500;
+    @apply dark:hover:border-gray-900 dark:hover:text-king-700 dark:focus:text-king-700 dark:active:text-king-600;
+  }
+
+  /* accent used only in footer section where it has colorful background */
+  .btn-accent {
+    @apply py-2 px-6;
+    @apply btn-icon-accent;
   }
 }
