@@ -2,6 +2,7 @@ import Head from 'next/head';
 
 import TheHeader from '@/components/header/TheHeader';
 import TheFooter from '@/components/TheFooter';
+import TheHero from '@/components/TheHero';
 
 export default function Home() {
   return (
@@ -15,22 +16,7 @@ export default function Home() {
 
       <main className="">
         <section className="bg-gray-100 dark:bg-gray-900">
-          <div className="container m-auto px-6 py-12">
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-            <h1>Hi</h1>
-            <p>Web Developer</p>
-          </div>
+          <TheHero />
         </section>
       </main>
 
