@@ -32,31 +32,35 @@ body {
 
 @layer utilities {
   .btn-layout {
-    @apply flex items-center gap-2 rounded-full;
+    @apply flex items-center gap-2 rounded-full transition focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95;
   }
 }
 
 @layer components {
   .btn-icon {
     @apply btn-layout;
-    @apply border border-gray-900 text-gray-900;
-    @apply hover:border-gray-900 hover:bg-gray-900 hover:text-yellow-400 focus:bg-gray-900 focus:text-yellow-500;
-    @apply dark:border-gray-100 dark:text-gray-100 dark:hover:border-gray-900 dark:hover:text-yellow-500;
+    @apply border border-gray-900 text-gray-900 ring-gray-900;
+    @apply dark:border-gray-100 dark:text-gray-100;
+    @apply hover:bg-gray-900 hover:text-yellow-400 focus:bg-gray-900 focus:text-yellow-400 active:bg-gray-800 active:text-yellow-500;
+    @apply dark:hover:border-gray-900 dark:hover:text-yellow-700 dark:focus:text-yellow-700 dark:active:text-yellow-600;
   }
 
   .btn-primary {
     @apply btn-layout;
     @apply py-2 px-6;
-    @apply bg-gray-900 text-gray-100;
-    @apply dark:bg-gray-100 dark:text-gray-900;
-    @apply hover:bg-yellow-400 hover:text-gray-900 focus:bg-yellow-400 focus:text-gray-900;
-    @apply dark:hover:bg-yellow-700 dark:hover:text-gray-100 dark:focus:bg-yellow-700;
+    @apply bg-gray-900 text-gray-100 ring-gray-900;
+    @apply dark:bg-gray-100 dark:text-gray-900 dark:ring-gray-100;
+    @apply hover:bg-yellow-400 hover:text-gray-900 focus:bg-yellow-400 focus:text-gray-900 active:bg-yellow-500;
+    @apply dark:hover:bg-yellow-700 dark:hover:text-gray-100 dark:focus:bg-yellow-700 dark:focus:ring-gray-100 dark:active:bg-yellow-600;
   }
+
   .btn-secondary {
     @apply btn-layout;
     @apply py-2 px-6;
-    @apply border border-gray-900  text-gray-900;
-    @apply hover:bg-yellow-400 hover:text-gray-900 focus:bg-yellow-400 focus:text-gray-900;
+    @apply border border-gray-900 text-gray-900 ring-gray-900;
+    @apply dark:border-gray-100 dark:text-gray-100 dark:ring-gray-100;
+    @apply hover:bg-yellow-400 hover:text-gray-900 focus:bg-yellow-400 focus:text-gray-900 active:bg-yellow-500;
+    @apply dark:hover:bg-yellow-700 dark:hover:text-gray-100 dark:focus:bg-yellow-700 dark:focus:text-gray-100 dark:focus:ring-gray-100 dark:active:bg-yellow-600;
   }
 
   .btn-accent {
