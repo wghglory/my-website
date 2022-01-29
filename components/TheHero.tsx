@@ -3,7 +3,7 @@ import Image from 'next/image';
 import DoorIcon from '/public/door.svg';
 import mePic from '/public/me.png';
 
-import SocialIcons from './SocialIcons';
+import SocialIcons from './share/SocialIcons';
 
 export default function TheHero() {
   return (

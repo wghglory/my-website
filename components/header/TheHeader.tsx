@@ -9,7 +9,7 @@ import {useMedia} from 'react-use';
 
 import PlaneIcon from '/public/telegram-plane.svg';
 
-import AppLogo from '../AppLogo';
+import AppLogo from '../share/AppLogo';
 import MenuButton from './MenuButton';
 import ThemeChanger from './ThemeChanger';
 

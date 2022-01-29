@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-import AppModal from '@/components/AppModal';
+import AppModal from './AppModal';
 
 export default function AppModalTest() {
   const [isOpen, setIsOpen] = useState(false);
