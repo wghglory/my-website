@@ -1,4 +1,17 @@
+import gsap from 'gsap';
+import {useEffect} from 'react';
+
 export default function Sky({theme}: {theme: string}) {
+  useEffect(() => {
+    if (theme === 'dark') {
+      gsap
+        .timeline({ease: 'back'})
+        .from('#moon', {autoAlpha: 0})
+        .from('#moon', {x: 80, rotate: -5, transformOrigin: '50% 50%', yoyo: true, repeat: -1, duration: 2}, '<')
+        .from('#star path', {scale: 0, opacity: 0, stagger: 0.2, repeat: -1, yoyo: true}, 0.5);
+    }
+  }, [theme]);
+
   return theme === 'light' ? (
     <svg
       className="md:w-70 mt-[-30px] w-60 lg:w-80"
@@ -68,7 +81,7 @@ export default function Sky({theme}: {theme: string}) {
     </svg>
   ) : (
     <svg className="mb-20 w-52 md:w-60 lg:w-72" viewBox="0 0 980 748" fill="none">
-      <g id="moon">
+      <g id="moon" className="invisible">
         <g id="moon-body">
           <path
             d="M700.085 611.656C556.082 720.751 359.04 647.275 295.44 520.43C233.567 407.448 258.458 242 381.339 161.927C364.222 190.712 344.16 227.548 339.371 250.365C338.586 253.781 337.918 257.159 337.408 260.457C306 392.996 400.969 595.32 587.332 620.806C597.094 622.158 606.925 622.958 616.777 623.202C639.037 624.066 671.426 618.843 700.085 611.656Z"
