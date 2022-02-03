@@ -1,9 +1,8 @@
 import dynamic from 'next/dynamic';
 import {useTheme} from 'next-themes';
 
-import Sky from './Sky';
-
 const SkillPlane = dynamic(() => import('./SkillPlane'), {ssr: false});
+const Sky = dynamic(() => import('./Sky'), {ssr: false});
 
 export default function ExperienceSection() {
   const {theme} = useTheme();
