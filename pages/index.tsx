@@ -3,6 +3,7 @@ import Head from 'next/head';
 import ExperienceSection from '@/components/ExperienceSection';
 import TheHeader from '@/components/header/TheHeader';
 import HeroSection from '@/components/HeroSection';
+import ProjectSection from '@/components/ProjectSection';
 import TheFooter from '@/components/TheFooter';
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
       <main>
         <HeroSection />
         <ExperienceSection />
+        <ProjectSection />
       </main>
 
       <TheFooter />
