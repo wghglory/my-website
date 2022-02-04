@@ -22,7 +22,7 @@ const kingColor = (fullConfig.theme.colors as any).king;
 
 export default function ProjectSection() {
   return (
-    <section className="bg-gray-100 dark:bg-gray-900">
+    <section className="bg-gray-100 dark:bg-gray-900" id="project">
       <div className="container m-auto py-10 lg:py-20">
         <h2 className="text-center text-2xl lg:mb-10 lg:py-6 lg:text-left lg:text-5xl">Projects</h2>
         <div>
