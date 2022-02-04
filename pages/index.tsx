@@ -1,10 +1,10 @@
 import Head from 'next/head';
 
-import ExperienceSection from '@/components/ExperienceSection';
+import ExperienceSection from '@/components/experience/ExperienceSection';
 import TheHeader from '@/components/header/TheHeader';
-import HeroSection from '@/components/HeroSection';
-import ProjectSection from '@/components/ProjectSection';
-import TheFooter from '@/components/TheFooter';
+import HeroSection from '@/components/hero/HeroSection';
+import ProjectSection from '@/components/project/ProjectSection';
+import TheFooter from '@/components/share/TheFooter';
 
 export default function Home() {
   return (

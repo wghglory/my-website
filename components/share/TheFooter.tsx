@@ -3,8 +3,8 @@ import React from 'react';
 
 import PlaneIcon from '/public/telegram-plane.svg';
 
-import AppLogo from './share/AppLogo';
-import SocialIcons from './share/SocialIcons';
+import AppLogo from './AppLogo';
+import SocialIcons from './SocialIcons';
 
 export default function TheFooter() {
   return (
