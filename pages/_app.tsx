@@ -10,7 +10,11 @@ import {ScrollToPlugin} from 'gsap/dist/ScrollToPlugin';
 import {ScrollTrigger} from 'gsap/dist/ScrollTrigger';
 import {TextPlugin} from 'gsap/dist/TextPlugin';
 import type {AppProps} from 'next/app';
+import Head from 'next/head';
 import {ThemeProvider} from 'next-themes';
+
+import TheHeader from '@/components/header/TheHeader';
+import TheFooter from '@/components/share/TheFooter';
 
 /*
 DrawSVGPlugin.min.js, GSDevTools.min.js, InertiaPlugin.min.js, MorphSVGPlugin.min.js, MotionPathHelper.min.js, Physics2DPlugin.min.js, PhysicsPropsPlugin.min.js, ScrambleTextPlugin.min.js, and SplitText.min.js are Club GreenSock perks
@@ -44,7 +48,18 @@ if (typeof window !== 'undefined') {
 function MyApp({Component, pageProps}: AppProps) {
   return (
     <ThemeProvider attribute="class">
-      <Component {...pageProps} />
+      <div className="flex flex-col">
+        <Head>
+          <title>Derek Website</title>
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+        <TheHeader />
+
+        <Component {...pageProps} />
+
+        <TheFooter />
+      </div>
     </ThemeProvider>
   );
 }
