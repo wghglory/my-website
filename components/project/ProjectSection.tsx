@@ -14,6 +14,8 @@ import sirius1Img from '/public/projects/sirius1.png';
 import sirius2Img from '/public/projects/sirius2.png';
 import sirius3Img from '/public/projects/sirius3.png';
 
+import CarouselCard from '../share/CarouselCard';
+
 const tailwindConfig = require('/tailwind.config');
 const fullConfig = resolveConfig(tailwindConfig);
 const kingColor = (fullConfig.theme.colors as any).king;
@@ -54,16 +56,18 @@ export default function ProjectSection() {
             className="mySwiper"
           >
             <SwiperSlide>
-              <Image className="w-1/2" src={spotifyImg} alt="Spotify" />
+              <CarouselCard
+                imgSrc={spotifyImg}
+                title="Spotify Lite"
+                description="Make a Spotify Lite by Next.js, NAuth, Spotify webApi. Music album, player, server-side rendering are the main features."
+              />
             </SwiperSlide>
             <SwiperSlide>
-              <Image className="w-1/2" src={sirius1Img} alt="Spotify" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Image className="w-1/2" src={sirius2Img} alt="Spotify" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Image className="w-1/2" src={sirius3Img} alt="Spotify" />
+              <CarouselCard
+                imgSrc={sirius1Img}
+                title="SaaS Pipeline Viewer"
+                description="Monitor SaaS pipeline progress in a smart way. It offers the team members to understand their tasks."
+              />
             </SwiperSlide>
           </Swiper>
           <style jsx global>
@@ -77,7 +81,7 @@ export default function ProjectSection() {
               .swiper-slide {
                 background-position: center;
                 background-size: cover;
-                width: clamp(50%, 400px, 90%);
+                width: clamp(40%, 300px, 90%);
                 /* height: 200px; */
               }
 
