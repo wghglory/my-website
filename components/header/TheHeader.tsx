@@ -60,17 +60,17 @@ export default function TheHeader() {
                 </Link>
               </li>
               <li className="hover:text-orange-600">
-                <Link href="#about">
+                <Link href="#experience">
                   <a>About</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
-                <Link href="#projects">
+                <Link href="#project">
                   <a>Projects</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
-                <Link href="#blog">
+                <Link href="/posts">
                   <a>Blog</a>
                 </Link>
               </li>
@@ -113,17 +113,17 @@ export default function TheHeader() {
                   </Link>
                 </li>
                 <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="#about">
+                  <Link href="#experience">
                     <a>About</a>
                   </Link>
                 </li>
                 <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="#projects">
+                  <Link href="#project">
                     <a>Projects</a>
                   </Link>
                 </li>
                 <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="#blog">
+                  <Link href="/posts">
                     <a>Blog</a>
                   </Link>
                 </li>

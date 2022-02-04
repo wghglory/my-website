@@ -7,7 +7,7 @@ import SocialIcons from '../share/SocialIcons';
 
 export default function HeroSection() {
   return (
-    <section className="bg-gray-100 dark:bg-gray-900">
+    <section className="bg-gray-100 dark:bg-gray-900" id="home">
       <div className="container m-auto px-6 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-36">
           <div className="flex flex-col justify-center gap-6 px-12">
