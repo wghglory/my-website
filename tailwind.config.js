@@ -14,6 +14,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('@tailwindcss/forms'),
     // https://stackoverflow.com/questions/66416614/how-to-create-scrollable-element-in-tailwind-without-a-scrollbar
     // https://github.com/reslear/tailwind-scrollbar-hide
     plugin(function ({addUtilities}) {
