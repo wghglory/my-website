@@ -34,3 +34,14 @@ module.exports = {
   },
 };
 ```
+
+## Add Sitemap
+
+```bash
+npm i next-sitemap
+```
+
+copy `next-sitemap.js` in project root.
+
+Add `"postbuild": "next-sitemap"` in package.json. After build, it should generate 3 files in **public** folder --
+sitemap.xml, sitemap-0.xml, robots.txt.
