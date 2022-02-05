@@ -42,6 +42,14 @@ export default function PostPage({post}: {post: MDXPost}) {
         </a>
       </Link>
       <h1>{post.meta.title}</h1>
+      <div className="text-center">
+        <img
+          className="inline-block w-full sm:w-4/5 lg:w-3/5"
+          src={post.meta.cover_image}
+          alt="post cover"
+          loading="lazy"
+        />
+      </div>
       <MDXRemote {...post.source} components={{YouTube, Image}} />
     </article>
   );
