@@ -1,3 +1,5 @@
+// TODO: may remove or refactor
+
 import type {GetStaticPaths, GetStaticProps} from 'next';
 import Head from 'next/head';
 
@@ -12,7 +14,7 @@ export default function TagPage({slug, posts}: {slug: string; posts: PostMeta[]}
         <title>Tag: {slug}</title>
       </Head>
       <h1>Tag: {slug}</h1>
-      <PostList posts={posts} />
+      {/* <PostList posts={posts} /> */}
     </>
   );
 }
