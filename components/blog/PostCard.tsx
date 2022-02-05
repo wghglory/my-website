@@ -1,8 +1,19 @@
 import Link from 'next/link';
+import {Dispatch, SetStateAction} from 'react';
 
 import type {PostMeta} from '@/models/post';
 
-export default function PostCard({post}: {post: PostMeta}) {
+import PillList from '../share/PillList';
+
+export default function PostCard({
+  post,
+  setTerm,
+  term,
+}: {
+  post: PostMeta;
+  setTerm: Dispatch<SetStateAction<string>>;
+  term: string;
+}) {
   return (
     <div className="flex flex-col rounded-xl border-2 border-transparent bg-white shadow-md hover:border-king-500 hover:shadow-xl dark:bg-gray-900">
       <div className={`post-bg h-48 rounded-t-xl bg-cover bg-center bg-no-repeat`}>{/* https://hypercolor.dev/ */}</div>
@@ -22,13 +33,7 @@ export default function PostCard({post}: {post: PostMeta}) {
             </Link>
           </header>
           {/* <p className="text-gray-500">{post.excerpt}</p> */}
-          <div className="flex flex-wrap gap-2 text-xs">
-            {post.tags.map((tag) => (
-              <Link key={tag} href={`/tags/${tag}`}>
-                <a className="rounded-full border bg-gray-100 py-1 px-3 dark:bg-gray-800">{tag}</a>
-              </Link>
-            ))}
-          </div>
+          <PillList tags={post.tags} setTerm={setTerm} term={term} />
         </div>
         <time className="block font-serif text-xs text-gray-500">{new Date(post.date).toLocaleDateString()}</time>
       </div>

@@ -1,11 +1,12 @@
-import {ChangeEvent, useState} from 'react';
+import {useState} from 'react';
 import {useDebounce} from 'react-use';
 
 import PostList from '@/components/blog/PostList';
+import PillList from '@/components/share/PillList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
 
-export default function PostsPage({posts}: {posts: PostMeta[]}) {
+export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: string[]}) {
   const [term, setTerm] = useState('');
   const [debouncedValue, setDebouncedValue] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(posts);
@@ -14,7 +15,10 @@ export default function PostsPage({posts}: {posts: PostMeta[]}) {
     () => {
       setDebouncedValue(term);
 
-      const data = posts.filter((slug) => slug.title.match(new RegExp(term, 'i')));
+      // filter by title or tags
+      const data = posts.filter((p) => {
+        return p.title.match(new RegExp(term, 'i')) || p.tags.includes(term);
+      });
       setFilteredPosts(data);
     },
     1000,
@@ -24,11 +28,11 @@ export default function PostsPage({posts}: {posts: PostMeta[]}) {
 
   return (
     <section className="bg-white dark:bg-gray-900" id="project">
-      <div className="container m-auto py-10 px-6 lg:py-20">
-        <h2 className="py-6 text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">Posts</h2>
+      <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
+        <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">Posts</h2>
 
-        {/* <form action="/blog" method="GET"> */}
-        <form className="w-full pb-10 lg:w-2/3">
+        {/* Search by title or tags <form action="/blog" method="GET"> */}
+        <form className="w-full lg:w-2/3">
           <div className="relative">
             <button
               title="Search"
@@ -49,7 +53,7 @@ export default function PostsPage({posts}: {posts: PostMeta[]}) {
               name="q"
               value={term}
               onChange={(e) => setTerm(e.target.value)}
-              placeholder="Search posts by title"
+              placeholder="Search posts"
               className="w-full rounded-full border border-gray-200 bg-gray-100 py-4 pl-14 pr-6 text-lg font-medium focus:border-king-500 focus:outline-none focus:ring-0 dark:border-gray-700 dark:bg-gray-800 dark:focus:border-king-500 md:pr-20"
             />
             <div className="absolute right-6 top-0 hidden h-full w-14 items-center justify-end text-lg font-medium text-gray-500 md:flex">
@@ -58,7 +62,13 @@ export default function PostsPage({posts}: {posts: PostMeta[]}) {
           </div>
         </form>
 
-        <PostList posts={filteredPosts} />
+        {/* Search by tag */}
+        <div className="space-y-4">
+          <label className="text-xl">Search posts by topics</label>
+          <PillList tags={tags} setTerm={setTerm} term={term} />
+        </div>
+
+        <PostList posts={filteredPosts} setTerm={setTerm} term={term} />
       </div>
     </section>
   );
@@ -69,5 +79,7 @@ export async function getStaticProps() {
     // .slice(0, 9)
     .map((post) => post.meta);
 
-  return {props: {posts}};
+  const tags = Array.from(new Set(posts.map((post) => post.tags).flat()));
+
+  return {props: {posts, tags}};
 }
