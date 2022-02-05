@@ -18,7 +18,7 @@ export default function PostCard({post}: {post: PostMeta}) {
         <div className="flex-1 space-y-6">
           <header className="text-2xl font-semibold lg:text-center">
             <Link href={`/posts/${post.slug}`}>
-              <a className="block hover:text-queen-500 hover:underline">{post.title}</a>
+              <a className="block hover:text-king-500">{post.title}</a>
             </Link>
           </header>
           {/* <p className="text-gray-500">{post.excerpt}</p> */}

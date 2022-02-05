@@ -1,4 +1,4 @@
-import 'highlight.js/styles/atom-one-dark.css';
+import 'highlight.js/styles/night-owl.css';
 
 import type {GetStaticPaths, GetStaticProps} from 'next';
 import Head from 'next/head';
@@ -13,16 +13,17 @@ import rehypeSlug from 'rehype-slug';
 import YouTube from '@/components/share/Youtube';
 import {getPostFromSlug, getSlugs} from '@/lib/post';
 import {MDXPost} from '@/models/post';
-import style from '@/styles/post.module.css';
+// import style from '@/styles/post.module.css';
 
 export default function PostPage({post}: {post: MDXPost}) {
   return (
-    <article className={style.post}>
+    // <article className={style.post}>
+    <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
       <Head>
         <title>{post.meta.title}</title>
       </Head>
       <Link href="/posts">
-        <a className="group flex items-center gap-3">
+        <a className="group mb-8 flex items-center gap-3">
           <svg
             className="rotate-90 duration-200 group-hover:-translate-x-2"
             width="32"

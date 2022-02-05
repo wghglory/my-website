@@ -15,6 +15,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.1",
     "classnames": "^2.3.1",
     "focus-trap-react": "^8.9.1",
     "glob": "^7.2.0",
@@ -32,13 +33,13 @@
     "swiper": "^8.0.3"
   },
   "devDependencies": {
-    "@types/glob": "^7.2.0",
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
     "@playwright/test": "^1.18.0",
     "@svgr/webpack": "^6.2.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
+    "@types/glob": "^7.2.0",
     "@types/node": "17.0.4",
     "@types/react": "17.0.38",
     "@types/react-dom": "^17.0.11",

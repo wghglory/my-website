@@ -1,4 +1,3 @@
-import PostCard from '@/components/blog/PostCard';
 import PostList from '@/components/blog/PostList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
@@ -16,7 +15,7 @@ export default function PostsPage({posts}: {posts: PostMeta[]}) {
 
 export async function getStaticProps() {
   const posts = getAllPosts()
-    .slice(0, 9)
+    // .slice(0, 9)
     .map((post) => post.meta);
 
   return {props: {posts}};
