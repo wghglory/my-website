@@ -1,11 +1,12 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": "next",
   "plugins": ["simple-import-sort", "testing-library"],
   "rules": {
     "react/jsx-filename-extension": [0, {"extensions": [".tsx", ".ts"]}],
     "import/extensions": [0, "never"],
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "@next/next/no-img-element": "off"
   },
   "overrides": [
     // Only uses Testing Library lint rules in test files
