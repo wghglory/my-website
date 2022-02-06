@@ -7,7 +7,7 @@
       "@/atoms/*": ["./atoms/*"],
       "@/lib/*": ["./lib/*"],
       "@/styles/*": ["./styles/*"],
-      "@/models/*": ["./models/*"]
+      "@/models": ["./models/index"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

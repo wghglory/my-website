@@ -3,12 +3,12 @@ import {sync} from 'glob';
 import matter from 'gray-matter';
 import path from 'path';
 
-import {Post} from '@/models/post';
+import {FileContent} from '@/models';
 
-const postsDirectory = path.join(process.cwd(), 'content/posts');
+export type ContentDirectory = 'posts' | 'projects' | 'snippets';
 
-export const getSlugs = (): string[] => {
-  const paths = sync(`${postsDirectory}/*.mdx`);
+export const getSlugs = (dir: ContentDirectory): string[] => {
+  const paths = sync(path.join(process.cwd(), `content/${dir}/*.mdx`));
 
   return paths.map((path) => {
     const parts = path.split('/');
@@ -18,18 +18,18 @@ export const getSlugs = (): string[] => {
   });
 };
 
-export const getAllPosts = () => {
-  const posts = getSlugs()
-    .map((slug) => getPostFromSlug(slug))
+export const getAllFiles = (dir: ContentDirectory) => {
+  const files = getSlugs(dir)
+    .map((slug) => getFileFromSlug(dir, slug))
     .sort((a, b) => {
       return new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime();
     });
-  return posts;
+  return files;
 };
 
-export const getPostFromSlug = (slug: string): Post => {
-  const postPath = path.join(postsDirectory, `${slug}.mdx`);
-  const source = fs.readFileSync(postPath, 'utf8');
+export const getFileFromSlug = (dir: ContentDirectory, slug: string): FileContent => {
+  const filePath = path.join(process.cwd(), `content/${dir}`, `${slug}.mdx`);
+  const source = fs.readFileSync(filePath, 'utf8');
   const {content, data} = matter(source);
 
   return {
@@ -38,8 +38,8 @@ export const getPostFromSlug = (slug: string): Post => {
       slug,
       excerpt: data.excerpt ?? '',
       title: data.title ?? slug,
-      topics: (data.topics ?? []).sort(),
       date: (data.date ?? new Date()).toString(),
+      topics: (data.topics ?? []).sort(),
       cover_image: data.cover_image ?? '',
     },
   };

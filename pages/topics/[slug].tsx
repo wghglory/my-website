@@ -5,10 +5,10 @@ import {useRouter} from 'next/router';
 import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
 import TopicList from '@/components/share/TopicList';
-import {getAllPosts} from '@/lib/post';
-import {PostMeta} from '@/models/post';
+import {getAllFiles} from '@/lib/file';
+import {FileMeta} from '@/models';
 
-export default function TopicPage({topic, topics, posts}: {topic: string; topics: string[]; posts: PostMeta[]}) {
+export default function TopicPage({topic, topics, posts}: {topic: string; topics: string[]; posts: FileMeta[]}) {
   const router = useRouter();
 
   function updateQuery(topic: string) {
@@ -40,11 +40,11 @@ export default function TopicPage({topic, topics, posts}: {topic: string; topics
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  const posts = getAllPosts();
+  const posts = getAllFiles('posts');
 
   const topics = Array.from(new Set(posts.map((post) => post.meta.topics).flat()));
 
-  const filteredPosts = posts.filter((post) => post.meta.topics.includes(slug));
+  const filteredPosts = posts.filter((post) => post.meta.topics?.includes(slug));
 
   return {
     props: {
@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = getAllPosts();
+  const posts = getAllFiles('posts');
   const topics = new Set(posts.map((post) => post.meta.topics).flat());
   const paths = Array.from(topics).map((topic) => ({params: {slug: topic}}));
 

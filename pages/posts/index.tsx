@@ -7,10 +7,10 @@ import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
 import TopicList from '@/components/share/TopicList';
 import TopicRadioList from '@/components/share/TopicRadioList';
-import {getAllPosts} from '@/lib/post';
-import {PostMeta} from '@/models/post';
+import {getAllFiles} from '@/lib/file';
+import {FileMeta} from '@/models';
 
-export default function PostsPage({posts, topics}: {posts: PostMeta[]; topics: string[]}) {
+export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: string[]}) {
   const [term, setTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(posts);
 
@@ -25,7 +25,7 @@ export default function PostsPage({posts, topics}: {posts: PostMeta[]; topics: s
       debounce(() => {
         // filter by title or topics
         const data = posts.filter((p) => {
-          return p.title.match(new RegExp(q, 'i')) || p.topics.includes(q);
+          return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
         });
         setFilteredPosts(data);
       }, 1000)();
@@ -91,7 +91,7 @@ export default function PostsPage({posts, topics}: {posts: PostMeta[]; topics: s
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getAllPosts()
+  const posts = getAllFiles('posts')
     // .slice(0, 9)
     .map((post) => post.meta);
 

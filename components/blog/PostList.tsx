@@ -1,4 +1,4 @@
-import {PostMeta} from '@/models/post';
+import {FileMeta} from '@/models';
 
 import PostCard from './PostCard';
 
@@ -7,7 +7,7 @@ export default function PostList({
   syncInputWithQuery,
   term,
 }: {
-  posts: PostMeta[];
+  posts: FileMeta[];
   syncInputWithQuery: (val: string) => void;
   term: string;
 }) {

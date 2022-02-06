@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import type {PostMeta} from '@/models/post';
+import type {FileMeta} from '@/models';
 
 import TopicList from '../share/TopicList';
 
@@ -9,7 +9,7 @@ export default function PostCard({
   syncInputWithQuery,
   term,
 }: {
-  post: PostMeta;
+  post: FileMeta;
   syncInputWithQuery: (val: string) => void;
   term: string;
 }) {

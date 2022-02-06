@@ -7,10 +7,10 @@ import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
 import TopicList from '@/components/share/TopicList';
 import TopicRadioList from '@/components/share/TopicRadioList';
-import {getAllPosts} from '@/lib/post';
-import {PostMeta} from '@/models/post';
+import {getAllFiles} from '@/lib/file';
+import {FileMeta} from '@/models';
 
-export default function SnippetsPage({posts, topics}: {posts: PostMeta[]; topics: string[]}) {
+export default function SnippetsPage({posts, topics}: {posts: FileMeta[]; topics: string[]}) {
   const [term, setTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(posts);
 
@@ -91,7 +91,7 @@ export default function SnippetsPage({posts, topics}: {posts: PostMeta[]; topics
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getAllPosts()
+  const posts = getAllFiles('snippets')
     // .slice(0, 9)
     .map((post) => post.meta);
 
