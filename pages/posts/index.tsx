@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {useDebounce} from 'react-use';
 
 import PostList from '@/components/blog/PostList';
+import NoData from '@/components/share/NoData';
 import PillList from '@/components/share/PillList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
@@ -68,7 +69,7 @@ export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: strin
           <PillList tags={tags} setTerm={setTerm} term={term} />
         </div>
 
-        <PostList posts={filteredPosts} setTerm={setTerm} term={term} />
+        {filteredPosts.length === 0 ? <NoData /> : <PostList posts={filteredPosts} setTerm={setTerm} term={term} />}
       </div>
     </section>
   );
