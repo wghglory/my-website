@@ -24,7 +24,7 @@ export default function TopicPage({topic, topics, posts}: {topic: string; topics
         <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
           <div className="space-y-4">
             <label className="text-xl">Search posts by topics</label>
-            <TopicList topics={topics} syncInputWithQuery={updateQuery} term={topic} />
+            <TopicList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
           </div>
 
           <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">

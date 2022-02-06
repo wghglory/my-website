@@ -1,23 +1,23 @@
 export default function TopicList({
   topics,
-  syncInputWithQuery,
-  term,
+  currentTopicChange,
+  currentTopic,
 }: {
   topics: string[];
-  syncInputWithQuery: (val: string) => void;
-  term: string;
+  currentTopicChange: (val: string) => void;
+  currentTopic: string;
 }) {
   return (
     <div className="flex flex-wrap gap-2 text-xs">
-      {topics.map((topic) => (
+      {topics.map((t) => (
         <button
-          key={topic}
+          key={t}
           className={`rounded-full border bg-gray-100 py-1 px-3 dark:bg-gray-800 ${
-            term === topic ? 'border-king-500 bg-king-400 dark:bg-king-400 dark:text-gray-900' : ''
+            currentTopic === t ? 'border-king-500 bg-king-400 dark:bg-king-400 dark:text-gray-900' : ''
           }`}
-          onClick={() => syncInputWithQuery(topic)}
+          onClick={() => currentTopicChange(t)}
         >
-          {topic}
+          {t}
         </button>
       ))}
     </div>
