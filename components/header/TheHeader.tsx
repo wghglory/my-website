@@ -4,6 +4,7 @@
 import cn from 'classnames';
 import FocusTrap from 'focus-trap-react';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {useMedia} from 'react-use';
 
@@ -14,6 +15,7 @@ import MenuButton from './MenuButton';
 import ThemeChanger from './ThemeChanger';
 
 export default function TheHeader() {
+  const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
   const isLg = useMedia('(min-width: 1024px)');
 
@@ -43,6 +45,11 @@ export default function TheHeader() {
   useEffect(() => {
     document.documentElement.style.overflow = showMenu && !isLg ? 'hidden' : 'auto';
   }, [showMenu, isLg]);
+
+  function navigateTo(destination: string) {
+    setShowMenu(false);
+    router.push(destination);
+  }
 
   return (
     <FocusTrap active={showMenu && !isLg}>
@@ -107,30 +114,30 @@ export default function TheHeader() {
           <div className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}>
             <nav className="mt-auto">
               <ul>
-                <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="/">
-                    <a>Home</a>
-                  </Link>
+                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/')}>
+                    Home
+                  </button>
                 </li>
-                <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="/#experience">
-                    <a>About</a>
-                  </Link>
+                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/#experience')}>
+                    About
+                  </button>
                 </li>
-                <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="/#project">
-                    <a>Projects</a>
-                  </Link>
+                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/#project')}>
+                    Projects
+                  </button>
                 </li>
-                <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="/posts">
-                    <a>Blog</a>
-                  </Link>
+                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/posts')}>
+                    Blog
+                  </button>
                 </li>
-                <li className="py-3 text-center hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800 md:py-5">
-                  <Link href="/snippets">
-                    <a>Snippets</a>
-                  </Link>
+                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/snippets')}>
+                    Snippets
+                  </button>
                 </li>
               </ul>
             </nav>
