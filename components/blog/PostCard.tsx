@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import {Dispatch, SetStateAction} from 'react';
 
 import type {PostMeta} from '@/models/post';
 
@@ -7,11 +6,11 @@ import PillList from '../share/PillList';
 
 export default function PostCard({
   post,
-  setTerm,
+  syncInputWithQuery,
   term,
 }: {
   post: PostMeta;
-  setTerm: Dispatch<SetStateAction<string>>;
+  syncInputWithQuery: (val: string) => void;
   term: string;
 }) {
   return (
@@ -33,7 +32,7 @@ export default function PostCard({
             </Link>
           </header>
           {/* <p className="text-gray-500">{post.excerpt}</p> */}
-          <PillList tags={post.tags} setTerm={setTerm} term={term} />
+          <PillList tags={post.tags} syncInputWithQuery={syncInputWithQuery} term={term} />
         </div>
         <time className="block font-serif text-xs text-gray-500">{new Date(post.date).toLocaleDateString()}</time>
       </div>

@@ -7,13 +7,13 @@ import PostList from '@/components/blog/PostList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
 
-export default function TagPage({slug, posts}: {slug: string; posts: PostMeta[]}) {
+export default function TagPage({tag, posts}: {tag: string; posts: PostMeta[]}) {
   return (
     <>
       <Head>
-        <title>Tag: {slug}</title>
+        <title>Tag: {tag}</title>
       </Head>
-      <h1>Tag: {slug}</h1>
+      <h1>Tag: {tag}</h1>
       {/* <PostList posts={posts} /> */}
     </>
   );
@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 
   return {
     props: {
-      slug,
+      tag: slug,
       posts: posts.map((post) => post.meta),
     },
   };
