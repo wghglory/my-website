@@ -32,7 +32,7 @@ export default function PostCard({
             </Link>
           </header>
           {/* <p className="text-gray-500">{post.excerpt}</p> */}
-          <TopicList topics={post.topics} syncInputWithQuery={syncInputWithQuery} term={term} />
+          <TopicList topics={post.topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
         </div>
         <time className="block font-serif text-xs text-gray-500">{new Date(post.date).toLocaleDateString()}</time>
       </div>

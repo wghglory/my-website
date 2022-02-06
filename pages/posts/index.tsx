@@ -76,7 +76,7 @@ export default function PostsPage({posts, topics}: {posts: PostMeta[]; topics: s
         {/* Search by topic */}
         <div className="space-y-4">
           <label className="text-xl">Search posts by topics</label>
-          <TopicList topics={topics} syncInputWithQuery={syncInputWithQuery} term={term} />
+          <TopicList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
           {/* <TopicRadioList topics={topics} /> */}
         </div>
 
