@@ -38,7 +38,7 @@ export const getPostFromSlug = (slug: string): Post => {
       slug,
       excerpt: data.excerpt ?? '',
       title: data.title ?? slug,
-      tags: (data.tags ?? []).sort(),
+      topics: (data.topics ?? []).sort(),
       date: (data.date ?? new Date()).toString(),
       cover_image: data.cover_image ?? '',
     },

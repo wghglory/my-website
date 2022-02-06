@@ -9,7 +9,7 @@ export interface PostMeta {
   excerpt: string;
   slug: string;
   title: string;
-  tags: string[];
+  topics: string[];
   date: string;
   cover_image: string;
 }
