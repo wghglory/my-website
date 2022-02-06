@@ -8,7 +8,7 @@ import TopicList from '@/components/share/TopicList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
 
-export default function TopicPage({topic, topics, posts}: {topic: string; topics: string[]; posts: FileMeta[]}) {
+export default function TopicPage({topic, topics, files}: {topic: string; topics: string[]; files: FileMeta[]}) {
   const router = useRouter();
 
   function updateQuery(topic: string) {
@@ -31,7 +31,7 @@ export default function TopicPage({topic, topics, posts}: {topic: string; topics
             Topic<strong className="ml-6 text-king-500">{topic}</strong>
           </h2>
 
-          {posts.length === 0 ? <NoData /> : <PostList posts={posts} syncInputWithQuery={updateQuery} term={topic} />}
+          {files.length === 0 ? <NoData /> : <PostList posts={files} syncInputWithQuery={updateQuery} term={topic} />}
         </div>
       </section>
     </>
@@ -40,24 +40,24 @@ export default function TopicPage({topic, topics, posts}: {topic: string; topics
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  const posts = getAllFiles('posts');
+  const files = getAllFiles('posts');
 
-  const topics = Array.from(new Set(posts.map((post) => post.meta.topics).flat()));
+  const topics = Array.from(new Set(files.map((f) => f.meta.topics).flat()));
 
-  const filteredPosts = posts.filter((post) => post.meta.topics?.includes(slug));
+  const filteredFiles = files.filter((f) => f.meta.topics?.includes(slug));
 
   return {
     props: {
       topics,
       topic: slug,
-      posts: filteredPosts.map((post) => post.meta),
+      files: filteredFiles.map((f) => f.meta),
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = getAllFiles('posts');
-  const topics = new Set(posts.map((post) => post.meta.topics).flat());
+  const files = getAllFiles('posts');
+  const topics = new Set(files.map((f) => f.meta.topics).flat());
   const paths = Array.from(topics).map((topic) => ({params: {slug: topic}}));
 
   return {

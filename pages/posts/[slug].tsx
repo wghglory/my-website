@@ -15,12 +15,11 @@ import {getFileFromSlug, getSlugs} from '@/lib/file';
 import {MDXFile} from '@/models';
 // import style from '@/styles/post.module.css';
 
-export default function PostPage({post}: {post: MDXFile}) {
+export default function PostPage({file}: {file: MDXFile}) {
   return (
-    // <article className={style.post}>
     <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
       <Head>
-        <title>{post.meta.title}</title>
+        <title>{file.meta.title}</title>
       </Head>
       <Link href="/posts">
         <a className="group mb-8 flex items-center gap-3">
@@ -41,16 +40,16 @@ export default function PostPage({post}: {post: MDXFile}) {
           Back to overview
         </a>
       </Link>
-      <h1>{post.meta.title}</h1>
+      <h1>{file.meta.title}</h1>
       <div className="text-center">
         <img
           className="inline-block w-full sm:w-4/5 lg:w-3/5"
-          src={post.meta.cover_image}
+          src={file.meta.cover_image}
           alt="post cover"
           loading="lazy"
         />
       </div>
-      <MDXRemote {...post.source} components={{YouTube, Image}} />
+      <MDXRemote {...file.source} components={{YouTube, Image}} />
     </article>
   );
 }
@@ -64,7 +63,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     },
   });
 
-  return {props: {post: {source: mdxSource, meta}}};
+  return {props: {file: {source: mdxSource, meta}}};
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
