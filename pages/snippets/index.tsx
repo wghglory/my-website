@@ -3,20 +3,19 @@ import {GetStaticProps} from 'next';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
-import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
 import TopicList from '@/components/share/TopicList';
-import TopicRadioList from '@/components/share/TopicRadioList';
+import SnippetList from '@/components/snippet/SnippetList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
 
-export default function SnippetsPage({posts, topics}: {posts: FileMeta[]; topics: string[]}) {
+export default function SnippetsPage({files, topics}: {files: FileMeta[]; topics: string[]}) {
   const [term, setTerm] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [filteredFiles, setFilteredFiles] = useState(files);
 
   const router = useRouter();
 
-  // if router q has value, setTerm and filteredPosts
+  // if router q has value, setTerm and filteredFiles
   useEffect(() => {
     const q = router.query.q as string;
     if (q !== undefined) {
@@ -24,13 +23,13 @@ export default function SnippetsPage({posts, topics}: {posts: FileMeta[]; topics
 
       debounce(() => {
         // filter by title or topics
-        const data = posts.filter((p) => {
+        const data = files.filter((p) => {
           return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
         });
-        setFilteredPosts(data);
+        setFilteredFiles(data);
       }, 1000)();
     }
-  }, [posts, router.query.q]);
+  }, [files, router.query.q]);
 
   function syncInputWithQuery(val: string) {
     setTerm(val);
@@ -40,7 +39,7 @@ export default function SnippetsPage({posts, topics}: {posts: FileMeta[]; topics
   return (
     <section className="bg-white dark:bg-gray-900" id="project">
       <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
-        <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">Posts</h2>
+        <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">Snippets</h2>
 
         {/* Search by title or topics */}
         <div className="relative w-full lg:w-2/3">
@@ -65,37 +64,32 @@ export default function SnippetsPage({posts, topics}: {posts: FileMeta[]; topics
             onChange={(e) => {
               syncInputWithQuery(e.target.value);
             }}
-            placeholder="Search posts"
+            placeholder="Search snippets"
             className="w-full rounded-full border border-gray-200 bg-gray-100 py-4 pl-14 pr-6 text-lg font-medium focus:border-king-500 focus:outline-none focus:ring-0 dark:border-gray-700 dark:bg-gray-800 dark:focus:border-king-500 md:pr-20"
           />
           <div className="absolute right-6 top-0 hidden h-full w-14 items-center justify-end text-lg font-medium text-gray-500 md:flex">
-            {filteredPosts.length}
+            {filteredFiles.length}
           </div>
         </div>
 
         {/* Search by topic */}
         <div className="space-y-4">
-          <label className="text-xl">Search posts by topics</label>
+          <label className="text-xl">Search snippets by topics</label>
           <TopicList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
-          {/* <TopicRadioList topics={topics} /> */}
         </div>
 
-        {filteredPosts.length === 0 ? (
-          <NoData />
-        ) : (
-          <PostList posts={filteredPosts} syncInputWithQuery={syncInputWithQuery} term={term} />
-        )}
+        {filteredFiles.length === 0 ? <NoData /> : <SnippetList snippets={filteredFiles} />}
       </div>
     </section>
   );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getAllFiles('snippets')
+  const files = getAllFiles('snippets')
     // .slice(0, 9)
-    .map((post) => post.meta);
+    .map((f) => f.meta);
 
-  const topics = Array.from(new Set(posts.map((post) => post.topics).flat()));
+  const topics = Array.from(new Set(files.map((f) => f.topics).flat()));
 
-  return {props: {posts, topics}};
+  return {props: {files, topics}};
 };

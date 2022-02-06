@@ -10,9 +10,9 @@ import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
 
-export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: string[]}) {
+export default function PostsPage({files, topics}: {files: FileMeta[]; topics: string[]}) {
   const [term, setTerm] = useState('');
-  const [filteredPosts, setFilteredPosts] = useState(posts);
+  const [filteredFiles, setFilteredFiles] = useState(files);
 
   const router = useRouter();
 
@@ -24,13 +24,13 @@ export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: s
 
       debounce(() => {
         // filter by title or topics
-        const data = posts.filter((p) => {
+        const data = files.filter((p) => {
           return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
         });
-        setFilteredPosts(data);
+        setFilteredFiles(data);
       }, 1000)();
     }
-  }, [posts, router.query.q]);
+  }, [files, router.query.q]);
 
   function syncInputWithQuery(val: string) {
     setTerm(val);
@@ -69,7 +69,7 @@ export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: s
             className="w-full rounded-full border border-gray-200 bg-gray-100 py-4 pl-14 pr-6 text-lg font-medium focus:border-king-500 focus:outline-none focus:ring-0 dark:border-gray-700 dark:bg-gray-800 dark:focus:border-king-500 md:pr-20"
           />
           <div className="absolute right-6 top-0 hidden h-full w-14 items-center justify-end text-lg font-medium text-gray-500 md:flex">
-            {filteredPosts.length}
+            {filteredFiles.length}
           </div>
         </div>
 
@@ -80,10 +80,10 @@ export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: s
           {/* <TopicRadioList topics={topics} /> */}
         </div>
 
-        {filteredPosts.length === 0 ? (
+        {filteredFiles.length === 0 ? (
           <NoData />
         ) : (
-          <PostList posts={filteredPosts} syncInputWithQuery={syncInputWithQuery} term={term} />
+          <PostList posts={filteredFiles} syncInputWithQuery={syncInputWithQuery} term={term} />
         )}
       </div>
     </section>
@@ -91,11 +91,11 @@ export default function PostsPage({posts, topics}: {posts: FileMeta[]; topics: s
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const posts = getAllFiles('posts')
+  const files = getAllFiles('posts')
     // .slice(0, 9)
-    .map((post) => post.meta);
+    .map((f) => f.meta);
 
-  const topics = Array.from(new Set(posts.map((post) => post.topics).flat()));
+  const topics = Array.from(new Set(files.map((f) => f.topics).flat()));
 
-  return {props: {posts, topics}};
+  return {props: {files, topics}};
 };
