@@ -5,7 +5,7 @@ import path from 'path';
 
 import {Post} from '@/models/post';
 
-const postsDirectory = path.join(process.cwd(), 'posts');
+const postsDirectory = path.join(process.cwd(), 'content/posts');
 
 export const getSlugs = (): string[] => {
   const paths = sync(`${postsDirectory}/*.mdx`);
