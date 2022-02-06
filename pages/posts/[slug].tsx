@@ -11,11 +11,11 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
 
 import YouTube from '@/components/share/Youtube';
-import {getPostFromSlug, getSlugs} from '@/lib/post';
-import {MDXPost} from '@/models/post';
+import {getFileFromSlug, getSlugs} from '@/lib/file';
+import {MDXFile} from '@/models';
 // import style from '@/styles/post.module.css';
 
-export default function PostPage({post}: {post: MDXPost}) {
+export default function PostPage({post}: {post: MDXFile}) {
   return (
     // <article className={style.post}>
     <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
@@ -57,7 +57,7 @@ export default function PostPage({post}: {post: MDXPost}) {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  const {content, meta} = getPostFromSlug(slug);
+  const {content, meta} = getFileFromSlug('posts', slug);
   const mdxSource = await serialize(content, {
     mdxOptions: {
       rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, {behavior: 'wrap'}], rehypeHighlight] as any,
@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = getSlugs().map((slug) => ({params: {slug}}));
+  const paths = getSlugs('posts').map((slug) => ({params: {slug}}));
 
   return {
     paths,
