@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import type {PostMeta} from '@/models/post';
 
-import PillList from '../share/PillList';
+import TopicList from '../share/TopicList';
 
 export default function PostCard({
   post,
@@ -32,7 +32,7 @@ export default function PostCard({
             </Link>
           </header>
           {/* <p className="text-gray-500">{post.excerpt}</p> */}
-          <PillList tags={post.tags} syncInputWithQuery={syncInputWithQuery} term={term} />
+          <TopicList topics={post.topics} syncInputWithQuery={syncInputWithQuery} term={term} />
         </div>
         <time className="block font-serif text-xs text-gray-500">{new Date(post.date).toLocaleDateString()}</time>
       </div>

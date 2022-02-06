@@ -7,13 +7,13 @@ import PostList from '@/components/blog/PostList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
 
-export default function TagPage({tag, posts}: {tag: string; posts: PostMeta[]}) {
+export default function TopicPage({topic, posts}: {topic: string; posts: PostMeta[]}) {
   return (
     <>
       <Head>
-        <title>Tag: {tag}</title>
+        <title>Topic: {topic}</title>
       </Head>
-      <h1>Tag: {tag}</h1>
+      <h1>Topic: {topic}</h1>
       {/* <PostList posts={posts} /> */}
     </>
   );
@@ -21,11 +21,11 @@ export default function TagPage({tag, posts}: {tag: string; posts: PostMeta[]}) 
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  const posts = getAllPosts().filter((post) => post.meta.tags.includes(slug));
+  const posts = getAllPosts().filter((post) => post.meta.topics.includes(slug));
 
   return {
     props: {
-      tag: slug,
+      topic: slug,
       posts: posts.map((post) => post.meta),
     },
   };
@@ -33,8 +33,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = getAllPosts();
-  const tags = new Set(posts.map((post) => post.meta.tags).flat());
-  const paths = Array.from(tags).map((tag) => ({params: {slug: tag}}));
+  const topics = new Set(posts.map((post) => post.meta.topics).flat());
+  const paths = Array.from(topics).map((topic) => ({params: {slug: topic}}));
 
   return {
     paths,

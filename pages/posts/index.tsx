@@ -5,12 +5,12 @@ import {useEffect, useState} from 'react';
 
 import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
-import PillList from '@/components/share/PillList';
+import TopicList from '@/components/share/TopicList';
 import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllPosts} from '@/lib/post';
 import {PostMeta} from '@/models/post';
 
-export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: string[]}) {
+export default function PostsPage({posts, topics}: {posts: PostMeta[]; topics: string[]}) {
   const [term, setTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState(posts);
 
@@ -23,9 +23,9 @@ export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: strin
       setTerm(q as string);
 
       debounce(() => {
-        // filter by title or tags
+        // filter by title or topics
         const data = posts.filter((p) => {
-          return p.title.match(new RegExp(q, 'i')) || p.tags.includes(q);
+          return p.title.match(new RegExp(q, 'i')) || p.topics.includes(q);
         });
         setFilteredPosts(data);
       }, 1000)();
@@ -42,7 +42,7 @@ export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: strin
       <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
         <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">Posts</h2>
 
-        {/* Search by title or tags */}
+        {/* Search by title or topics */}
         <div className="relative w-full lg:w-2/3">
           <button
             title="Search"
@@ -73,11 +73,11 @@ export default function PostsPage({posts, tags}: {posts: PostMeta[]; tags: strin
           </div>
         </div>
 
-        {/* Search by tag */}
+        {/* Search by topic */}
         <div className="space-y-4">
           <label className="text-xl">Search posts by topics</label>
-          <PillList tags={tags} syncInputWithQuery={syncInputWithQuery} term={term} />
-          {/* <TopicRadioList tags={tags} /> */}
+          <TopicList topics={topics} syncInputWithQuery={syncInputWithQuery} term={term} />
+          {/* <TopicRadioList topics={topics} /> */}
         </div>
 
         {filteredPosts.length === 0 ? (
@@ -95,7 +95,7 @@ export const getStaticProps: GetStaticProps = async () => {
     // .slice(0, 9)
     .map((post) => post.meta);
 
-  const tags = Array.from(new Set(posts.map((post) => post.tags).flat()));
+  const topics = Array.from(new Set(posts.map((post) => post.topics).flat()));
 
-  return {props: {posts, tags}};
+  return {props: {posts, topics}};
 };
