@@ -1,0 +1,39 @@
+---
+title: Reduce in JavaScript
+topics:
+  - javascript
+  - fundamentals
+  - arrays
+  - reduce
+date: 2020-05-09
+excerpt:
+  The reduce function of an array is one of the most versatile functions in JavaScript. With it you can accomplish a lot
+  of the functions from array and math objects.
+---
+
+> what is it?
+
+The [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) function of
+an `Array` is one of the most versatile functions in JavaScript. With it you can accomplish a lot of the functions from
+the [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) and
+[Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) objects. It's job is to
+start with an array, and reduce those elements into some other type of data... which sounds vague, but you could use it
+to convert from an array to an object, an array to another array, an array to a number or an array to a boolean.
+Understanding how it works opens up a world of possibilities.
+
+```js
+function reduce(array, callback, initial) {
+  // start our accumulator off as the initial value
+  let acc = initial;
+  // iterate over each element in the array
+  for (let i = 0; i < array.length; i++) {
+    // pass the accumulator and current element to callback function
+    // override the accumulator with the callback's response
+    acc = callback(acc, array[i], i);
+  }
+  // return the final accumulator value
+  return acc;
+}
+
+result = reduce([1, 2, 3], (acc, num) => acc + num, 0);
+```
