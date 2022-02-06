@@ -1,12 +1,10 @@
-import {Dispatch, SetStateAction} from 'react';
-
 export default function PillList({
   tags,
-  setTerm,
+  syncInputWithQuery,
   term,
 }: {
   tags: string[];
-  setTerm: Dispatch<SetStateAction<string>>;
+  syncInputWithQuery: (val: string) => void;
   term: string;
 }) {
   return (
@@ -17,7 +15,7 @@ export default function PillList({
           className={`rounded-full border bg-gray-100 py-1 px-3 dark:bg-gray-800 ${
             term === tag ? 'border-king-500 bg-king-400 dark:bg-king-400 dark:text-gray-900' : ''
           }`}
-          onClick={() => setTerm(tag)}
+          onClick={() => syncInputWithQuery(tag)}
         >
           {tag}
         </button>
