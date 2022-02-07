@@ -12,7 +12,7 @@ export default function TopicList({
       {topics.map((t) => (
         <button
           key={t}
-          className={`rounded-full border bg-gray-100 py-1 px-3 dark:bg-gray-800 ${
+          className={`rounded-full bg-gray-100 py-1 px-3 dark:bg-gray-700 ${
             currentTopic === t ? 'border-king-500 bg-king-400 dark:bg-king-400 dark:text-gray-900' : ''
           }`}
           onClick={() => currentTopicChange(t)}
