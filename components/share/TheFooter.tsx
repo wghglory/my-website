@@ -65,7 +65,7 @@ export default function TheFooter() {
             </nav>
           </section>
           <section className="lg:col-span-2">
-            <div className="px-2 pb-2 text-center text-xs lg:text-left">All rights reserved © Derek Wang 2022</div>
+            <div className="px-2 pb-2 text-center text-xs lg:text-left">All rights reserved © Guanghui Wang 2022</div>
           </section>
         </div>
       </div>
