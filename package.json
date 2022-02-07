@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author": "Derek Wang",
+  "author": "Guanghui Wang",
   "scripts": {
     "debug": "node --inspect-brk node_modules/.bin/next dev",
     "dev": "next dev -p 9000",
