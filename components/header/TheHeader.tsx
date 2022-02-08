@@ -63,27 +63,27 @@ export default function TheHeader() {
             <ul className="flex gap-x-4 sm:gap-x-6 md:gap-x-8">
               <li className="hover:text-orange-600">
                 <Link href="/">
-                  <a>Home</a>
+                  <a className="p-2">Home</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
                 <Link href="/#experience">
-                  <a>About</a>
+                  <a className="p-2">About</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
                 <Link href="/#project">
-                  <a>Projects</a>
+                  <a className="p-2">Projects</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
                 <Link href="/posts">
-                  <a>Blog</a>
+                  <a className="p-2">Blog</a>
                 </Link>
               </li>
               <li className="hover:text-orange-600">
                 <Link href="/snippets">
-                  <a>Snippets</a>
+                  <a className="p-2">Snippets</a>
                 </Link>
               </li>
             </ul>
