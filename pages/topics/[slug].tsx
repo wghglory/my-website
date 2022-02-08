@@ -27,7 +27,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
             <TopicRadioList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
           </div>
 
-          {files.length === 0 ? <NoData /> : <AppCardList files={files} />}
+          {files.length === 0 ? <NoData /> : <AppCardList path="/posts" files={files} />}
         </div>
       </section>
     </>

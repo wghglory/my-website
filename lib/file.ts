@@ -1,7 +1,11 @@
 import fs from 'fs';
 import {sync} from 'glob';
 import matter from 'gray-matter';
+import {serialize} from 'next-mdx-remote/serialize';
 import path from 'path';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeSlug from 'rehype-slug';
 
 import {FileContent} from '@/models';
 
@@ -42,5 +46,35 @@ export const getFileFromSlug = (dir: ContentDirectory, slug: string): FileConten
       topics: (data.topics ?? []).sort(),
       cover_image: data.cover_image ?? '',
     },
+  };
+};
+
+export function getMdxFilesStaticProps(dir: ContentDirectory) {
+  const files = getAllFiles(dir)
+    // .slice(0, 9)
+    .map((f) => f.meta);
+
+  const topics = Array.from(new Set(files.map((f) => f.topics).flat()));
+
+  return {props: {files, topics}};
+}
+
+export const getMdxFileStaticProps = async (dir: ContentDirectory, slug: string) => {
+  const {content, meta} = getFileFromSlug(dir, slug);
+  const mdxSource = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, {behavior: 'wrap'}], rehypeHighlight] as any,
+    },
+  });
+
+  return {props: {file: {source: mdxSource, meta}}};
+};
+
+export const getMdxFileStaticPaths = (dir: ContentDirectory) => {
+  const paths = getSlugs(dir).map((slug) => ({params: {slug}}));
+
+  return {
+    paths,
+    fallback: false,
   };
 };

@@ -1,19 +1,26 @@
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import {ReactNode} from 'react';
 
 export default function AppCard({
   title,
   excerpt,
   date,
-  href,
+  slug,
+  path,
   children,
 }: {
   title: string;
   excerpt: string;
   date: string;
-  href: string;
+  slug: string;
+  path?: string;
   children?: ReactNode;
 }) {
+  const router = useRouter();
+
+  const href = path ? `${path}/${slug}` : `${router.asPath}/${slug}`;
+
   return (
     <Link href={href}>
       <a className="group flex flex-col rounded-xl border border-gray-200 bg-white hover:border-king-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-king-400">
