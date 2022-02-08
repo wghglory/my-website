@@ -3,9 +3,9 @@ import {GetStaticProps} from 'next';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
+import AppCardList from '@/components/share/AppCardList';
 import NoData from '@/components/share/NoData';
 import TopicRadioList from '@/components/share/TopicRadioList';
-import SnippetList from '@/components/snippet/SnippetList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
 
@@ -27,7 +27,7 @@ export default function SnippetsPage({files, topics}: {files: FileMeta[]; topics
           return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
         });
         setFilteredFiles(data);
-      }, 1000)();
+      }, 500)();
     }
   }, [files, router.query.q]);
 
@@ -78,7 +78,7 @@ export default function SnippetsPage({files, topics}: {files: FileMeta[]; topics
           <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
         </div>
 
-        {filteredFiles.length === 0 ? <NoData /> : <SnippetList snippets={filteredFiles} />}
+        {filteredFiles.length === 0 ? <NoData /> : <AppCardList files={filteredFiles} />}
       </div>
     </section>
   );

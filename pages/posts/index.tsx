@@ -3,7 +3,7 @@ import {GetStaticProps} from 'next';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
-import PostList from '@/components/blog/PostList';
+import AppCardList from '@/components/share/AppCardList';
 import NoData from '@/components/share/NoData';
 import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllFiles} from '@/lib/file';
@@ -27,7 +27,7 @@ export default function PostsPage({files, topics}: {files: FileMeta[]; topics: s
           return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
         });
         setFilteredFiles(data);
-      }, 1000)();
+      }, 500)();
     }
   }, [files, router.query.q]);
 
@@ -78,7 +78,7 @@ export default function PostsPage({files, topics}: {files: FileMeta[]; topics: s
           <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
         </div>
 
-        {filteredFiles.length === 0 ? <NoData /> : <PostList posts={filteredFiles} />}
+        {filteredFiles.length === 0 ? <NoData /> : <AppCardList files={filteredFiles} />}
       </div>
     </section>
   );

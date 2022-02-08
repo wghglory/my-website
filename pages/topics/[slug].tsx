@@ -2,7 +2,7 @@ import type {GetStaticPaths, GetStaticProps} from 'next';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 
-import PostList from '@/components/blog/PostList';
+import AppCardList from '@/components/share/AppCardList';
 import NoData from '@/components/share/NoData';
 import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllFiles} from '@/lib/file';
@@ -27,7 +27,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
             <TopicRadioList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
           </div>
 
-          {files.length === 0 ? <NoData /> : <PostList posts={files} />}
+          {files.length === 0 ? <NoData /> : <AppCardList files={files} />}
         </div>
       </section>
     </>
