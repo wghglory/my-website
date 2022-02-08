@@ -27,10 +27,6 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
             <TopicRadioList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
           </div>
 
-          <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">
-            Topic<strong className="ml-6 text-king-500">{topic}</strong>
-          </h2>
-
           {files.length === 0 ? <NoData /> : <PostList posts={files} />}
         </div>
       </section>
