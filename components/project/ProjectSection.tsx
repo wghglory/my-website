@@ -4,15 +4,12 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-import Image from 'next/image';
+import Link from 'next/link';
 import {A11y, Autoplay, EffectCoverflow, Navigation, Pagination} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import resolveConfig from 'tailwindcss/resolveConfig';
 
-import sirius1Img from '/public/projects/sirius1.png';
-import sirius2Img from '/public/projects/sirius2.png';
-import sirius3Img from '/public/projects/sirius3.png';
-import spotifyImg from '/public/projects/spotify.png';
+import {FileMeta} from '@/models';
 
 import CarouselCard from '../share/CarouselCard';
 
@@ -20,11 +17,33 @@ const tailwindConfig = require('/tailwind.config');
 const fullConfig = resolveConfig(tailwindConfig);
 const kingColor = (fullConfig.theme.colors as any).king;
 
-export default function ProjectSection() {
+export default function ProjectSection({projects}: {projects: FileMeta[]}) {
   return (
     <section className="bg-gray-100 dark:bg-gray-900" id="project">
-      <div className="container m-auto py-10 lg:py-20">
-        <h2 className="text-center text-2xl lg:mb-10 lg:py-6 lg:text-left lg:text-5xl">Projects</h2>
+      <div className="container m-auto space-y-6 py-10 lg:px-6 lg:py-20">
+        <header className="flex flex-col gap-6 px-6 text-center md:flex-row md:justify-between">
+          <h2 className="text-2xl lg:text-left lg:text-5xl">Projects</h2>
+
+          <Link href="/projects">
+            <a className="group hidden cursor-pointer  items-center justify-center gap-3 text-center text-queen-600 hover:text-queen-500 dark:text-queen-400 dark:hover:text-queen-500 md:flex">
+              View More
+              <svg
+                className="-rotate-90 duration-200 group-hover:translate-x-2"
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </a>
+          </Link>
+        </header>
         <div>
           <Swiper
             style={
@@ -51,24 +70,19 @@ export default function ProjectSection() {
               disableOnInteraction: false,
             }}
             navigation={true}
-            modules={[A11y, Pagination, EffectCoverflow, Navigation]}
-            // modules={[A11y, Autoplay, Pagination, Navigation]}
+            modules={[A11y, Pagination, Autoplay, EffectCoverflow, Navigation]}
             className="mySwiper"
           >
-            <SwiperSlide>
-              <CarouselCard
-                imgSrc={spotifyImg}
-                title="Spotify Lite"
-                description="Make a Spotify Lite by Next.js, NAuth, Spotify webApi. Music album, player, server-side rendering are the main features."
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <CarouselCard
-                imgSrc={sirius1Img}
-                title="SaaS Pipeline Viewer"
-                description="Monitor SaaS pipeline progress in a smart way. It offers the team members to understand their tasks."
-              />
-            </SwiperSlide>
+            {projects.map((p) => (
+              <SwiperSlide key={p.title}>
+                <CarouselCard
+                  imgSrc={p.cover_image}
+                  title={p.title}
+                  description={p.excerpt}
+                  link={`/projects/${p.slug}`}
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
           <style jsx global>
             {`
@@ -105,6 +119,25 @@ export default function ProjectSection() {
             `}
           </style>
         </div>
+        <Link href="/projects">
+          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-king-600 dark:hover:text-king-400 md:hidden">
+            View More
+            <svg
+              className="-rotate-90 duration-200 group-hover:translate-x-2"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </a>
+        </Link>
       </div>
     </section>
   );
