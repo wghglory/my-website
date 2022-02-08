@@ -19,7 +19,7 @@ export default function AppCard({
 }) {
   const router = useRouter();
 
-  const href = path ? `${path}/${slug}` : `${router.asPath}/${slug}`;
+  const href = path ? `${path}/${slug}` : `${router.pathname}/${slug}`;
 
   return (
     <Link href={href}>

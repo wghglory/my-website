@@ -14,7 +14,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
   const router = useRouter();
 
   // /posts/[slug]
-  const [, parentPath] = router.asPath.split('/');
+  const [, parentPath] = router.pathname.split('/');
 
   return (
     <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
