@@ -1,7 +1,4 @@
-import Image from 'next/image';
-
-import DoorIcon from '/public/door.svg';
-import mePic from '/public/me.png';
+import DoorBg from '/public/door.svg';
 
 import SocialIcons from '../share/SocialIcons';
 
@@ -9,10 +6,10 @@ export default function HeroSection() {
   return (
     <section className="bg-gray-100 dark:bg-gray-900" id="home">
       <div className="container m-auto px-6 lg:pt-12">
-        <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-36">
-          <div className="flex flex-col justify-center gap-6 lg:px-12">
+        <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
+          <div className="flex max-w-5xl flex-col justify-center gap-6">
             <div>
-              <h2 className="py-6 text-2xl lg:text-5xl">
+              <h2 className="py-6 text-center text-2xl lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-500">React</span> and{' '}
                 <span className="text-teal-500">Vue</span>
               </h2>
@@ -25,7 +22,7 @@ export default function HeroSection() {
               <SocialIcons />
             </div>
           </div>
-          <div className="relative flex justify-center px-12 text-center text-queen-300 dark:text-gray-600">
+          <div className="relative flex justify-center text-center text-queen-300 dark:text-gray-600">
             <style jsx>
               {`
                 .door {
@@ -34,8 +31,12 @@ export default function HeroSection() {
                 }
               `}
             </style>
-            <DoorIcon className="absolute h-full" />
-            <Image className="w-1/2" src={mePic} alt="Guanghui Picture" height={667 / 1.5} width={336 / 1.5} />
+            <DoorBg className="absolute h-full" />
+            <img
+              src="/me.png"
+              className="z-[1] max-h-[300px] min-h-[200px] w-fit lg:max-h-[400px]"
+              alt="Guanghui Picture"
+            />
           </div>
         </div>
       </div>

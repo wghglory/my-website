@@ -25,7 +25,7 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
           <h2 className="text-2xl lg:text-left lg:text-5xl">Projects</h2>
 
           <Link href="/projects">
-            <a className="group hidden cursor-pointer  items-center justify-center gap-3 text-center text-queen-600 hover:text-queen-500 dark:text-queen-400 dark:hover:text-queen-500 md:flex">
+            <a className="group hidden cursor-pointer items-center justify-center gap-3 text-center text-queen-600 hover:text-queen-500 dark:text-queen-400 dark:hover:text-queen-500 md:flex">
               View More
               <svg
                 className="-rotate-90 duration-200 group-hover:translate-x-2"
@@ -120,7 +120,7 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
           </style>
         </div>
         <Link href="/projects">
-          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-king-600 dark:hover:text-king-400 md:hidden">
+          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center text-queen-600 hover:text-queen-500 dark:text-queen-400 dark:hover:text-queen-500 md:hidden">
             View More
             <svg
               className="-rotate-90 duration-200 group-hover:translate-x-2"
