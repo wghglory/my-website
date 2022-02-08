@@ -54,7 +54,7 @@ export default function TheHeader() {
   return (
     <FocusTrap active={showMenu && !isLg}>
       {/* // h-screen + body overflow hidden to display the menu in the screen */}
-      <header className={cn({'h-screen': showMenu}, 'flex flex-col bg-gray-100 dark:bg-gray-900 lg:h-auto')}>
+      <header className={cn({'h-screen': showMenu}, 'flex flex-col bg-white dark:bg-gray-900 lg:h-auto')}>
         <div className="container mx-auto flex h-20 items-center justify-between px-6">
           <h1 aria-label="Guanghui Wang's Website">
             <AppLogo />
