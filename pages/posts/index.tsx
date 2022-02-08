@@ -80,11 +80,7 @@ export default function PostsPage({files, topics}: {files: FileMeta[]; topics: s
           {/* <TopicRadioList topics={topics} /> */}
         </div>
 
-        {filteredFiles.length === 0 ? (
-          <NoData />
-        ) : (
-          <PostList posts={filteredFiles} syncInputWithQuery={syncInputWithQuery} term={term} />
-        )}
+        {filteredFiles.length === 0 ? <NoData /> : <PostList posts={filteredFiles} />}
       </div>
     </section>
   );
