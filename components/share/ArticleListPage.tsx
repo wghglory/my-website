@@ -71,10 +71,12 @@ export default function ArticleListPage({files, topics, title}: {files: FileMeta
         </div>
 
         {/* Search by topic */}
-        <div className="space-y-4">
-          <label className="text-xl">Search {title} by topics</label>
-          <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
-        </div>
+        {topics.length > 0 && (
+          <div className="space-y-4">
+            <label className="text-xl">Search {title} by topics</label>
+            <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
+          </div>
+        )}
 
         {filteredFiles.length === 0 ? <NoData /> : <AppCardList files={filteredFiles} />}
       </div>
