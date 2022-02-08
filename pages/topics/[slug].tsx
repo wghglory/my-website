@@ -31,7 +31,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
             Topic<strong className="ml-6 text-king-500">{topic}</strong>
           </h2>
 
-          {files.length === 0 ? <NoData /> : <PostList posts={files} syncInputWithQuery={updateQuery} term={topic} />}
+          {files.length === 0 ? <NoData /> : <PostList posts={files} />}
         </div>
       </section>
     </>
