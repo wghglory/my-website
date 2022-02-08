@@ -5,7 +5,6 @@ import {useEffect, useState} from 'react';
 
 import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
-import TopicList from '@/components/share/TopicList';
 import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
@@ -76,8 +75,7 @@ export default function PostsPage({files, topics}: {files: FileMeta[]; topics: s
         {/* Search by topic */}
         <div className="space-y-4">
           <label className="text-xl">Search posts by topics</label>
-          <TopicList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
-          {/* <TopicRadioList topics={topics} /> */}
+          <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
         </div>
 
         {filteredFiles.length === 0 ? <NoData /> : <PostList posts={filteredFiles} />}

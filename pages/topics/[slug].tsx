@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 
 import PostList from '@/components/blog/PostList';
 import NoData from '@/components/share/NoData';
-import TopicList from '@/components/share/TopicList';
+import TopicRadioList from '@/components/share/TopicRadioList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
 
@@ -24,7 +24,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
         <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
           <div className="space-y-4">
             <label className="text-xl">Search posts by topics</label>
-            <TopicList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
+            <TopicRadioList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />
           </div>
 
           <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">
