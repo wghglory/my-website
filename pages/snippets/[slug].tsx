@@ -10,6 +10,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
 
+import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
 import {getFileFromSlug, getSlugs} from '@/lib/file';
 import {MDXFile} from '@/models';
@@ -40,6 +41,7 @@ export default function SnippetPage({file}: {file: MDXFile}) {
         </a>
       </Link>
       <h1>{file.meta.title}</h1>
+      <TopicList topics={file.meta.topics} />
       <MDXRemote {...file.source} components={{YouTube, Image}} />
     </article>
   );

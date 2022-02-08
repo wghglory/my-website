@@ -10,6 +10,7 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
 
+import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
 import {getFileFromSlug, getSlugs} from '@/lib/file';
 import {MDXFile} from '@/models';
@@ -41,6 +42,7 @@ export default function PostPage({file}: {file: MDXFile}) {
         </a>
       </Link>
       <h1>{file.meta.title}</h1>
+      <TopicList topics={file.meta.topics} />
       <div className="text-center">
         <img
           className="inline-block w-full sm:w-4/5 lg:w-3/5"
