@@ -9,10 +9,10 @@ import {A11y, Autoplay, EffectCoverflow, Navigation, Pagination} from 'swiper';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import resolveConfig from 'tailwindcss/resolveConfig';
 
-import spotifyImg from '/public/projects/nextjs-spotify.png';
 import sirius1Img from '/public/projects/sirius1.png';
 import sirius2Img from '/public/projects/sirius2.png';
 import sirius3Img from '/public/projects/sirius3.png';
+import spotifyImg from '/public/projects/spotify.png';
 
 import CarouselCard from '../share/CarouselCard';
 
