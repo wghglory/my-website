@@ -4,7 +4,7 @@ import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 
 import NoData from '@/components/share/NoData';
-import TopicList from '@/components/share/TopicList';
+import TopicRadioList from '@/components/share/TopicRadioList';
 import SnippetList from '@/components/snippet/SnippetList';
 import {getAllFiles} from '@/lib/file';
 import {FileMeta} from '@/models';
@@ -75,7 +75,7 @@ export default function SnippetsPage({files, topics}: {files: FileMeta[]; topics
         {/* Search by topic */}
         <div className="space-y-4">
           <label className="text-xl">Search snippets by topics</label>
-          <TopicList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
+          <TopicRadioList topics={topics} currentTopicChange={syncInputWithQuery} currentTopic={term} />
         </div>
 
         {filteredFiles.length === 0 ? <NoData /> : <SnippetList snippets={filteredFiles} />}
