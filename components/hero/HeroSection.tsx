@@ -38,7 +38,7 @@ export default function HeroSection() {
             <DoorBg className="absolute h-full" />
             <img
               src="/me.png"
-              className="z-[1] max-h-[300px] min-h-[200px] w-fit lg:max-h-[400px]"
+              className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
               alt="Guanghui Picture"
             />
           </div>
