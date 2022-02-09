@@ -57,16 +57,18 @@ export default function ArticlePage({file}: {file: MDXFile}) {
         </div>
       )}
       <MDXRemote {...file.source} components={{YouTube, Bilibili, Image}} />
-      <Giscus
-        repo="wghglory/my-website"
-        repoId="R_kgDOGvOLfg"
-        category="Announcements"
-        categoryId="DIC_kwDOGvOLfs4CBEzx"
-        mapping="title"
-        reactionsEnabled="1"
-        emitMetadata="0"
-        theme={theme}
-      />
+      <div className="my-4">
+        <Giscus
+          repo="wghglory/my-website"
+          repoId="R_kgDOGvOLfg"
+          category="Announcements"
+          categoryId="DIC_kwDOGvOLfs4CBEzx"
+          mapping="title"
+          reactionsEnabled="1"
+          emitMetadata="0"
+          theme={theme}
+        />
+      </div>
     </article>
   );
 }
