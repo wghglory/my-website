@@ -1,10 +1,12 @@
 import 'highlight.js/styles/night-owl.css';
 
+import {Giscus} from '@giscus/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {MDXRemote} from 'next-mdx-remote';
+import {useTheme} from 'next-themes';
 
 import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
@@ -12,6 +14,7 @@ import {MDXFile} from '@/models';
 
 export default function ArticlePage({file}: {file: MDXFile}) {
   const router = useRouter();
+  const {theme} = useTheme();
 
   // /posts/[slug]
   const [, parentPath] = router.pathname.split('/');
@@ -53,6 +56,16 @@ export default function ArticlePage({file}: {file: MDXFile}) {
         </div>
       )}
       <MDXRemote {...file.source} components={{YouTube, Image}} />
+      <Giscus
+        repo="wghglory/my-website"
+        repoId="R_kgDOGvOLfg"
+        category="Announcements"
+        categoryId="DIC_kwDOGvOLfs4CBEzx"
+        mapping="title"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        theme={theme}
+      />
     </article>
   );
 }
