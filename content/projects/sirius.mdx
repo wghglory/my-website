@@ -2,7 +2,132 @@
 title: SaaS Pipeline Viewer
 date: 2022-01-09
 excerpt: Monitor SaaS pipeline progress in a smart way. It offers the team members to understand their tasks.
-cover_image: /projects/sirius1.png
+cover_image: /projects/sirius1.webp
 ---
 
-Todo
+## Problem Statement
+
+The SaaS development & delivery model has significantly changed our work style. Cross functional teams dynamically work
+together to delivery features in continuous delivery model. When the scrum team is developing multiple feature pipelines
+in parallel, maintaining the development progress becomes harder.
+
+The primary purpose of this project is to help each team member understand the SaaS pipeline process. Our initial design
+will include the authentication module, pipeline management, and task management, etc. Some considerations would be: a)
+The system should allow different personas to observe the whole pipeline status accordingly. b) The pipeline definitions
+should be responsive as we may shift different pipeline templates in other projects. c) Currently, no workflow designer
+is built into the project. We need to find a standard for workflow creation.
+
+## Key Features
+
+| Persona            | Story                                                                                       | Description                                                                                                              |
+| ------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Project Owner      | I can create a new pipeline instance.                                                       | The pipeline (as a workflow) definition is created before-hand.                                                          |
+| Project Owner      | I can start the pipeline instance.                                                          |                                                                                                                          |
+| Project Owner      | I can view multiple pipeline instances.                                                     | Progress, current activities, owner, pipeline name, belonging project                                                    |
+| Project Owner      | I can close pipeline instances.                                                             |                                                                                                                          |
+| Project User       | As the current activity owner, I can finish the task with varied conditions.                |                                                                                                                          |
+| Project User       | As the next activity owner, I can receive my task upon the completion of previous activity. |                                                                                                                          |
+| Project User       | As the current activity owner, I can fail the task with varied conditions.                  |                                                                                                                          |
+| Project Owner/User | I can see the overall timeline status of each pipeline instance.                            |                                                                                                                          |
+| Project Owner/User | I can see the detail timeline status of each pipeline instance.                             | On clicking the pipeline details, I can see all the major and minor activities as this diagram.                          |
+| Project Owner/User | I can jump to 3rd party systems from the links of the pipeline instance.                    | By clicking on the links of activity details, I can jump to corresponding system, i.e. JIRA, Runway to complete my work. |
+
+## Technology Analysis
+
+### Workflow Engine & Business Process Model and Notation (BPMN)
+
+The pipeline is managed by a workflow engine. Based on our investigation, **Flowable** is handy and offers all the
+functionalities that we need. Project managers can log on to Flowable UI to create users, roles and create workflow
+definitions. The definitions are nothing but BPMN standards.
+
+BPMN provides businesses with the capability of understanding their internal business procedures in a graphical notation
+and will give organizations the ability to communicate these procedures in a standard manner.
+
+BPMN XML files can be stored on the backend server. A workflow definition (BPMN XML file) should be chosen whenever a
+new pipeline needs to be created, determining the whole workflow process. Hence, our project could support many
+different workflows by defining various workflow definitions/templates.
+
+We may switch to other workflow engines in the future. Our backend can handle it correctly as long as the engine's
+output is based on the BPMN standard.
+
+### Render BPMN in UI
+
+The next issue comes down to how UI renders the workflow smartly. For different users, they should be able to view the
+workflow diagram based on their roles. For example, QE would like to focus more on testing and bug reporting. The UI
+probably wants to emphasize those activities. We investigated several 3rd party libraries — react-flow, logicFlow, X6,
+BPMN-js, and BPMN-visualization. Among them, react-flow and BPMN-visualization stand out due to their flexible
+customization and deep BPMN integrations.
+
+React-flow, adopted in this project, only needs the server to provide JSON data describing the activities' nodes, edges,
+current activities, completed activities, etc. Whenever a task is completed or rejected, the server will respond with
+the latest process JSON data.
+
+BPMN-visualization needs 2 APIs. The first should return the BPMN XML definition, loaded by the library and rendered as
+the diagram layout. The second one is the same one mentioned above — processing data. UI then will apply the process
+information onto the diagram.
+
+### Workflow Design Key Points
+
+1. The Project manager designs a BPMN standard definition by flowable UI.
+2. Backend looks up the definition created above and starts workflow instance.
+3. The project manager creates feature pipelines with a name and one of the predefined workflow templates. The pipeline
+   status is just made at this moment.
+4. UI displays all pipelines with information like name, date created, current activity, task owner in the Datagrid as
+   overview-all information.
+5. Whenever a user clicks a pipeline, it will navigate to the pipeline detail page. Frontend retrieves the processing
+   JSON from the server.
+6. The JSON result includes all nodes and edges, positions that react-flow needed. React-flow is responsible for
+   rendering the workflow diagram and marking the current activities and tasks the current user owns.
+7. Another notification toaster will alert the current user to complete their task if any.
+8. Once the current user clicks the complete or the reject button, API interactions will happen. The frontend will
+   re-render the latest processing data in UI.
+
+## Design Specification
+
+### Design System
+
+Frontend: **React + MUI + Tailwind + Vite**
+
+Backend: SpringBoot + Flowable engine + Postgres DB
+
+**React**
+
+We decided to adopt React as the virtual library to deliver a fast and robust UI since React has a super-mature
+ecosystem supporting complex functionalities. The main workflow UI is achieved by react-flow, which can be run only with
+React. React-flow is quite successful in the flow diagram field with over 8k stars on Github. With a renowned
+reputation, Vue users also try to create the same flow. However, based on our tests, it's not stable as react-flow.
+That's the main reason we chose to react in this project.
+
+**MUI**
+
+Like Clarity, we need a UI library to present the unique system style across the whole application. React platform has
+rich UI libraries, such as MUI, Ant Design, Chakra-UI, and Evergreen. We decided to use MUI since it has lots of
+beautiful and performant components to fit our requirements. Besides, its design system, language deserves deep
+learning, and it helps us gain more edge-cutting technologies. Learning MUI also will help us build and improve Clarity
+Core in new projects.
+
+**Tailwind**
+
+Although MUI is super great, unfortunately, we probably won't use it in real VMware projects. So what if we want to
+absorb some essence of MUI? We could introduce a lightweight library, Tailwind CSS, in real projects. Its utilities are
+handy and heavily accelerate our development speed with comfortable DX.
+
+**Vite**
+
+Vite, as the next generation build tool, runs super fast and reflects any code changes immediately. Webpack users suffer
+a lot regarding building, re-compiling. Vite overcomes many shortcomings and brings fantastic DX.
+
+## Open Issues
+
+1. React-flow doesn't support BPMN pools and lanes, meaning impossible to render the diagram selectively based on user
+   roles.
+2. BPMN has many element types. Currently, we implement InclusiveGateway, ParallelGateway, UserTask, StartEvent,
+   ThrowEvent as custom react-flow nodes. We'd to add more if new BPMN elements were to be introduced in the future.
+   Each BPMN element must map to a custom node. BPMN-visualization doesn't have this shortcoming.
+3. We may need to import BPMN-js to our system to support workflow design in the future.
+
+## Screenshots
+
+<Image src="/projects/sirius1.webp" width={1703} height={980} />
+<Image src="/projects/sirius2.webp" width={1703} height={980} />
+<Image src="/projects/sirius3.webp" width={1703} height={980} />
