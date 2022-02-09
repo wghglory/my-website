@@ -29,9 +29,11 @@ export default function AppCard({
         <div className="flex flex-1 flex-col gap-4 px-8 py-6">
           <div className="flex-1 space-y-6">
             <header className="text-2xl font-semibold group-hover:text-king-500 lg:text-center">{title}</header>
-            <p className="text-gray-500">{excerpt}</p>
+            <p className="text-gray-500 dark:text-gray-400">{excerpt}</p>
           </div>
-          <time className="block font-serif text-xs text-gray-500">{new Date(date).toLocaleDateString()}</time>
+          <time className="block font-serif text-xs text-gray-500 dark:text-gray-400">
+            {new Date(date).toLocaleDateString()}
+          </time>
         </div>
       </a>
     </Link>
