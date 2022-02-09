@@ -49,8 +49,8 @@ export default function HeroSection() {
           <div className="flex h-28 items-center justify-center gap-4 lg:justify-start lg:gap-10">
             <VMwareLogo className="h-4" />
             <UnionbankLogo className="h-7" />
-            <UPMCLogo className="h-5" />
             <UMLogo className="h-6" />
+            <UPMCLogo className="h-5" />
           </div>
         </div>
       </div>
