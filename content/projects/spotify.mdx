@@ -4,7 +4,39 @@ date: 2022-01-15
 excerpt:
   Make a Spotify Lite by Next.js, NAuth, Spotify webApi. Music album, player, server-side rendering are the main
   features.
-cover_image: /projects/spotify.png
+cover_image: /projects/spotify.webp
 ---
 
-Todo
+There're lots of online music streaming services such as Spotify, QQ music, NetEase music, etc. Among them, I like
+Spotify's fantastic UI design. Thanks to Spotify's developer-friendly APIs, it's easy to deliver a fast Spotify clone
+app like the one that I will show you later.
+
+## Tech Frames
+
+- nextjs 12 (middleware, ssr)
+- next-auth
+- spotify-web-api-node
+- tailwind 3
+- recoil for global state management
+
+## Features
+
+- SSO via Spotify
+- List playlist
+- List songs
+- Play songs
+- Adjust volume
+- Go to the next/previous song
+- Start or pause a song
+- Responsive design
+
+## Basic Flow
+
+After signing in via Spotify OAuth 2 and NextAuth package, we can see playlists you created on the official Spotify
+website. Users can choose a playlist and listen to the songs. Spotify Lite supports basic music control like pause and
+start, music shift, and volume adjustment. Of course, responsive design is achieved so mobile users can access the
+website with a great experience as well.
+
+## Demo
+
+<Bilibili src="//player.bilibili.com/player.html?aid=893181483&bvid=BV12P4y1j7kQ&cid=486255345&page=1" />

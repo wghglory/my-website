@@ -8,6 +8,7 @@ import {useRouter} from 'next/router';
 import {MDXRemote} from 'next-mdx-remote';
 import {useTheme} from 'next-themes';
 
+import Bilibili from '@/components/share/Bilibili';
 import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
 import {MDXFile} from '@/models';
@@ -55,7 +56,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
           />
         </div>
       )}
-      <MDXRemote {...file.source} components={{YouTube, Image}} />
+      <MDXRemote {...file.source} components={{YouTube, Bilibili, Image}} />
       <Giscus
         repo="wghglory/my-website"
         repoId="R_kgDOGvOLfg"
