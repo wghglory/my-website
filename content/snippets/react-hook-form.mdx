@@ -1,0 +1,86 @@
+---
+title: React Hook Form
+topics:
+  - react
+  - hooks
+  - form
+date: 2022-01-09
+excerpt: Basic react-hook-form snippet
+---
+
+## react-hook-from
+
+```tsx
+// https://github.com/react-hook-form/react-hook-form
+import React, {ChangeEvent} from 'react';
+import {useForm} from 'react-hook-form';
+
+function App() {
+  const {
+    register,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+  const onSubmit = (data) => console.log(data);
+
+  // use with jsx <input onChange={changeUpdate} />
+  function changeUpdate(e: ChangeEvent<HtmlInputElement>) {
+    setCount(+e.target.value);
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <input {...register('firstName')} /> {/* register an input */}
+      <input {...register('lastName', {required: true})} />
+      {errors.lastName && <p>Last name is required.</p>}
+      <input {...register('age', {pattern: /\d+/})} />
+      {errors.age && <p>Please enter number for age.</p>}
+      <input type="submit" />
+    </form>
+  );
+}
+```
+
+## Normal Form
+
+```tsx
+// For complex nested update: https: //github.com/immerjs/use-immer
+
+import {useState} from 'react';
+
+export default function Form() {
+  const [person, setPerson] = useState({
+    firstName: 'Barbara',
+    lastName: 'Hepworth',
+    email: 'bhepworth@sculpture.com',
+  });
+
+  function handleChange(e) {
+    setPerson({
+      ...person,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <label>
+        First name:
+        <input name="firstName" value={person.firstName} onChange={handleChange} />
+      </label>
+      <label>
+        Last name:
+        <input name="lastName" value={person.lastName} onChange={handleChange} />
+      </label>
+      <label>
+        Email:
+        <input name="email" value={person.email} onChange={handleChange} />
+      </label>
+      <p>
+        {person.firstName} {person.lastName} ({person.email})
+      </p>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
