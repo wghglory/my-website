@@ -6,6 +6,7 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="icon" href="/favicon.ico" />
+          <meta name="description" content="Guanghui Wang Website" key="desc" />
         </Head>
         <body className="no-scrollbar">
           <Main />
