@@ -14,7 +14,7 @@ const ThemeChanger = () => {
   return (
     <>
       {theme === 'light' ? (
-        <button onClick={() => setTheme('dark')}>
+        <button onClick={() => setTheme('dark')} aria-label="Set dark theme">
           {/* Sun */}
           <svg className="group h-10 w-10" viewBox="0 0 56 56" fill="none">
             <circle
@@ -39,7 +39,7 @@ const ThemeChanger = () => {
           </svg>
         </button>
       ) : (
-        <button onClick={() => setTheme('light')}>
+        <button onClick={() => setTheme('light')} aria-label="Set light theme">
           {/* Moon */}
           <svg className="group h-10 w-10" viewBox="0 0 56 56" fill="none">
             <circle
