@@ -11,7 +11,14 @@ import {useTheme} from 'next-themes';
 import Bilibili from '@/components/share/Bilibili';
 import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
+import {ContentDirectory} from '@/lib/file';
 import {MDXFile} from '@/models';
+
+const titlePrefix = {
+  projects: 'Project',
+  posts: 'Post',
+  snippets: 'Snippet',
+};
 
 export default function ArticlePage({file}: {file: MDXFile}) {
   const router = useRouter();
@@ -23,7 +30,9 @@ export default function ArticlePage({file}: {file: MDXFile}) {
   return (
     <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
       <Head>
-        <title>{file.meta.title}</title>
+        <title>
+          {titlePrefix[parentPath as ContentDirectory]}: {file.meta.title}
+        </title>
       </Head>
       <Link href={`/${parentPath}`}>
         <a className="group mb-8 flex items-center gap-3">
@@ -48,12 +57,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
       <TopicList topics={file.meta.topics} />
       {file.meta.cover_image && (
         <div className="text-center">
-          <img
-            className="inline-block w-full sm:w-4/5 lg:w-3/5"
-            src={file.meta.cover_image}
-            alt="article cover"
-            loading="lazy"
-          />
+          <img className="inline-block w-full" src={file.meta.cover_image} alt="article cover" loading="lazy" />
         </div>
       )}
       <MDXRemote {...file.source} components={{YouTube, Bilibili, Image}} />
