@@ -96,25 +96,27 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
           `}
         </style>
       </div>
-      <Link href="/projects">
-        <a className="group flex cursor-pointer items-center justify-center gap-3 text-center text-queen-600 hover:text-queen-500 dark:text-queen-400 dark:hover:text-queen-500">
-          View More
-          <svg
-            className="-rotate-90 duration-200 group-hover:translate-x-2"
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-            fill="none"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
-              fill="currentColor"
-            ></path>
-          </svg>
-        </a>
-      </Link>
+      <div className="flex justify-center">
+        <Link href="/projects">
+          <a className="btn-secondary group">
+            View more
+            <svg
+              className="w-5 -rotate-90 duration-200 group-hover:translate-x-2"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </a>
+        </Link>
+      </div>
     </SectionLayout>
   );
 }

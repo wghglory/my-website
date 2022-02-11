@@ -18,10 +18,10 @@ export default function CarouselCard({
         <header className="text-center text-2xl font-semibold">{title}</header>
         <p>{description}</p>
         <Link href={link}>
-          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-king-600 dark:hover:text-king-400">
-            Find Out More
+          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-queen-600 dark:hover:text-queen-400">
+            Learn more
             <svg
-              className="-rotate-90 duration-200 group-hover:translate-x-2"
+              className="w-5 -rotate-90 duration-200 group-hover:translate-x-2"
               width="32"
               height="32"
               viewBox="0 0 32 32"
