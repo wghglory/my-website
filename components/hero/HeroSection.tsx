@@ -17,7 +17,7 @@ export default function HeroSection() {
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <div className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20">
             <div>
-              <h2 className="py-6 text-center text-2xl lg:text-left lg:text-5xl">
+              <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-500">React</span> and{' '}
                 <span className="text-teal-500">Vue</span>
               </h2>

@@ -37,7 +37,7 @@ export default function ArticleListPage({files, topics, title}: {files: FileMeta
   return (
     <section className="bg-white dark:bg-gray-900" id="project">
       <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
-        <h2 className="text-center text-2xl lg:mb-10 lg:text-left lg:text-5xl">{title}</h2>
+        <h2 className="text-center text-3xl lg:mb-10 lg:text-left lg:text-5xl">{title}</h2>
 
         {/* Search by title or topics */}
         <div className="relative w-full lg:w-2/3">
