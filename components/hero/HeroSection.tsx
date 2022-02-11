@@ -38,11 +38,10 @@ export default function HeroSection() {
               className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
               alt="Guanghui Picture"
             /> */}
-            <Link href="/about" passHref>
-              <AboutMe
-                className="absolute top-[45%]  z-10 w-16 cursor-pointer text-gray-200 hover:text-white lg:w-20"
-                aria-label="more about me"
-              />
+            <Link href="/about">
+              <a className="absolute top-[45%]  z-10 w-16 cursor-pointer text-gray-200 hover:text-white lg:w-20">
+                <AboutMe aria-label="more about me" />
+              </a>
             </Link>
           </div>
         </div>
