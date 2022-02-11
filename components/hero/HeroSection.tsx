@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
+import AboutMe from '/public/aboutme.svg';
 import DoorBg from '/public/door.svg';
 import UMLogo from '/public/um.svg';
 import UnionbankLogo from '/public/unionbank.svg';
@@ -36,6 +38,12 @@ export default function HeroSection() {
               className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
               alt="Guanghui Picture"
             /> */}
+            <Link href="/about" passHref>
+              <AboutMe
+                className="absolute top-[45%]  z-10 w-16 cursor-pointer text-gray-200 hover:text-white lg:w-20"
+                aria-label="more about me"
+              />
+            </Link>
           </div>
         </div>
       </div>
