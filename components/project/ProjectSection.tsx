@@ -20,7 +20,7 @@ const kingColor = (fullConfig.theme.colors as any).king;
 
 export default function ProjectSection({projects}: {projects: FileMeta[]}) {
   return (
-    <SectionLayout id="projects" title="Projects">
+    <SectionLayout id="project" title="Projects">
       <div>
         <Swiper
           style={
