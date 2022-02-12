@@ -4,7 +4,7 @@ export interface EventItem {
   year: string;
   title: string;
   organization: string;
-  tags?: {GPA: number; medal?: string};
+  tags?: {GPA?: number; medal?: string};
 }
 
 export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
@@ -13,16 +13,18 @@ export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
       {eventList.map((e) => (
         <div className="flex flex-col sm:flex-row" key={e.year}>
           <div className="flex sm:w-1/2 lg:w-2/3">
-            <div className="">
+            <div className="w-full">
               <div className="text-xl font-medium">{e.title}</div>
               <div className="text-gray-600 dark:text-gray-300">{e.organization}</div>
               <div className="sm:hidden">{e.year}</div>
 
               {e.tags && (
                 <div className="space-x-2 pt-1">
-                  <span className="inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">
-                    GPA&nbsp;<strong className="font-bold">{e.tags.GPA}</strong>
-                  </span>
+                  {e.tags.GPA && (
+                    <span className="inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">
+                      GPA&nbsp;<strong className="font-bold">{e.tags.GPA}</strong>
+                    </span>
+                  )}
 
                   {e.tags.medal && (
                     <span className="inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">

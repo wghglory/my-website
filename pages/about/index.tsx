@@ -45,6 +45,24 @@ export default function AboutPage() {
     },
   ];
 
+  const values = [
+    {
+      title: 'Kindness',
+      description:
+        "You can be the smartest and most skilled software engineer in the world, but if you're not kind to those with whom you interact, you'll never reach your full potential and you'll always be chasing the next thing to bring you happiness in life. Be kind.",
+    },
+    {
+      title: 'Share',
+      description:
+        "One of the biggest things that has helped me learn is by committing myself to sharing what I know with others. I force myself into situations where I have to be accountable to those I'm sharing to really know my stuff. And as a result, I gained a lot, so do others.",
+    },
+    {
+      title: 'Collaborate',
+      description:
+        "I've worked with many developers as a team member at companies I've worked at as well as in the open source community. I've found it to be invaluable to collaborate well with others. I value giving credit where it is due and celebrating the successes of others with them. We can accomplish much more together than separately.",
+    },
+  ];
+
   return (
     <>
       <SectionLayout id="about" title="Work Experience">
@@ -52,6 +70,16 @@ export default function AboutPage() {
       </SectionLayout>
       <SectionLayout title="Education" className="">
         <TimelineEvents eventList={educationList} />
+      </SectionLayout>
+      <SectionLayout title="My Values">
+        <div className="grid gap-y-8 gap-x-16 lg:grid-cols-3">
+          {values.map((v) => (
+            <div key={v.title} className="space-y-4">
+              <div className="text-2xl">{v.title}</div>
+              <p>{v.description}</p>
+            </div>
+          ))}
+        </div>
       </SectionLayout>
     </>
   );
