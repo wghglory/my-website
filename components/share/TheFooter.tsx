@@ -8,7 +8,7 @@ import SocialIcons from './SocialIcons';
 
 export default function TheFooter() {
   return (
-    <footer className="bg-king-400 pt-20 pb-10 dark:bg-sky-800">
+    <footer className="border-t border-gray-200/80 bg-gray-200 pt-20 pb-10 dark:border-gray-700/80 dark:bg-gray-700">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 gap-20 text-center lg:grid-cols-2 lg:text-left">
           <section>
@@ -18,9 +18,9 @@ export default function TheFooter() {
           <section className="flex flex-col gap-2">
             <div className="text-xl font-bold">Contact</div>
             <a href="mailto:guanghui-wang@foxmail.com">guanghui-wang@foxmail.com</a>
-            <SocialIcons iconClass="btn-icon-accent" />
+            <SocialIcons iconClass="btn-icon" />
             <div className="flex justify-center lg:justify-start">
-              <button className="btn-accent">
+              <button className="btn-secondary">
                 Contact
                 <PlaneIcon className="w-5" />
               </button>
