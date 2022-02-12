@@ -22,7 +22,7 @@ const titlePrefix = {
 
 export default function ArticlePage({file}: {file: MDXFile}) {
   const router = useRouter();
-  const {theme} = useTheme();
+  const {resolvedTheme} = useTheme();
 
   // /posts/[slug]
   const [, parentPath] = router.pathname.split('/');
@@ -70,7 +70,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
           mapping="title"
           reactionsEnabled="1"
           emitMetadata="0"
-          theme={theme}
+          theme={resolvedTheme}
         />
       </div>
     </article>

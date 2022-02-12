@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 
 const ThemeChanger = () => {
   const [mounted, setMounted] = useState(false);
-  const {theme, setTheme} = useTheme();
+  const {resolvedTheme, theme, systemTheme, setTheme} = useTheme();
 
   // Avoid Hydration Mismatch. When mounted on client, now we can show the UI
   // https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
@@ -13,7 +13,7 @@ const ThemeChanger = () => {
 
   return (
     <>
-      {theme === 'light' ? (
+      {resolvedTheme === 'light' ? (
         <button onClick={() => setTheme('dark')} aria-label="Set dark theme">
           {/* Sun */}
           <svg className="group h-10 w-10" viewBox="0 0 56 56" fill="none">
