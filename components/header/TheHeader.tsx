@@ -17,7 +17,7 @@ import ThemeChanger from './ThemeChanger';
 export default function TheHeader() {
   const router = useRouter();
   const [showMenu, setShowMenu] = useState(false);
-  const isLg = useMedia('(min-width: 1024px)');
+  const isLg = useMedia('(min-width: 1024px)', false);
 
   // ECS to quit small nav menu
   // function keyPress(e: React.KeyboardEvent) {
