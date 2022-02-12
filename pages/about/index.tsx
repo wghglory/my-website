@@ -1,3 +1,4 @@
+import Responsibilities from '@/components/share/Responsibilities';
 import SectionLayout from '@/components/share/SectionLayout';
 import TimelineEvents from '@/components/share/TimelineEvent';
 
@@ -65,11 +66,14 @@ export default function AboutPage() {
 
   return (
     <>
-      <SectionLayout id="about" title="Work Experience">
+      <SectionLayout id="about" title="Work Experience" className="">
         <TimelineEvents eventList={experienceList} />
       </SectionLayout>
-      <SectionLayout title="Education" className="">
+      <SectionLayout title="Education">
         <TimelineEvents eventList={educationList} />
+      </SectionLayout>
+      <SectionLayout title="Recent Responsibilities" className="">
+        <Responsibilities />
       </SectionLayout>
       <SectionLayout title="My Values">
         <div className="grid gap-y-8 gap-x-16 lg:grid-cols-3">
