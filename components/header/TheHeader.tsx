@@ -114,34 +114,34 @@ export default function TheHeader() {
           <div className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}>
             <nav className="mt-auto">
               <ul>
-                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/')}>
                     Home
                   </button>
                 </li>
-                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/about')}>
                     About
                   </button>
                 </li>
-                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/#project')}>
                     Projects
                   </button>
                 </li>
-                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/posts')}>
                     Blog
                   </button>
                 </li>
-                <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/snippets')}>
                     Snippets
                   </button>
                 </li>
               </ul>
             </nav>
-            <div className="mb-auto flex flex-col items-center gap-4 border-t border-gray-200 py-8 dark:border-gray-700">
+            <div className="mb-auto flex flex-col items-center gap-4 border-t border-gray-100 py-8 dark:border-gray-700">
               <ThemeChanger />
               <button className="btn-primary">
                 Contact
