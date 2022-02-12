@@ -18,8 +18,8 @@ export default function HeroSection() {
           <div className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20">
             <div>
               <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
-                Web Developer Loving <span className="text-sky-500">React</span> and{' '}
-                <span className="text-teal-500">Vue</span>
+                Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
+                <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
               </h2>
               <p>
                 Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love all modern UI technologies
