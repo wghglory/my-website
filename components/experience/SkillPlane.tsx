@@ -1,9 +1,9 @@
-export default function SkillPlane({theme}: {theme: string}) {
+export default function SkillPlane({resolvedTheme}: {resolvedTheme: string}) {
   return (
     <svg className="inline w-full max-w-2xl lg:w-1/2" viewBox="0 0 1345 1644" fill="none">
       <g id="plane">
         <g id="engine">
-          {theme === 'light' ? (
+          {resolvedTheme === 'light' ? (
             <>
               <path
                 d="M427.433 693.255C429.252 707.988 431.5 728.678 431.5 740.917V740.921C431.5 761.48 431.5 794.802 413.796 843.663C408.965 856.998 401.536 872.015 395.309 883.708C392.197 889.553 389.387 894.562 387.355 898.111C386.339 899.885 385.518 901.293 384.951 902.258C384.788 902.534 384.647 902.774 384.528 902.975C384.422 902.773 384.298 902.534 384.155 902.26C383.646 901.281 382.907 899.854 381.987 898.059C380.147 894.469 377.582 889.409 374.685 883.53C368.891 871.77 361.772 856.741 356.463 843.646C337.5 796.869 337.5 770.027 337.5 740.925V740.917C337.5 724.385 339.544 705.696 341.31 692.639C342.575 683.284 350.643 676.5 360.104 676.5H384.5H408.321C418.026 676.5 426.245 683.633 427.433 693.255Z"
@@ -343,7 +343,7 @@ export default function SkillPlane({theme}: {theme: string}) {
           y2="713.846"
           gradientUnits="userSpaceOnUse"
         >
-          {theme === 'light' ? (
+          {resolvedTheme === 'light' ? (
             <>
               <stop stopColor="#99BBFF" />
               <stop offset="0.489583" stopColor="#CCCCFF" />

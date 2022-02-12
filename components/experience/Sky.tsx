@@ -1,18 +1,18 @@
 import gsap from 'gsap';
 import {useEffect} from 'react';
 
-export default function Sky({theme}: {theme: string}) {
+export default function Sky({resolvedTheme}: {resolvedTheme: string}) {
   useEffect(() => {
-    if (theme === 'dark') {
+    if (resolvedTheme === 'dark') {
       gsap
         .timeline({ease: 'back'})
         .from('#moon', {autoAlpha: 0})
         .from('#moon', {x: 80, rotate: -5, transformOrigin: '50% 50%', yoyo: true, repeat: -1, duration: 2}, '<')
         .from('#star path', {scale: 0, opacity: 0, stagger: 0.2, repeat: -1, yoyo: true}, 0.5);
     }
-  }, [theme]);
+  }, [resolvedTheme]);
 
-  return theme === 'light' ? (
+  return resolvedTheme === 'light' ? (
     <svg
       className="md:w-70 mt-[-30px] w-60 lg:w-80"
       viewBox="0 0 668 534"
