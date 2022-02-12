@@ -67,7 +67,7 @@ export default function TheHeader() {
                 </Link>
               </li>
               <li className="hover:text-orange-600">
-                <Link href="/#experience">
+                <Link href="/about">
                   <a className="p-2">About</a>
                 </Link>
               </li>
@@ -120,7 +120,7 @@ export default function TheHeader() {
                   </button>
                 </li>
                 <li className="hover:bg-gray-200 hover:text-orange-600 hover:dark:bg-gray-800">
-                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/#experience')}>
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/about')}>
                     About
                   </button>
                 </li>
