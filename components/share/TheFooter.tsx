@@ -42,7 +42,7 @@ export default function TheFooter() {
                   </Link>
                 </li>
                 <li className="py-3 text-center hover:text-white dark:hover:text-black md:py-1 lg:text-left">
-                  <Link href="/#experience">
+                  <Link href="/about">
                     <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">About</a>
                   </Link>
                 </li>
