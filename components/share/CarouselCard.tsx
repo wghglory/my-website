@@ -18,7 +18,10 @@ export default function CarouselCard({
         <header className="text-center text-2xl font-semibold">{title}</header>
         <p>{description}</p>
         <Link href={link}>
-          <a className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-queen-600 dark:hover:text-queen-400">
+          <a
+            className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-queen-600 dark:hover:text-queen-400"
+            aria-label={`learn more about ${title}`}
+          >
             Learn more
             <svg
               className="w-5 -rotate-90 duration-200 group-hover:translate-x-2"
