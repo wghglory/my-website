@@ -30,7 +30,7 @@ body {
   }
 
   ::selection {
-    @apply bg-king-600 text-white;
+    @apply bg-king-600 text-white dark:bg-sky-600;
   }
 }
 

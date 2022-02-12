@@ -24,7 +24,7 @@ const responsibilities = [
   },
   {
     name: 'Project Setup',
-    icon: <ProjectSetupIcon className="w-6" aria-label="Project Setup" />,
+    icon: <ProjectSetupIcon className="w-6 text-cyan-600 dark:text-cyan-400" aria-label="Project Setup" />,
   },
   {
     name: 'Build Libraries',
@@ -36,7 +36,7 @@ const responsibilities = [
   },
   {
     name: 'Accessability',
-    icon: <A11yIcon className="w-6" aria-label="Accessability" />,
+    icon: <A11yIcon className="w-6 text-sky-600 dark:text-sky-400" aria-label="Accessability" />,
   },
   {
     name: 'Internationalization',
