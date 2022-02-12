@@ -14,10 +14,11 @@ import YouTube from '@/components/share/Youtube';
 import {ContentDirectory} from '@/lib/file';
 import {MDXFile} from '@/models';
 
+// giscus currently converts title first letter to lower case, so let's use lowercase for now.
 const titlePrefix = {
-  projects: 'Project',
-  posts: 'Post',
-  snippets: 'Snippet',
+  projects: 'project',
+  posts: 'post',
+  snippets: 'snippet',
 };
 
 export default function ArticlePage({file}: {file: MDXFile}) {
