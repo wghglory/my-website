@@ -36,29 +36,29 @@ export default function TheFooter() {
             <div className="text-xl font-bold">Sitemap</div>
             <nav>
               <ul>
-                <li className="py-3 text-center hover:text-white dark:hover:text-black  md:py-1 lg:text-left">
+                <li className="py-3 text-center hover:font-semibold dark:hover:text-gray-100  md:py-1 lg:text-left">
                   <Link href="/">
-                    <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">Home</a>
+                    <a className="pb-1 hover:border-b-2 hover:border-gray-900 dark:hover:border-gray-100">Home</a>
                   </Link>
                 </li>
-                <li className="py-3 text-center hover:text-white dark:hover:text-black md:py-1 lg:text-left">
+                <li className="py-3 text-center hover:font-semibold dark:hover:text-gray-100 md:py-1 lg:text-left">
                   <Link href="/about">
-                    <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">About</a>
+                    <a className="pb-1 hover:border-b-2 hover:border-gray-900 dark:hover:border-gray-100">About</a>
                   </Link>
                 </li>
-                <li className="py-3 text-center hover:text-white dark:hover:text-black md:py-1 lg:text-left">
+                <li className="py-3 text-center hover:font-semibold dark:hover:text-gray-100 md:py-1 lg:text-left">
                   <Link href="/#project">
-                    <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">Projects</a>
+                    <a className="pb-1 hover:border-b-2 hover:border-gray-900 dark:hover:border-gray-100">Projects</a>
                   </Link>
                 </li>
-                <li className="py-3 text-center hover:text-white dark:hover:text-black md:py-1 lg:text-left">
+                <li className="py-3 text-center hover:font-semibold dark:hover:text-gray-100 md:py-1 lg:text-left">
                   <Link href="/posts">
-                    <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">Blog</a>
+                    <a className="pb-1 hover:border-b-2 hover:border-gray-900 dark:hover:border-gray-100">Blog</a>
                   </Link>
                 </li>
-                <li className="py-3 text-center hover:text-white dark:hover:text-black md:py-1 lg:text-left">
+                <li className="py-3 text-center hover:font-semibold dark:hover:text-gray-100 md:py-1 lg:text-left">
                   <Link href="/snippets">
-                    <a className="pb-1 hover:border-b-2 hover:border-white dark:hover:border-black">Snippets</a>
+                    <a className="pb-1 hover:border-b-2 hover:border-gray-900 dark:hover:border-gray-100">Snippets</a>
                   </Link>
                 </li>
               </ul>
