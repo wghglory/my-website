@@ -5,7 +5,11 @@ import {getMdxFileStaticPaths, getMdxFileStaticProps} from '@/lib/file';
 import {MDXFile} from '@/models';
 
 export default function ProjectPage({file}: {file: MDXFile}) {
-  return <ArticlePage file={file} />;
+  return (
+    <main>
+      <ArticlePage file={file} />
+    </main>
+  );
 }
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
