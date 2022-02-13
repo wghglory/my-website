@@ -90,10 +90,12 @@ export default function TheHeader() {
           </nav>
           <div className="hidden items-center gap-4 lg:flex">
             <ThemeChanger />
-            <button className="btn-primary">
-              Contact
-              <PlaneIcon className="w-5" />
-            </button>
+            <Link href="/contact">
+              <a className="btn-primary">
+                Contact
+                <PlaneIcon className="w-5" />
+              </a>
+            </Link>
           </div>
           <div className="inline-flex lg:hidden">
             <MenuButton
@@ -143,7 +145,7 @@ export default function TheHeader() {
             </nav>
             <div className="mb-auto flex flex-col items-center gap-4 border-t border-gray-100 py-8 dark:border-gray-700">
               <ThemeChanger />
-              <button className="btn-primary">
+              <button className="btn-primary" onClick={() => navigateTo('/contact')}>
                 Contact
                 <PlaneIcon className="w-5" />
               </button>
