@@ -43,42 +43,106 @@ function App() {
 
 ## Normal Form
 
+### Controlled Form
+
 ```tsx
 // For complex nested update: https: //github.com/immerjs/use-immer
 
-import {useState} from 'react';
+import {useState, ChangeEvent} from 'react';
 
-export default function Form() {
+export default function ControlledForm() {
   const [person, setPerson] = useState({
-    firstName: 'Barbara',
-    lastName: 'Hepworth',
-    email: 'bhepworth@sculpture.com',
+    firstName: 'Derek',
+    lastName: 'Wang',
+    email: 'derekw@sculpture.com',
+    isSoldier: false,
   });
 
-  function handleChange(e) {
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+
     setPerson({
       ...person,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   }
 
+  function handleSubmit() {
+    // use person state
+  }
+
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={handleSubmit}>
       <label>
         First name:
-        <input name="firstName" value={person.firstName} onChange={handleChange} />
+        <input name="firstName" type="text" value={person.firstName} onChange={handleChange} />
       </label>
       <label>
         Last name:
-        <input name="lastName" value={person.lastName} onChange={handleChange} />
+        <input name="lastName" type="text" value={person.lastName} onChange={handleChange} />
       </label>
       <label>
         Email:
-        <input name="email" value={person.email} onChange={handleChange} />
+        <input name="email" type="text" value={person.email} onChange={handleChange} />
+      </label>
+      <label>
+        isSoldier:
+        <input name="isSoldier" type="checkbox" value={person.isSoldier} onChange={handleChange} />
       </label>
       <p>
         {person.firstName} {person.lastName} ({person.email})
       </p>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+### Uncontrolled Form
+
+```tsx
+// For complex nested update: https: //github.com/immerjs/use-immer
+
+import {FormEvent} from 'react';
+
+export default function UncontrolledForm() {
+  handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    // way 1
+    const firstName = event.target.firstName.value;
+    const lastName = event.target.lastName.value;
+
+    // way 2:
+    const formData: any = {};
+    (Array.from(event.currentTarget.elements) as HTMLFormElement[]).forEach((e) => {
+      if (e.name) {
+        formData[e.name] = e.value;
+      }
+    });
+
+    // Here we do something with form data
+    console.log(firstName, lastName);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        First name:
+        <input name="firstName" type="text" />
+      </label>
+      <label>
+        Last name:
+        <input name="lastName" type="text" />
+      </label>
+      <label>
+        Email:
+        <input name="email" type="text" />
+      </label>
+      <label>
+        isSoldier:
+        <input name="isSoldier" type="checkbox" />
+      </label>
       <button type="submit">Submit</button>
     </form>
   );
