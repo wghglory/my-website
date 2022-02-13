@@ -65,7 +65,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <>
+    <main>
       <SectionLayout id="about" title="Work Experience" className="">
         <TimelineEvents eventList={experienceList} />
       </SectionLayout>
@@ -85,6 +85,6 @@ export default function AboutPage() {
           ))}
         </div>
       </SectionLayout>
-    </>
+    </main>
   );
 }
