@@ -22,8 +22,8 @@ export default function HeroSection() {
                 <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
               </h2>
               <p>
-                Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love all modern UI technologies
-                and also starting to fall in love with SVG, GSAP, framer motion!
+                Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love modern UI technologies and
+                also starting to fall in love with SVG, GSAP, framer motion!
               </p>
             </div>
             <div className="lg:mb-14">
