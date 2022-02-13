@@ -54,7 +54,7 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="container mx-auto my-10 max-w-2xl rounded-md p-5 shadow-sm">
+    <main className="container mx-auto my-10 max-w-2xl rounded-md p-5">
       <div className="text-center">
         <h2 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Contact me</h2>
       </div>
@@ -98,12 +98,28 @@ export default function ContactPage() {
             <textarea rows={5} name="message" placeholder="Your Message" className={inputClass} required></textarea>
           </div>
           <div className="mb-6 flex justify-center">
-            <button className={`btn-primary ${btnStatusClass}`} type="submit">
+            <button className={`btn-primary ${btnStatusClass}`} type="submit" disabled={status === 'pending'}>
               Send Message
               {status === 'pending' && <CgSpinner className="animate-spin" size={24} />}
               {status === 'success' && <BsCheckCircle size={24} />}
               {status === 'error' && <RiErrorWarningLine size={24} />}
             </button>
+          </div>
+          <div
+            className={`min-h-[1.5rem] text-center opacity-0 duration-200 ${
+              status === 'success' && 'text-green-600 opacity-100 dark:text-green-400'
+            } ${status === 'error' && 'text-red-600 opacity-100 dark:text-red-400'}`}
+          >
+            {status === 'success' && <>Your email was sent successfully! I will reply you soon. Thank you!</>}
+            {status === 'error' && (
+              <>
+                Something went wrong. Please send email to{' '}
+                <a href="mailto:wghglory89@gmail.com" className="text-queen-600 dark:text-sky-400">
+                  wghglory89@gmail.com
+                </a>{' '}
+                manually.
+              </>
+            )}
           </div>
         </form>
       </div>
