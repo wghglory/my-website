@@ -20,10 +20,12 @@ export default function TheFooter() {
             <a href="mailto:guanghui-wang@foxmail.com">guanghui-wang@foxmail.com</a>
             <SocialIcons iconClass="btn-icon" />
             <div className="flex justify-center lg:justify-start">
-              <button className="btn-secondary">
-                Contact
-                <PlaneIcon className="w-5" />
-              </button>
+              <Link href="/contact">
+                <a className="btn-secondary">
+                  Contact
+                  <PlaneIcon className="w-5" />
+                </a>
+              </Link>
             </div>
           </section>
           <section>
