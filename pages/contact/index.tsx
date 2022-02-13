@@ -1,12 +1,22 @@
 import {sendForm} from '@emailjs/browser';
-import {FormEvent} from 'react';
+import {FormEvent, useState} from 'react';
+import {BsCheckCircle} from 'react-icons/bs';
+import {CgSpinner} from 'react-icons/cg';
+import {RiErrorWarningLine} from 'react-icons/ri';
 
 const inputClass =
   'w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-300 focus:outline-none focus:ring focus:ring-queen-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:focus:border-gray-500 dark:focus:ring-sky-500';
 
 export default function ContactPage() {
+  const [status, setStatus] = useState('idle');
+
+  const btnStatusClass =
+    status === 'pending' ? 'btn-loading' : status === 'success' ? 'btn-success' : status === 'error' ? 'btn-error' : '';
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    setStatus('pending');
 
     // Way1: https://www.emailjs.com/docs/examples/reactjs. Can define templates
     sendForm(
@@ -15,8 +25,12 @@ export default function ContactPage() {
       '#form',
       process.env.NEXT_PUBLIC_EMAILJS_USER_ID!,
     ).then(
-      (res) => {},
-      (err) => {},
+      (res) => {
+        setStatus('success');
+      },
+      (err) => {
+        setStatus('error');
+      },
     );
 
     // Way2: https://formsubmit.co/ajax-documentation. No registration
@@ -83,9 +97,12 @@ export default function ContactPage() {
             </label>
             <textarea rows={5} name="message" placeholder="Your Message" className={inputClass} required></textarea>
           </div>
-          <div className="mb-6 text-center">
-            <button className="btn-primary inline" type="submit">
+          <div className="mb-6 flex justify-center">
+            <button className={`btn-primary ${btnStatusClass}`} type="submit">
               Send Message
+              {status === 'pending' && <CgSpinner className="animate-spin" size={24} />}
+              {status === 'success' && <BsCheckCircle size={24} />}
+              {status === 'error' && <RiErrorWarningLine size={24} />}
             </button>
           </div>
         </form>
