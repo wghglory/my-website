@@ -4,7 +4,7 @@ import {svgVariants} from '@/lib/motion';
 
 export default function MenuButton({onClick}: {onClick: () => void}) {
   return (
-    <button onClick={onClick}>
+    <button onClick={onClick} aria-label="toggle menu button">
       <motion.svg initial={false} className="group h-10 w-10" viewBox="0 0 56 56" fill="none">
         <motion.circle
           initial="start"
