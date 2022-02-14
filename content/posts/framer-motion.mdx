@@ -139,6 +139,41 @@ export default function Index() {
 }
 ```
 
+## Create Micro Interactions with Gesture Props
+
+Framer Motion provides helper props like `whileHover` & `whileTap`, that will temporarily animate a component to a
+visual state when that gesture is happening.
+
+```diff
+const fadeInVariant = {
+  hidden: {opacity: 0, y: -200},
+  visible: (custom) => ({opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween', delay: custom}}),
+};
+
+export default function Index() {
+  const items = ['item 1', 'item 2'];
+  return (
+    <ul>
+      <AnimatePresence>
+        {items.map((i, index) => (
+          <motion.li
+            key={i}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            layoutId={i}
+            custom={(index + 1) * 0.2}
+            variants={fadeInVariant}
++            whileHover={{scale: 1.05}}
++            whileTap={{scale: 1.1}}
+          ></motion.li>
+        ))}
+      </AnimatePresence>
+    </ul>
+  );
+}
+```
+
 ## Reference
 
 https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
