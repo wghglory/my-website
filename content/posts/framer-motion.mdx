@@ -50,6 +50,25 @@ export default function Index() {
 
 > Use this for hero headings, description, etc
 
+## Variants, making states semantic and reusable
+
+Let's update the above example with **variants**:
+
+```tsx
+const fadeInVariant = {
+  hidden: {opacity: 0, y: -200},
+  visible: {opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween'}},
+};
+
+export default function Index() {
+  return (
+    <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
+      fade in from top
+    </motion.div>
+  );
+}
+```
+
 ## Reference
 
 https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
