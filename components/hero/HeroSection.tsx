@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -16,7 +17,11 @@ export default function HeroSection() {
       <div className="container m-auto px-6 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <div className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20">
-            <div>
+            <motion.div
+              initial={{opacity: 0, y: -200}}
+              animate={{opacity: 1, y: 0}}
+              transition={{duration: 0.4, ease: 'easeOut', type: 'tween'}}
+            >
               <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
                 <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
@@ -25,7 +30,7 @@ export default function HeroSection() {
                 Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love modern UI technologies and
                 also starting to fall in love with SVG, GSAP, framer motion!
               </p>
-            </div>
+            </motion.div>
             <div className="lg:mb-14">
               <SocialIcons />
             </div>

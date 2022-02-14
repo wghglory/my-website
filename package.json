@@ -22,6 +22,7 @@
     "@tailwindcss/typography": "^0.5.1",
     "classnames": "^2.3.1",
     "focus-trap-react": "^8.9.1",
+    "framer-motion": "^6.2.6",
     "glob": "^7.2.0",
     "gray-matter": "^4.0.3",
     "gsap": "^3.9.1",
