@@ -69,6 +69,44 @@ export default function Index() {
 }
 ```
 
+## Animate Elements Removed by AnimatePresence and Exit
+
+Let's say we have a todo list whose item will fade in when a new one is added and fade out when removed. We need to wrap
+`AnimatePresence` with the list and add `exit` prop indicating the exit state.
+
+```tsx
+const fadeInVariant = {
+  hidden: {opacity: 0, y: -200},
+  visible: {opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween'}},
+};
+
+export default function Index() {
+  const items = ['item 1', 'item 2'];
+  return (
+    <ul>
+      <AnimatePresence>
+        {items.map((i) => (
+          <motion.li
+            key={i}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            layoutId={i}
+            variants={fadeInVariant}
+          ></motion.li>
+        ))}
+      </AnimatePresence>
+    </ul>
+  );
+}
+```
+
+> Animate Elements When Their Layout Changes with Framer Motion `layoutId`. Use the `layoutId` prop to automatically
+> animate layout changes across, and between, multiple components.
+
+I think `layoutId` value could be the `key` value. One element exiting will need it. If only 1 element exists for the
+animation, I don't think it is needed.
+
 ## Reference
 
 https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
