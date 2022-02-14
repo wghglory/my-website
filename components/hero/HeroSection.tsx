@@ -8,13 +8,9 @@ import UMLogo from '/public/um.svg';
 import UnionbankLogo from '/public/unionbank.svg';
 import UPMCLogo from '/public/upmc.svg';
 import VMwareLogo from '/public/vmware.svg';
+import {fadeInVariant} from '@/lib/motion';
 
 import SocialIcons from '../share/SocialIcons';
-
-const fadeInVariant = {
-  hidden: {opacity: 0, y: -200},
-  visible: {opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween'}},
-};
 
 export default function HeroSection() {
   return (
