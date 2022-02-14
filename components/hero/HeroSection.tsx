@@ -34,7 +34,7 @@ export default function HeroSection() {
           </div>
           <div className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3">
             <DoorBg className="absolute h-full" />
-            <Image src="/me.png" alt="Guanghui Picture" layout="fill" objectFit="contain" />
+            <Image src="/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" />
             {/* <img
               src="/me.png"
               className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
