@@ -11,17 +11,18 @@ import VMwareLogo from '/public/vmware.svg';
 
 import SocialIcons from '../share/SocialIcons';
 
+const fadeInVariant = {
+  hidden: {opacity: 0, y: -200},
+  visible: {opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween'}},
+};
+
 export default function HeroSection() {
   return (
     <section className="bg-white dark:bg-gray-900" id="home">
       <div className="container m-auto px-6 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <div className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20">
-            <motion.div
-              initial={{opacity: 0, y: -200}}
-              animate={{opacity: 1, y: 0}}
-              transition={{duration: 0.4, ease: 'easeOut', type: 'tween'}}
-            >
+            <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
               <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
                 <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
