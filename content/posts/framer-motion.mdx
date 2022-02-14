@@ -107,6 +107,38 @@ export default function Index() {
 I think `layoutId` value could be the `key` value. One element exiting will need it. If only 1 element exists for the
 animation, I don't think it is needed.
 
+## Stagger
+
+The `custom` prop let's you create dynamic variant values to animate each component differently.
+
+```diff
+const fadeInVariant = {
+  hidden: {opacity: 0, y: -200},
++  visible: (custom) => ({opacity: 1, y: 0, transition: {duration: 0.5, ease: 'easeOut', type: 'tween', delay: custom}}),
+};
+
+export default function Index() {
+  const items = ['item 1', 'item 2'];
+  return (
+    <ul>
+      <AnimatePresence>
+        {items.map((i, index) => (
+          <motion.li
+            key={i}
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            layoutId={i}
++            custom={(index + 1) * 0.2}
+            variants={fadeInVariant}
+          ></motion.li>
+        ))}
+      </AnimatePresence>
+    </ul>
+  );
+}
+```
+
 ## Reference
 
 https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
