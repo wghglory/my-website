@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function CarouselCard({
@@ -12,8 +13,18 @@ export default function CarouselCard({
   link: string;
 }) {
   return (
-    <div className="object-fit rounded-xl bg-gray-200 dark:bg-gray-700">
-      <img src={imgSrc} alt="project image" className="rounded-t-xl" />
+    <div className="rounded-xl bg-gray-200 dark:bg-gray-700">
+      <div className="relative h-56">
+        <Image
+          src={imgSrc}
+          layout="fill"
+          objectFit="cover"
+          alt="project image"
+          className="rounded-t-xl"
+          loading="lazy"
+          priority={false}
+        />
+      </div>
       <div className="space-y-6 p-8">
         <header className="text-center text-2xl font-semibold">{title}</header>
         <p>{description}</p>
