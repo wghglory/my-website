@@ -1,0 +1,55 @@
+---
+title: Framer Motion Examples
+topics:
+  - react
+  - animation
+date: 2022-02-14
+excerpt: Easy animation by framer motion
+cover_image: /posts/reduce.jpg
+---
+
+## Animate through Multiple States with Framer Motion Keyframes
+
+```tsx
+export default function Index() {
+  return (
+    <motion.div
+      animate={{opacity: 1, y: [-200, 0, 200, 0, -200, 0]}}
+      transition={{duration: 2, times: [0, 0.2, 0.3, 0.7, 0.9, 1]}}
+    >
+      up and down bounce
+    </motion.div>
+  );
+}
+```
+
+- `times` is an array from 0 to 1, like keyframe percentage.
+- `duration` tells the whole animation time.
+
+- at time 0, div is at -200
+- at 20%, div is at 0
+- at 30%, div is at 200
+
+## Initial Prop to Define the Beginning State of Animations
+
+```tsx
+export default function Index() {
+  return (
+    <motion.div
+      initial={{opacity: 0, y: -200}}
+      animate={{opacity: 1, y: 0}}
+      transition={{duration: 0.4, ease: 'easeOut', type: 'tween'}}
+    >
+      fade in from top
+    </motion.div>
+  );
+}
+```
+
+`initial` is the initial state of the element, and `animate` is the final end state.
+
+> Use this for hero headings, description, etc
+
+## Reference
+
+https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
