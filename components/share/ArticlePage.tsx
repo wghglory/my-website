@@ -9,6 +9,7 @@ import {MDXRemote} from 'next-mdx-remote';
 import {useTheme} from 'next-themes';
 
 import Bilibili from '@/components/share/Bilibili';
+import CodeFrame from '@/components/share/CodeFrame';
 import TopicList from '@/components/share/TopicList';
 import YouTube from '@/components/share/Youtube';
 import {ContentDirectory} from '@/lib/file';
@@ -58,11 +59,16 @@ export default function ArticlePage({file}: {file: MDXFile}) {
       <TopicList topics={file.meta.topics} />
       {file.meta.cover_image && (
         <div className="text-center">
-          <img className="inline-block w-full" src={file.meta.cover_image} alt="article cover" loading="lazy" />
+          <img
+            className="inline-block w-full"
+            src={file.meta.cover_image}
+            alt="article cover"
+            placeholder="Cover Image Loading..."
+          />
         </div>
       )}
-      <MDXRemote {...file.source} components={{YouTube, Bilibili, Image}} />
-      <div className="my-4">
+      <MDXRemote {...file.source} components={{YouTube, Bilibili, CodeFrame, Image}} />
+      <div className="mb-4 mt-8 lg:mt-16">
         <Giscus
           repo="wghglory/my-website"
           repoId="R_kgDOGvOLfg"

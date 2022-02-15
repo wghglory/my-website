@@ -5,10 +5,10 @@ topics:
   - animation
 date: 2022-02-14
 excerpt: Easy animation by framer motion
-cover_image: /posts/reduce.jpg
+cover_image: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
 ---
 
-## Animate through Multiple States with Framer Motion Keyframes
+## Animate through Multiple States with Keyframes
 
 ```tsx
 export default function Index() {
@@ -214,6 +214,103 @@ export default function MenuButton({onClick}: {onClick: () => void}) {
 }
 ```
 
+## Path morphing
+
+<CodeFrame src="https://codesandbox.io/embed/framer-motion-morphsvg-example-dp7to?fontsize=14&hidenavigation=1&theme=dark" />
+
+## Scroll-based animations
+
+Create declarative, reactive chains of MotionValues that can update as a result of animations and/or gestures.
+
+```tsx
+const {scrollYProgress} = useViewportScroll();
+
+return <motion.path style={{pathLength: scrollYProgress}} />;
+```
+
+## Server-side rendering
+
+The animated state of a component will be rendered server-side to prevent flashes of re-styled content after your
+JavaScript loads.
+
+```tsx
+<motion.div initial={false} animate={{x: 100}} />
+```
+
+## MotionValues
+
+Create declarative, reactive chains of MotionValues that can update as a result of animations and/or gestures.
+
+> MotionValues track the state and velocity of animating values.
+
+```tsx
+const x = useMotionValue(0);
+
+const xinput = [-200, 0, 200];
+const opacityOutput = [0, 1, 0];
+const colorOutput = ['#f00', '#fff', '#0f0'];
+
+const opacity = useTransform(x, xInput, opacityOutput);
+const color = useTransform(x, xInput, colorOutput);
+
+return <motion.div drag="x" style={{x, opacity, color}} />;
+```
+
+initial x is 0, the opacity will be 1. When dragging over to -200 or 200, opacity will be 0.
+
+<CodeFrame
+  src="https://codesandbox.io/embed/framer-motion-path-drawing-drag-and-usetransform-jnqk2?fontsize=14&hidenavigation=1&theme=dark"
+  title="Framer Motion: Path drawing, drag and useTransform"
+/>
+
+## Scroll-triggered animations
+
+Motion also provides a whileInView prop that defines a visual state to animate to while a component is in the viewport.
+
+```tsx
+<motion.div initial={{opacity: 0}} whileInView={{opacity: 1}} viewport={{once: true}} />
+```
+
+## Scroll-linked animations
+
+The useViewportScroll hook provides four read-only MotionValues, two that return the viewport's x/y scroll position in
+pixels, and two that return it as progress value between 0 and 1.
+
+You can use these MotionValues to declaratively drive features like progress indicators or parallax effects.
+
+```tsx
+import {motion, useViewportScroll} from 'framer-motion';
+
+export const CircleIndicator = () => {
+  const {scrollYProgress} = useViewportScroll();
+
+  // a svg progress indicator
+  return <motion.path d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0" style={{pathLength: scrollYProgress}} />;
+};
+```
+
+## Layout animation
+
+To automatically animate the layout of a motion component when its size or position changes, give it a `layout` prop.
+
+```tsx
+<motion.div layout />
+```
+
+<CodeFrame src="https://codesandbox.io/embed/framer-motion-2-layout-animations-kij8p?fontsize=14&hidenavigation=1&theme=dark" />
+
+## Shared layout animations
+
+When a new motion component is added, it can be automatically animated from another one by giving them both the same
+layoutId prop.
+
+```tsx
+isSelected ? <motion.div layoutId="underline" /> : null;
+```
+
+<CodeFrame src="https://codesandbox.io/embed/framer-motion-5-shared-layout-animations-snxgv?fontsize=14&hidenavigation=1&theme=dark" />
+
 ## Reference
 
-https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
+- https://www.framer.com/docs/examples/#scroll-triggered-animations
+- https://egghead.io/lessons/react-use-framer-motion-initial-prop-to-define-the-beginning-state-of-animations
