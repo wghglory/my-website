@@ -6,6 +6,7 @@ import path from 'path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeSlug from 'rehype-slug';
+import rehypeToc from 'rehype-toc';
 
 import {FileContent} from '@/models';
 
@@ -63,7 +64,17 @@ export const getMdxFileStaticProps = async (dir: ContentDirectory, slug: string)
   const {content, meta} = getFileFromSlug(dir, slug);
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, {behavior: 'wrap'}], rehypeHighlight] as any,
+      rehypePlugins: [
+        rehypeSlug,
+        [
+          rehypeToc,
+          {
+            headings: ['h1', 'h2'],
+          },
+        ],
+        [rehypeAutolinkHeadings, {behavior: 'wrap'}],
+        rehypeHighlight,
+      ] as any,
     },
   });
 
