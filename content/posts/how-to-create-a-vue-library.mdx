@@ -1,0 +1,360 @@
+---
+title: Create a Vue Library by vite and Publish to NPM
+topics:
+  - vue
+  - library
+date: 2022-02-18
+excerpt: Create a vue library using vite, rollup, typescript, tailwind.
+cover_image: https://th.bing.com/th/id/OIP.Q5AS0U9JQsENubC3Qef6QAHaEK?pid=ImgDet&rs=1
+---
+
+## Setup the repo
+
+Create a new vite project: `npm init vite@latest dv-components`.
+
+> After vite vue project is created, `App.vue`, `main.ts` are not necessary like a normal vue project since we're
+> building a vue library. The reason I kept them is that we can use `App.vue` to test the components before publishing
+> to npm.
+
+## Add Tailwind (Optional)
+
+1. Add tailwind:
+
+   ```bash
+   npm install -D tailwindcss postcss autoprefixer
+
+   npx tailwindcss init -p
+   ```
+
+2. Update tailwind.config.js:
+
+   ```diff
+   # tailwind.config.js
+   module.exports = {
+   +  content: [
+   +    "./index.html",
+   +    "./src/**/*.{vue,js,ts,jsx,tsx}",
+   +  ],
+     theme: {
+       extend: {},
+     },
+     plugins: [],
+   }
+   ```
+
+3. Add tailwind directives to `src/styles/index.css`
+
+   ```css
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities;
+   ```
+
+4. Create `src/index.ts` file. This file is where we will export all components. Vite build process will use this index
+   file as the entry.
+
+   ```ts
+   // tailwind css here, and it will be built inside dist/style.css
+   import '@/styles/index.css';
+
+   // rest will be the component exports
+   // ...
+   ```
+
+## Create Components
+
+### A simple vue component with normal class
+
+In `src/components` folder, let's create a vue component called `dv-current-time.vue`, which doesn't have any tailwind
+class.
+
+```html
+<template>
+  <div class="time"><slot name="prefix" /> {{ displayTime }}</div>
+</template>
+
+<script setup lang="ts">
+  import {ref, computed} from 'vue';
+
+  const props = defineProps({
+    timeZone: {
+      type: String,
+      default: 'UTC',
+    },
+  });
+
+  const emit = defineEmits(['datechange']);
+
+  const currentDateTime = ref(new Date());
+
+  const displayTime = computed(() =>
+    currentDateTime.value.toLocaleString('en-US', {
+      timeZone: props.timeZone,
+    }),
+  );
+
+  setInterval(() => {
+    currentDateTime.value = new Date();
+    emit('datechange', displayTime);
+  }, 1000);
+</script>
+
+<style scoped>
+  .time {
+    color: green;
+  }
+</style>
+
+<script lang="ts">
+  export default {
+    name: 'DvCurrentTime', // important for global registration in vue `install` plugin method
+  };
+</script>
+```
+
+> .time class will be built inside the dist/style.css if we configure vite build later.
+
+Since we may have many components, let's create `src/components/index.ts`.
+
+### Another vue component with tailwind class
+
+```html
+<template>
+  <div
+    class="dv-card group flex flex-col rounded-lg border-2 border-transparent bg-white shadow-md hover:border-indigo-500 dark:bg-gray-800"
+  >
+    <header class="dv-card-header relative py-4 px-8 text-2xl">
+      <slot name="header"></slot>
+    </header>
+    <div class="dv-card-body px-8 py-4">
+      <slot name="body"></slot>
+    </div>
+    <footer :class="['dv-card-footer px-8 py-4', isFooterBordered ? 'border-t' : '']">
+      <slot name="footer"></slot>
+    </footer>
+  </div>
+</template>
+
+<script setup lang="ts">
+  defineProps({
+    isFooterBordered: {
+      default: false,
+    },
+  });
+</script>
+
+<script lang="ts">
+  export default {
+    name: 'DvCard',
+  };
+</script>
+```
+
+### Export these 2 components
+
+`src/components/index.ts`:
+
+```ts
+export {default as DvCurrentTime} from './dv-current-time.vue';
+export {default as DvCard} from './dv-card.vue';
+```
+
+`src/index.ts`: This file is significant in that it exports the components. Vite build config will use this file as the
+library entry. Note the `install` method is used for globally register the components.
+
+```ts
+// tailwind css here, and it will be built inside dist/style.css
+import '@/styles/index.css';
+
+import {Plugin} from 'vue';
+import {DvCard, DvCurrentTime} from '@/components';
+
+// global components
+const components = [DvCurrentTime, DvCard];
+
+export const DvPlugin: Plugin = {
+  install: (app: any, options: any) => {
+    components.forEach((component) => {
+      // Need to define component name
+      app.component(component.name, component);
+      // app.component('DvCurrentTime', DvCurrentTime);
+    });
+  },
+};
+
+// single component that can be imported in SFC
+export {DvCurrentTime, DvCard};
+```
+
+### Verify components in `App.vue`
+
+```html
+<template>
+  <dv-current-time>
+    <template #prefix>Time is </template>
+  </dv-current-time>
+
+  <dv-card :is-footer-bordered="true">
+    <template #header>
+      <div>Header</div>
+    </template>
+    <template #body>
+      <div>body</div>
+    </template>
+    <template #footer>
+      <div>footer</div>
+    </template>
+    <div>Header</div>
+  </dv-card>
+</template>
+
+<script setup lang="ts">
+  import {DvCurrentTime, DvCard} from './components';
+</script>
+
+<style scoped>
+  .dv-card {
+    background: #a2b8ff;
+  }
+</style>
+```
+
+## Vite Build, tsconfig.json and package.json
+
+These files are the most important as they're the keys to publish the library successfully.
+
+Refer https://vitejs.dev/guide/build.html#library-mode!
+
+`vite.config.ts`:
+
+```ts
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
+import {defineConfig} from 'vite';
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@/': new URL('./src/', import.meta.url).pathname,
+    },
+  },
+  plugins: [vue()],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'DvComponents',
+      fileName: (format) => `dv-components.${format}.js`,
+    },
+    rollupOptions: {
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
+      external: ['vue'],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },
+});
+```
+
+`package.json`:
+
+```json
+{
+  "name": "dv-components", // library name
+  "version": "0.0.1",
+  "files": ["dist"], // output folder
+  "main": "./dist/dv-components.umd.js",
+  "module": "./dist/dv-components.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/dv-components.es.js",
+      "require": "./dist/dv-components.umd.js"
+    },
+    "./dist/style.css": "./dist/style.css" // style output
+  },
+  "types": "./dist/types/index.d.ts", // typings. build will generate dist/src folder, and in build script we rename src to types
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vue-tsc --emitDeclarationOnly && mv dist/src dist/types"
+  },
+  "dependencies": {
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.18",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "tailwindcss": "^3.0.23",
+    "typescript": "^4.5.4",
+    "vite": "^2.8.0",
+    "vue-tsc": "^0.29.8"
+  }
+}
+```
+
+`tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "outDir": "dist", // output dir
+    "declaration": true, // important to generate types
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  // "vite.config.ts" is important here since without it, no dist/src will be generated.
+  "include": ["vite.config.ts", "src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"]
+}
+```
+
+The tricky thing is to include `vite.config.ts`. I guess because it's at the root folder level, so the build will put
+other files inside `src`. Otherwise, the other files will be flatten, meaning no `src` folder is generated inside `dist`
+folder.
+
+## Final test and Publish to NPM
+
+Although we already tested the components in `App.vue`, we can further verify this library in another vue project. That
+means we need to import the build dist locally.
+
+Luckily, we can leverage `npm link` feature to create a link of npm packages.
+
+1. In our dv-components library root folder. Run `npm link`.
+2. In another Vue project root, run `npm link dv-components`, which will add this package into node_modules, although it
+   won't appear in package.json.
+3. We could just consume the library.
+
+If everything works as expected, it's time to publish the library to NPM.
+
+Go back to the library root:
+
+```bash
+npm login
+npm publish
+```
+
+## Reference
+
+- https://levelup.gitconnected.com/using-vite-to-publish-a-vue-component-to-npm-7043a56cfa00
+- https://jivancic.com/posts/build-a-component-library.html
+- https://www.cnblogs.com/Hero-/p/15269982.html
+- https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe

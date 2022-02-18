@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://derekw.vercel.app</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/posts</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/arrays</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/fundamentals</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/javascript</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/reduce</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/hooks</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/topics/react</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/posts/reduce</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
-<url><loc>https://derekw.vercel.app/posts/swr</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-06T12:05:34.880Z</lastmod></url>
+<url><loc>https://derekw.vercel.app</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/about</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/contact</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/posts</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/projects</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/snippets</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/snippets/react-firebase-authprovider</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/snippets/react-hook-form</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/animation</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/react</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/library</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/vue</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/arrays</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/fundamentals</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/javascript</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/topics/hooks</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/projects/sirius</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/projects/spotify</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/posts/framer-motion</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/posts/how-to-create-a-vue-library</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/posts/reduce</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
+<url><loc>https://derekw.vercel.app/posts/swr</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-02-18T14:58:30.451Z</lastmod></url>
 </urlset>
