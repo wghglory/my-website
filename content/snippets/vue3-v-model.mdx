@@ -1,0 +1,65 @@
+---
+title: Vue3 v-model
+topics:
+  - vue
+  - form
+date: 2022-02-21
+excerpt: Vue3 v-model snippet
+---
+
+## react-hook-from
+
+```html
+<!-- Form.vue -->
+<template>
+  <form @submit.prevent="submitHandler">
+    <label>
+      Name
+      <input v-model="name" type="text" />
+    </label>
+    <button>Submit</button>
+  </form>
+</template>
+
+<script setup>
+  import {computed} from 'vue';
+
+  const props = defineProps({
+    modelValue: {
+      type: String,
+      default: '',
+    },
+  });
+  const emit = defineEmits(['update:modelValue', 'submit']);
+
+  const name = computed({
+    get() {
+      return props.modelValue;
+    },
+    set(val) {
+      emit('update:modelValue', val);
+    },
+  });
+
+  function submitHandler() {
+    emit('submit');
+  }
+</script>
+
+<!-- App.vue -->
+<template>
+  <div>Hello, {{ name }}!</div>
+  <form v-model="name" @submit="submitForm" />
+</template>
+
+<script setup>
+  import {ref} from 'vue';
+  import Form from './components/Form.vue';
+
+  const name = ref('');
+
+  function submitForm() {
+    console.log(name.value);
+  }
+</script>
+```
