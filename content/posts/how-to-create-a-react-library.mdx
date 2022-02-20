@@ -1,0 +1,622 @@
+---
+title: Create a react Library and Publish to NPM
+topics:
+  - react
+  - library
+date: 2022-02-18
+excerpt: Create a react library from scratch.
+cover_image: https://th.bing.com/th/id/OIP.xT_jmGV2t-qZegQX_3mGZQHaEK?w=325&h=183&c=7&r=0&o=5&dpr=2&pid=1.7
+---
+
+## Init Project and Create Components
+
+```bash
+npm init
+npm i react typescript @types/react -D
+```
+
+File structure:
+
+```
+📦src
+ ┣ 📂components
+ ┃ ┗ 📂DrButton
+ ┃ ┃ ┣ 📜DrButton.css
+ ┃ ┃ ┗ 📜DrButton.tsx
+ ┗ 📜index.ts
+```
+
+## Create a button component
+
+`src/components/DrButton/DrButton.tsx`:
+
+```tsx
+import React from 'react';
+
+export interface ButtonProps {
+  label: string;
+}
+
+const DrButton = (props: ButtonProps) => {
+  return <button>{props.label}</button>;
+};
+
+export default DrButton;
+```
+
+finally export all components:
+
+`src/index.ts`:
+
+```ts
+export {default as DrButton} from './components/DrButton/DrButton';
+```
+
+## Adding typescript
+
+```bash
+npx tsc --init
+```
+
+That will create a `tsconfig.json` file for us in the root of our project that contains all the default configuration
+options for Typescript.
+
+https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+
+You may notice depending on your IDE that immediately after initializing you begin to get errors in your project. There
+are two reasons for that: the first is that Typescript isn't configuration to understand React by default, and the
+second is that we haven't defined our method for handling modules yet: so it may not understand how to manage all of our
+exports.
+
+To fix this we are going to add the following values to `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    // Default
+    "target": "es5",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+
+    // Added
+    "jsx": "react",
+    "module": "ESNext",
+    "declaration": true,
+    "declarationDir": "types",
+    "sourceMap": true,
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "emitDeclarationOnly": true
+  }
+}
+```
+
+- "jsx": "react" -- Transform JSX into React code
+- "module": "ESNext" -- Generate modern JS modules for our library
+- "declaration": true -- Output a .d.ts file for our library types
+- "declarationDir": "types" -- Where to place the .d.ts files
+- "sourceMap": true -- Mapping JS code back to its TS file origins for debugging
+- "outDir": "dist" -- Directory where the project will be generated
+- "moduleResolution": "node" -- Follow node.js rules for finding modules
+- "allowSyntheticDefaultImports": true -- Assumes default exports if none are created manually
+- "emitDeclarationOnly": true -- Don't generate JS (rollup will do that) only export type declarations
+
+## Add Rollup and dependencies
+
+Rollup is great to build libraries. We need other rollup plugins for additional features like:
+
+- Preventing bundling of peerDependencies
+- Minifying the final bundle
+
+- @rollup/plugin-node-resolve - Uses the node resolution algorithm for third-party dependencies in node_modules
+- @rollup/plugin-typescript - Teaches rollup how to process Typescript files
+- @rollup/plugin-commonjs - Converts commonjs modules to ES6 modules
+- rollup-plugin-dts - rollup your .d.ts files
+
+2 Optimizing plugins:
+
+- rollup-plugin-peer-deps-external - With rollup's peer dependencies plugin we can tell the projects that are using our
+  libraries which dependencies are required (like React) but won't actually bundle a copy of React with the library
+  itself. If the consumer already has React in their project it will use that, otherwise it will get installed when they
+  run npm install.
+- rollup-plugin-terser - minify our bundle and reduce the overall file size
+
+```bash
+npm i -D rollup @rollup/plugin-node-resolve @rollup/plugin-commonjs @rollup/plugin-typescript rollup-plugin-peer-deps-external rollup-plugin-terser rollup-plugin-dts
+```
+
+```ts
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import dts from 'rollup-plugin-dts';
+import {terser} from 'rollup-plugin-terser';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+
+const packageJson = require('./package.json');
+
+export default [
+  // this object defines how the actual Javascript code of our library is generated.
+  {
+    input: 'src/index.ts', // The entrypoint for our library (input) which exports all of our components.
+    output: [
+      {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: true,
+      },
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true,
+      },
+    ],
+    plugins: [peerDepsExternal(), resolve(), commonjs(), typescript({tsconfig: './tsconfig.json'}), terser()],
+    external: [
+      'react',
+      'react-dom',
+      // 'styled-components'
+    ],
+  },
+  // this object defines how our libraries types are distributed and uses the dts plugin to do so.
+  {
+    input: 'dist/esm/types/index.d.ts',
+    output: [{file: 'dist/index.d.ts', format: 'esm'}],
+    plugins: [dts()],
+  },
+];
+```
+
+Next, update `package.json`
+
+```diff
+{
+  "name": "dr-components",
+  "version": "1.0.0",
+  "description": "a react components library",
++  "main": "dist/cjs/index.js",
++  "module": "dist/esm/index.js",
++  "files": [
++    "dist"
++  ],
++  "types": "dist/index.d.ts",
++  "scripts": {
++    "rollup": "rollup -c"
++  },
+  "author": "Guanghui Wang",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/react": "^17.0.39",
+-    "react": "^17.0.2",
+    "rollup": "^2.67.3",
+    "rollup-plugin-dts": "^4.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.5.5"
+  },
++  "peerDependencies": {
++    "react": "^17.0.2"
++  },
+}
+```
+
+Thanks to `rollup-plugin-peer-deps-external`, we can move react from `devDependencies` to `peerDependencies`.
+
+The most important changes are as follows:
+
+- "main" -- We have defined the output path for commonjs modules
+- "module" -- We have defined the output path for es6 modules
+- "files" -- We have defined the output directory for our entire library
+- "types" -- We have defined the location for our library's types
+- "scripts" -- `rollup -c` means **use the rollup configuration file**
+
+File structure:
+
+```
+├── src
+│   ├── components
+|   │   ├── DrButton
+|   |   │   └── DrButton.tsx
+│   └── index.ts
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── rollup.config.js
+```
+
+Run `npm run rollup` and see the `dist` folder:
+
+```
+📦dist
+ ┣ 📂cjs
+ ┃ ┣ 📂types
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┗ 📂DrButton
+ ┃ ┃ ┃ ┃ ┗ 📜DrButton.d.ts
+ ┃ ┃ ┗ 📜index.d.ts
+ ┃ ┣ 📜index.js
+ ┃ ┗ 📜index.js.map
+ ┣ 📂esm
+ ┃ ┣ 📂types
+ ┃ ┃ ┣ 📂components
+ ┃ ┃ ┃ ┗ 📂DrButton
+ ┃ ┃ ┃ ┃ ┗ 📜DrButton.d.ts
+ ┃ ┃ ┗ 📜index.d.ts
+ ┃ ┣ 📜index.js
+ ┃ ┗ 📜index.js.map
+ ┗ 📜index.d.ts
+```
+
+## Publish NPM package
+
+Now follow the instructions on Github shown in your new repository for committing your code.
+
+We need to update `package.json` with that information:
+
+```json
+{
+  "name": "@YOUR_GITHUB_USERNAME/YOUR_REPOSITORY_NAME",
+  "version": "0.0.1",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/YOUR_GITHUB_USERNAME"
+  }
+}
+```
+
+You will be updating the field `name` value and adding a new field called `publishConfig`. Note the values above in caps
+are meant to be replaced with your own values. For example my `name` field value would be `@wghlory/dr-components`.
+Notice the `packageConfig` also has your Github account name in it as well, but that value does not lead with the @
+symbol.
+
+Now that we have configured out project, we need to configure our local install of NPM itself to be authorized to
+publish to your Github account. To do this we use a .npmrc file.
+
+This file is **NOT PART OF OUR PROJECT**. This is a global file in a central location. For Mac/Linux users it goes in
+your home directory ~/.npmrc.
+
+```
+registry=https://registry.npmjs.org/
+@YOUR_GITHUB_USERNAME:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN
+```
+
+Go to your Github profile: **Settings -> Developer Settings -> Personal access tokens**. Or just
+[click this link Click Generate new token](https://github.com/settings/tokens). Give it a name that suits the project
+you are building. Give it an expiry date (Github recommends you don't create tokens with an infinite lifespan for
+security reasons, but that's up to you).
+
+The most important thing is to click the `write:packages` access value. This will give your token permission to read &
+write packages to your Github account.
+
+Now run `npm publish`!
+
+> If you get prompted for login credentials, the username is your Github username and your password is the access token
+> you generated
+
+You can see your package in github: https://github.com/wghglory/dr-components/packages/1263810
+
+You can view it on your Github account by going to your main account dashboard and clicking "packages" along the top to
+the right of "repositories".
+
+## Using Your Library
+
+Now that your library is live, you'll want to use it!
+
+Note that the instructions for using your library are slightly different if you published to a private repository.
+Everyone (aside from your own machine) who tries to import it is going to get a 404 Not Found error if they are not
+authorized.
+
+Those users also need to add a `~/.npmrc` file with the same information. To be more secure however you can provide
+those users with an access token that has only **read privileges**, not write.
+
+## Further Enhancement
+
+If you choose to continue, we will look at how to expand our component library to include a number of extremely useful
+features such as:
+
+- CSS: For exporting components with style
+- Storybook: For testing our components within the library itself as we design them
+- React Testing Library & Jest: For testing our components
+
+## Adding CSS
+
+Before we do any additional configuration, we'll begin by creating a CSS file that will apply some styles to our Button.
+Inside of the Button directory where our component lives, we'll create a file called: Button.css:
+
+`src/components/DrButton/DrButton.css`:
+
+```css
+button {
+  font-size: 60px;
+}
+```
+
+Notice that you will have build error due to the css import in DrButton.tsx:
+
+```diff
++ import './DrButton.css';
+
+const DrButton = (props: ButtonProps) => {
+  return <button>{props.label}</button>;
+};
+```
+
+Now we need to tell rollup how to process that syntax. To do that we use a plugin called `rollup-plugin-postcss`. Run
+the following command:
+
+```bash
+npm install rollup-plugin-postcss --save-dev
+```
+
+Now the `rollup.config.js` is like:
+
+```diff
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import typescript from '@rollup/plugin-typescript';
+import dts from 'rollup-plugin-dts';
+import {terser} from 'rollup-plugin-terser';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+
++ import postcss from 'rollup-plugin-postcss';
+
+const packageJson = require('./package.json');
+
+export default [
+  // this object defines how the actual Javascript code of our library is generated.
+  {
+    input: 'src/index.ts', // The entrypoint for our library (input) which exports all of our components.
+    output: [
+      {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: true,
+      },
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true,
+      },
+    ],
+    plugins: [
+      peerDepsExternal(),
+      resolve(),
+      commonjs(),
+      typescript({tsconfig: './tsconfig.json'}),
+      terser(),
++      postcss(),
+    ],
+    external: [
+      'react',
+      'react-dom',
+      // 'styled-components'
+    ],
+  },
+  // this object defines how our libraries types are distributed and uses the dts plugin to do so.
+  {
+    input: 'dist/esm/types/index.d.ts',
+    output: [{file: 'dist/index.d.ts', format: 'esm'}],
+    plugins: [dts()],
++    external: [/\.css$/],
+  },
+];
+```
+
+In the dts config we need to specify that `.css` modules are external and should not be processed as part of our type
+definitions (otherwise we will get an error).
+
+Finally we need to update the version number in our package.json file. Remember we are publishing a package so when we
+make changes, we need to ensure we don't impact users of previous versions of our library. Every time we publish we
+should increment the version number:
+
+`package.json`:
+
+```diff
+{
++  "version": "0.0.2",
+-  "version": "0.0.1",
+  ...
+}
+```
+
+Now run these commands:
+
+```bash
+npm run rollup
+npm publish
+```
+
+In the testing app, upgrade the library and verify.
+
+## Adding Tests
+
+```bash
+npm install @testing-library/react @testing-library/jest-dom @testing-library/user-event  jest @types/jest --save-dev
+```
+
+`src/components/DrButton/DrButton.test.tsx`:
+
+```tsx
+import React from 'react';
+import '@testing-library/jest-dom';
+import {render, screen} from '@testing-library/react';
+
+import DrButton from './DrButton';
+
+describe('DrButton', () => {
+  test('renders the DrButton component', () => {
+    render(<DrButton label="Hello world!" />);
+    expect(screen.getByText(/hello world/i)).toBeInTheDocument();
+  });
+});
+```
+
+Add `jest.config.js` or `npx jest --init`:
+
+```js
+module.exports = {
+  testEnvironment: 'jsdom',
+};
+```
+
+`package.json` script:
+
+```diff
+{
+  "scripts": {
+    "rollup": "rollup -c",
++    "test": "jest"
+  },
+}
+```
+
+Now we can run our tests with: `npm test`.
+
+Unfortunately we are going to get an error! The error is when our JSX code is encountered. If you recall we used
+Typescript to handle JSX with our rollup config, and a Typescript plugin for rollup to teach it how to do that. We have
+no such setup in place for Jest unfortunately.
+
+The error: Add `@babel/preset-react` (https://git.io/JfeDR) to the 'presets' section of your Babel config to enable
+transformation.
+
+Let's install all babel plugins:
+
+```bash
+npm install @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript babel-jest --save-dev
+```
+
+One more thing to config: You'll get an error saying the import of the .css file isn't understood. That makes sense
+because, again, we configured a postcss plugin for rollup to handle that, but we did no such thing for Jest.
+
+Let's add `npm install identity-obj-proxy --save-dev`.
+
+We need to update our Jest config tp include the `moduleNameMapper` property. We've also added `less` and `scss` in
+there for good measure in case you want to expand your project later to use those:
+
+```js
+module.exports = {
+  testEnvironment: 'jsdom',
+  moduleNameMapper: {
+    '.(css|less|scss)$': 'identity-obj-proxy',
+  },
+};
+```
+
+## Adding Storybook
+
+```bash
+npx sb init --builder webpack5
+```
+
+> Note as of this writing Storybook still defaults to using webpack 4 which is why we have added the extra builder flag
+
+Create `src/components/DrButton/DrButton.stories.tsx`:
+
+```tsx
+import React from 'react';
+import {ComponentStory, ComponentMeta} from '@storybook/react';
+import DrButton from './DrButton';
+
+// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+export default {
+  title: 'DrComponentLibrary/DrButton',
+  component: DrButton,
+} as ComponentMeta<typeof DrButton>;
+
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+const Template: ComponentStory<typeof DrButton> = (args) => <DrButton {...args} />;
+
+export const HelloWorld = Template.bind({});
+// More on args: https://storybook.js.org/docs/react/writing-stories/args
+HelloWorld.args = {
+  label: 'Hello world!',
+};
+
+export const ClickMe = Template.bind({});
+ClickMe.args = {
+  label: 'Click me!',
+};
+```
+
+The default export defines where the button will appear in the Storybook. I've chosen DrComponentLibrary as a simple
+name to group our custom components together separately from the examples.
+
+The Template determines which component is actually being rendered, and which default args/props to apply to it.
+
+The Template.bind objects are instances or example states of the component. So in a real project you might have
+something like "LargeButton" and "SmallButton". Since our button is always big I've just used an example of testing the
+button with two different labels.
+
+Now we can run `npm run storybook`.
+
+I got an error: Error: Cannot find module 'react/package.json'.
+[This link helps to solve the issue](https://github.com/storybookjs/storybook/issues/13665). They said "Check if you
+have added react as part of peer dependencies. It has to be there in dependencies also". But that will put `react` as
+dependencies which is not what we want.
+
+A tricky solution is this:
+
+> If you simply run a fresh npm install command it will install all the peerDependencies of the libraries you are using.
+> Before running this you may need to delete your package-lock.json and node_modules directory. They will be regenerated
+> automatically after your fresh install.
+
+It can be tricky to troubleshoot issues related to both overlapping and missing dependencies between libraries.
+
+Now we can re-run `npm run storybook`.
+
+## Adding SCSS
+
+Thanks to `rollup-plugin-postcss` you should already be able to simply rename your `.css` file to `.scss` and then
+import `DrButton.scss` and be on your way.
+
+Change `rollup.config.js` external field:
+
+```diff
+-    external: [/\.css$/],
++    external: [/\.scss$/],
+```
+
+```bash
+npm install @storybook/preset-scss css-loader sass sass-loader style-loader --save-dev
+```
+
+Now storybook will have an error: You may need an appropriate loader to handle this file type, currently no loaders are
+configured to process this file. See https://webpack.js.org/concepts#loaders.
+
+All need to do is to add `@storybook/preset-scss` to your main Storybook config:
+
+`.storybook/main.js`:
+
+```diff
+module.exports = {
+  stories: ['../src/**/*.stories.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: [
+    '@storybook/addon-links',
+    '@storybook/addon-essentials',
+    '@storybook/addon-interactions',
++    '@storybook/preset-scss',
+  ],
+  framework: '@storybook/react',
+  core: {
+    builder: 'webpack5',
+  },
+};
+```
+
+> One last reminder that it's common to encounter dependency errors with Storybook. Before you begin installing the
+> missing dependencies it asks for, always try deleting package-lock.json and node_modules first and then running npm
+> install again. This will often fix your issue without requiring you to add unnecessary dependencies to your own
+> project.
+
+## Reference
+
+This git repo: https://github.com/wghglory/dv-components.git
+
+- https://dev.to/alexeagleson/how-to-create-and-publish-a-react-component-library-2oe
+- https://blog.logrocket.com/build-component-library-react-typescript/
