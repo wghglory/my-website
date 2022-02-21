@@ -85,3 +85,8 @@ body {
     @apply btn-icon-accent;
   }
 }
+
+/* rehypeToc .toc class */
+.toc {
+  margin-top: 3rem;
+}
