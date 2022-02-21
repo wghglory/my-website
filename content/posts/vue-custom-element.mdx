@@ -1,0 +1,206 @@
+---
+title: Create Vue 3.2 Custom Components
+topics:
+  - vue
+  - library
+  - web component
+date: 2022-02-21
+excerpt: Create a Vue Custom Component library and compare it with regular Vue components library.
+cover_image: https://raw.githubusercontent.com/karol-f/vue-custom-element/HEAD/demo/assets/images/vue-custom-element-logo-text.png
+---
+
+This project was created based on the post [Create a Vue Library](/posts/create-a-vue-library). **Please review that
+post before this**. There're some differences in terms of vite build config, element file name, and build entry file.
+Let's start!
+
+## Update vite config to support building customElement
+
+`vite.config.ts` add build for custom elements option.
+
+```diff
+// ...
+export default defineConfig({
+  plugins: [
+    vue({
++      customElement: true,
++      template: {
++        compilerOptions: {
++          // treat all tags with a dash as custom elements
++          isCustomElement: (tag) => tag.startsWith('dv-'),
++        },
++      },
+    }),
+  ],
+  build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: 'DvComponents',
+      fileName: (format) => `dv-ce.${format}.js`,
+    },
+    rollupOptions: {
+      // make sure to externalize deps that shouldn't be bundled
+      // into your library
+      external: ['vue'],
+      output: {
+        // Provide global variables to use in the UMD build
+        // for externalized deps
+        globals: {
+          vue: 'Vue',
+        },
+      },
+    },
+  },
+});
+```
+
+## Create Vue Web Component
+
+Vue 3.2 supports to create custom element by add a `ce` postfix, short for custom element. So our component names should
+be changed to `card.ce.vue`. Let's create `components/card.ce.vue`. The content is the same as a normal vue component
+except that tailwind won't work due to shadowDom.
+
+```html
+<template>
+  <!-- rounded-lg bg-white not working! -->
+  <div class="dv-card rounded-lg bg-white">
+    <header class="dv-card-header">
+      <slot name="header"></slot>
+    </header>
+    <div class="dv-card-body">
+      <slot name="body"></slot>
+    </div>
+    <footer :class="['dv-card-footer', isFooterBordered ? 'border-t' : '']">
+      <slot name="footer"></slot>
+    </footer>
+  </div>
+</template>
+
+<script setup lang="ts">
+  import {ref, toRefs, reactive} from 'vue';
+
+  defineProps({
+    isFooterBordered: {
+      default: false,
+    },
+  });
+</script>
+
+<style scoped>
+  .dv-card {
+    background: yellowgreen;
+    border: 1px solid red;
+  }
+
+  .border-t {
+    border-top: 1px solid gray;
+  }
+</style>
+
+<script lang="ts">
+  export default {
+    name: 'DvCard',
+    inheritAttrs: false,
+    customOptions: {},
+  };
+</script>
+```
+
+> Tailwind won't work. `rounded-lg bg-white` these tailwind class are just used to test. In real Vue custom elements
+> don't import tailwind, we need to define class due to shadowDom.
+
+Then let's export ce components in `components/index.ts`:
+
+```ts
+export {default as Card} from './card.ce.vue';
+```
+
+## Register Web component
+
+Let's register the web component at the entry file `src/index.ts`:
+
+```ts
+// tailwind css WON'T work, delete it.
+import '@/styles/index.css';
+
+import {defineCustomElement} from 'vue';
+import {CurrentTime, Card} from './components';
+
+// 1. The essential part: Vue transform vue component to web component
+const CurrentTimeComponent = defineCustomElement(CurrentTime);
+const CardComponent = defineCustomElement(Card);
+
+// 2. register web component as usual
+customElements.define('dv-current-time', CurrentTimeComponent);
+customElements.define('dv-card', CardComponent);
+```
+
+Now we can successfully build the dist.
+
+### Verify Web Components
+
+Solution 1: import the dist in `index.html`. Note that if any change, we have to rebuild.
+
+```diff
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div id="app"></div>
++    <script type="module" src="/dist/dv-ce.es.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+```
+
+Solution 2 (recommended): Storybook, [refer this storybook link](https://storybook.js.org/blog/storybook-for-vite).
+
+Solution 3 (quick test): import the entry file to `App.vue`:
+
+```html
+<template>
+  <h2 class="text-2xl">Current Time</h2>
+  <dv-current-time>
+    <span slot="prefix">Time is</span>
+  </dv-current-time>
+
+  <h2 class="text-2xl">Card</h2>
+  <dv-card :is-footer-bordered="true">
+    <div slot="header">Header</div>
+    <div slot="body">body</div>
+    <div slot="footer">footer</div>
+  </dv-card>
+</template>
+
+<script setup lang="ts">
+  // import the entry file since it has the web component registration
+  import '@/index';
+</script>
+
+<style scoped>
+  .dv-card {
+    background: #a2b8ff;
+  }
+</style>
+```
+
+If the Vue web component has slots, we can use this syntax `<span slot="prefix">Time is</span>`.
+[More detail about web component slot can be founded here](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_templates_and_slots#using_the_element-details_custom_element_with_named_slots).
+
+> Again, due to shadowDom, the class `.dv-card` defined in App.vue won't work.
+
+## Final Thoughts about web component
+
+[Vue official website explained a lot about the comparison between Vue component vs Web component](https://vuejs.org/guide/extras/web-components.html#web-components-vs-vue-components).
+[They also has a tip on building Vue-powered web component](https://vuejs.org/guide/extras/web-components.html#building-custom-elements-with-vue).
+Based on the investigation of all 61 ways to create web component, Vue is not a good option in terms of performance and
+size.
+[You can click this link to see the detail of creating web components](https://webcomponents.dev/blog/all-the-ways-to-make-a-web-component/).
+
+I tend to learn [lit](https://github.com/lit/lit) and `svelte` for web components tools. `lit` is used by VMware Clarity
+Core.
+
+## Reference
+
+This git repo: https://github.com/wghglory/vue-custom-elements-playground.git
+
+- https://www.thisdot.co/blog/building-web-components-with-vue-3-2
+- https://vuejs.org/guide/extras/web-components.html
