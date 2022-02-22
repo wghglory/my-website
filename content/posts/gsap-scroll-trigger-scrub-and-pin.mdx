@@ -1,0 +1,127 @@
+---
+title: GSAP 3 scrollTrigger Scrub and Pin
+topics:
+  - gsap
+  - scroll trigger
+  - animation
+date: 2022-02-23
+excerpt: GSAP scrollTrigger scrub and pin
+cover_image: https://greensock.com/uploads/monthly_2020_05/scrolltrigger-thumb.png.eb7f15da1128db13dc6457a1dbf17011.png
+---
+
+## Scrub and Pin
+
+View this car moving on a wide screen:
+
+<CodeFrame
+  src="https://codepen.io/wghglory/embed/VwrxqzY?default-tab=js%2Cresult&editable=true"
+  title="CodePen Home ScrollTrigger - car scrub and pin"
+/>
+
+- `scrub: true` will scrub the animation between the scroll boundary. But the behavior is so hard for mousewheel.
+- `scrub: 1` is more natural. if scrub number increases, the animation lasts longer.
+- `pin: true` will pin the car with a stable Y. Otherwise the car will move right and up together. `pin` makes its Y
+  unchanged.
+
+## pinSpacing
+
+<CodeFrame
+  title="Pinning with Animation"
+  src="https://codepen.io/wghglory/embed/qBVKrdL?default-tab=js%2Cresult&editable=true"
+/>
+
+- `pinSpacing:true`: space will be added to the page to push content down vertically so that it will perfectly arrive in
+  its "normal" position when pinning is de-activated. **Usually it's natural to set pinSpacing as true given scrub:true
+  and pin:true**.
+- `pinSpacing:false`: content will scroll _behind_ the pinned element.
+
+> Change pinSpacing to true so that the page copy does not scroll behind the pinned animation.
+
+With **pinSpacing:true** (default) the `.pin-spacer` div will add padding to push content below the pinned item down.
+
+Be sure to set pinSpacing to true and false and compare the difference for yourself
+
+<CodeFrame
+  title="ScrollTrigger pinSpacing"
+  src="https://codepen.io/wghglory/embed/WNXyjNJ?default-tab=js%2Cresult&editable=true"
+/>
+
+### Pin Deep Dive - How does pinning work under the hood?
+
+<CodeFrame
+  title="ScrollTrigger Pin Deep Dive 1"
+  src="https://codepen.io/wghglory/embed/rNYKywr?default-tab=js%2Cresult&editable=true"
+/>
+
+When scrolling between the boundary, `pin:true` will add `position:fixed` to the target.
+
+```diff
+<div
+  class="pin-spacer"
+  style="flex-shrink: 1; display: block; margin: 0px; inset: 400px 1705px -99px 100px; position: absolute; overflow: visible; box-sizing: border-box; width: 100px; height: 100px; padding: 0px;"
+>
+  <div
+    class="box"
+    style="transform: translate3d(0px, 0px, 0px); left: 100px; top: 300px; margin: 0px; width: 100px; height: 100px; padding: 0px; box-sizing: border-box; max-width: 100px; max-height: 100px;
++    position: fixed;"
+  ></div>
+</div>
+```
+
+When scrolling out of the boundary, `position:fixed` is removed, and translate3d() Y will be calculated.
+
+```diff
+<div
+  class="pin-spacer"
+  style="flex-shrink: 1; display: block; margin: 0px; inset: 400px 1705px -99px 100px; position: absolute; overflow: visible; box-sizing: border-box; width: 100px; height: 100px; padding: 0px;"
+>
+  <div
+    class="box"
++    style="transform: translate3d(0px, 300px, 0px);
+    inset: 0px auto auto 0px; margin: 0px; width: 100px; height: 100px; padding: 0px;
+-    position: fixed;"
+  ></div>
+</div>
+```
+
+- The pinned element `.box` gets immediately wrapped in a `<div class="pin-spacer">` with a **fixed** width/height to
+  match. A class of "pin-spacer" is added to that wrapper.
+
+  Think of it like a proxy element that props open the space where the pinned element was in the DOM so that when it
+  flips to `position: fixed` things don't collapse.
+
+- When the ScrollTrigger is active (when the scroll position is between the start and end), it sets the pinned element
+  to `position: fixed` and positions it with fixed top/left/width/height values...unless the scroller isn't the viewport
+  in which case it never uses `position: fixed` because that'd break sub-scrolling, so it uses pure transforms. If
+  `pinReparent` is set to `true` (we recommend avoiding that if you can), the pinned element will get reparented to the
+  `<body>` and styles will be moved inline to ensure appearance is maintained.
+
+<CodeFrame
+  title="ScrollTrigger pinSpacing"
+  src="https://codepen.io/wghglory/embed/WNXyjNJ?default-tab=js%2Cresult&editable=true"
+/>
+
+![pinSpacing](/posts/pinSpacing.png)
+
+By default, `pinSpacing:true`, **padding will be added to the bottom** (or right for horizontal: true) of the pin-spacer
+so that [in most cases] things get pushed further down/right. When the pinned element gets unpinned, the content
+below/right will have caught up. So if, for example, the pinned element stays pinned for 300px, there would be padding
+of 300px added.
+
+More information from [GreenSock ScrollTrigger Docs](https://greensock.com/docs/v3/Plugins/ScrollTrigger)
+
+## Pinning car project
+
+Now that we have discussed some of the technical details of **pinning** and **pinSpacing** let's apply it to something a
+bit more "real world". Let's use the very beginning example.
+
+https://codepen.io/wghglory/full/rNYKwVL
+
+- enable pinning by setting `pin:true`
+- view the `.pin-spacer` background color (edit the css)
+- set `pinSpacing:false`
+- change start and end values in scrollTrigger config object
+
+## References
+
+- Craig Roblewsky's blog: [motiontricks.com](https://www.motiontricks.com/)
