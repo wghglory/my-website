@@ -1,6 +1,6 @@
 export default function CodeFrame({src, title = 'code demo'}: {src: string; title?: string}) {
   return (
-    <div className="relative h-0 max-w-full overflow-hidden pb-[56.25%]">
+    <div className="relative my-16 h-0 max-w-full overflow-hidden pb-[56.25%]">
       <iframe
         src={src}
         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
