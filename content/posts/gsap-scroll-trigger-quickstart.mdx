@@ -1,0 +1,52 @@
+---
+title: GSAP 3 scrollTrigger QuickStart
+topics:
+  - gsap
+  - scroll trigger
+  - animation
+date: 2022-02-22
+excerpt: GSAP scrollTrigger quick start, toggleActions
+cover_image: https://greensock.com/uploads/set_resources_5/84c1e40ea0e759e3f1505eb1788ddf3c_greensock-logo.svg
+---
+
+Below is a basic ScrollTrigger config.
+
+```diff
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from('.herman', {
+  duration: 10,
+  x: '-50vw',
+  rotation: -360,
+  ease: 'linear',
++  scrollTrigger: {
++    trigger: '.herman', // trigger target
++    markers: true,  // for dev only
++    start: 'top 75%', //when top of herman passes 75% viewport height
++    end: 'bottom 25%', //when bottom of herman passes 25% viewport height
++
++    //events: onEnter onLeave onEnterBack onLeaveBack
++    toggleActions: 'restart complete reverse reset',
++    //options: play, pause, resume, reset, restart, complete, reverse,none
+  },
+});
+```
+
+1. First let's scroll down, when `.herman` target's top passes 75% viewport height, triggering onEnter event, which will
+   restart the animation.
+2. Continue to scroll down, when the bottom of target passes 20% viewport height, triggering onLeave event, which will
+   complete the animation.
+3. If scrolling up, onEnterBack will be triggered, the animation will reverse.
+4. Continue to scroll up, everything will be reset.
+
+<CodeFrame src="https://codepen.io/wghglory/embed/RwjyBKE?default-tab=html%2Cresult" title="ScrollTrigger QuickStart" />
+
+<CodeFrame
+  title="GreenSock ScrollTrigger Timeline"
+  src="https://codepen.io/wghglory/embed/WNXJKdr?default-tab=html%2Cresult"
+/>
+
+<CodeFrame
+  title="toggleActions - ScrollTrigger"
+  src="https://codepen.io/wghglory/embed/rNYvrJG?default-tab=html%2Cresult"
+/>
