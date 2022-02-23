@@ -1,0 +1,59 @@
+---
+title: Aspect Ratio
+topics:
+  - css
+date: 2022-02-23
+excerpt: how to maintain the aspect ratio of an element.
+---
+
+- Case 1: Put a fixed ratio image in a card.
+- Case 2: Responsive iframe video
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        /* padding-top: 100%; 1:1 Aspect Ratio */
+        /* padding-top: 75%; 4:3 Aspect Ratio (divide 3 by 4 = 0.75) */
+        /* padding-top: 66.66%; 3:2 Aspect Ratio (divide 2 by 3 = 0.6666)  */
+      }
+
+      .responsive-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Maintain Aspect Ratio 16:9</h2>
+    <p>Resize the window to see the effect.</p>
+
+    <div class="container">
+      <iframe class="responsive-iframe" src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>
+    </div>
+  </body>
+</html>
+```
+
+<CodeFrame
+  src="https://codesandbox.io/embed/aspect-ratio-czpxx2?fontsize=14&hidenavigation=1&theme=dark"
+  title="aspect-ratio"
+/>
+
+Refer:
+
+- https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_responsive_iframe_169
+- https://www.w3schools.com/howto/howto_css_aspect_ratio.asp
