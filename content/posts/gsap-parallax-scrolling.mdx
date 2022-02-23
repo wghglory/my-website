@@ -1,0 +1,67 @@
+---
+title: GSAP Parallax Scrolling
+topics:
+  - gsap
+  - scroll trigger
+  - animation
+date: 2022-02-24
+excerpt: What is parallax scrolling?
+cover_image: https://greensock.com/uploads/monthly_2020_05/scrolltrigger-thumb.png.eb7f15da1128db13dc6457a1dbf17011.png
+---
+
+## Parallax Scrolling Introduction
+
+Parallax scrolling, when used correctly, can add a beautiful aesthetic to your web page. When used incorrectly it can be
+a bit annoying.
+
+> Parallax scrolling is an affect that foreground move faster than background.
+
+<CodeFrame
+  title="ScrollTrigger - basic parallax scrollling"
+  src="https://codepen.io/wghglory/embed/abVKEjM?default-tab=js%2Cresult&editable=true"
+/>
+
+```js
+gsap.defaults({ease: 'none', duration: 1});
+
+let tl = gsap
+  .timeline({
+    scrollTrigger: {
+      trigger: '.demoWrapper',
+      start: 'top 25%',
+      end: '+=100',
+      toggleActions: 'restart none none reverse',
+      markers: true,
+    },
+  })
+
+  .from('.background', {y: 50}) // slowest
+  .from('.middleground', {y: 150}, 0)
+  .from('.foreground', {y: 250}, 0) // foreground move more distance than background within the same amount of time
+  .from('.text', {y: 500}, 0); // fastest
+```
+
+The Beauty of Parallax (video games): [https://youtu.be/z9tBce8eFqE](https://youtu.be/z9tBce8eFqE)
+
+Stunning Parallax Scrolling Examples on CodePen: [https://youtu.be/-8u43gle_wE](https://youtu.be/-8u43gle_wE)
+
+## Aerial SVG car parallax
+
+Here's another twist on a parallax animation. This time I'm using SVG artwork with some elements moving in opposing
+directions. At the end of the day it's still just different things moving at different speeds as you scroll.
+
+<CodeFrame
+  title="ScrollTrigger Car parallax scrolling"
+  src="https://codepen.io/wghglory/embed/mdqKpYO?default-tab=js%2Cresult&editable=true"
+/>
+
+Also check out
+[Google Web Designer Parallax gallery](https://richmediagallery.com/formats/detail?formats=dv360&formatId=Parallax).
+
+## Use Case
+
+My website landing page
+
+## Reference
+
+https://www.w3schools.com/howto/howto_css_parallax.asp
