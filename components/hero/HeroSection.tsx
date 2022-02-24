@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import AboutMe from '/public/aboutme.svg';
+import UMLogo from '/public/companies/um.svg';
+import UnionbankLogo from '/public/companies/unionbank.svg';
+import UPMCLogo from '/public/companies/upmc.svg';
+import VMwareLogo from '/public/companies/vmware.svg';
 import DoorBg from '/public/door.svg';
-import UMLogo from '/public/um.svg';
-import UnionbankLogo from '/public/unionbank.svg';
-import UPMCLogo from '/public/upmc.svg';
-import VMwareLogo from '/public/vmware.svg';
 import {fadeInVariant} from '@/lib/motion';
 
 import SocialIcons from '../share/SocialIcons';
