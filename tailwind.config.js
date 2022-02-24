@@ -10,6 +10,9 @@ module.exports = {
         queen: colors.indigo,
         king: colors.yellow, // changing this will change theme
       },
+      boxShadow: {
+        xs: '0 0 47px 5px rgb(0 0 0 / 5%)',
+      },
     },
   },
   plugins: [
