@@ -57,11 +57,11 @@ export default function ArticlePage({file}: {file: MDXFile}) {
       </Link>
       <h1>{file.meta.title}</h1>
       <TopicList topics={file.meta.topics} />
-      {file.meta.cover_image && (
+      {file.meta.cover?.banner && (
         <div className="text-center">
           <img
             className="inline-block w-full"
-            src={file.meta.cover_image}
+            src={file.meta.cover.banner}
             alt="article cover"
             placeholder="Cover Image Loading..."
           />

@@ -24,7 +24,7 @@ export default function CodeFrame({src, title = 'code demo'}: {src: string; titl
     <div className="relative my-16 h-0 max-w-full overflow-hidden pb-[56.25%]">
       {/* Can further make a animated svg loading icon */}
       <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center" ref={loadingRef}>
-        Loading iframe
+        Loading Code Editor
         <FaSpinner className="ml-4 animate-spin" />
       </div>
 

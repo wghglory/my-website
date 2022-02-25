@@ -1,22 +1,24 @@
-export default function AppCardCover({cover_image}: {cover_image: string}) {
+import {ArticleCover} from '@/models';
+
+import {ArticleSvgCover} from './ArticleSvgCover';
+
+export default function AppCardCover({ArticleCover}: {ArticleCover: ArticleCover}) {
   return (
     <>
-      <div className={`img-bg relative overflow-hidden pb-[56.25%]`}>
-        {/* https://hypercolor.dev/ */}
-        <img
-          src={cover_image}
-          className="absolute h-full w-full object-cover duration-300 group-hover:scale-105"
-          alt="cover image"
-        />
-      </div>
-      <style jsx>
-        {`
-          .img-bg {
-            background-image: url(${cover_image}),
-              linear-gradient(to right, rgb(254, 243, 199), rgb(252, 211, 77), rgb(245, 158, 11));
-          }
-        `}
-      </style>
+      {ArticleCover.banner ? (
+        // https://hypercolor.dev/
+        <div
+          className={`img-bg relative overflow-hidden bg-gradient-to-t from-gray-700 via-gray-900 to-black pb-[56.25%]`}
+        >
+          <img
+            src={ArticleCover.banner}
+            className="absolute h-full w-full object-cover duration-300 group-hover:scale-105"
+            alt="cover image"
+          />
+        </div>
+      ) : (
+        <ArticleSvgCover title={ArticleCover.title!} subtitle={ArticleCover.subtitle!} topic={ArticleCover.topic!} />
+      )}
     </>
   );
 }

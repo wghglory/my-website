@@ -1,0 +1,80 @@
+<svg width="400"
+  height="225"
+  viewBox="0 0 400 225"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .title-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .title {
+      font-size: 44px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 24px;
+      text-align: center;
+      color: white;
+    }
+
+  </style>
+
+  <!-- bg -->
+  <rect width="400"
+    height="225"
+    fill="#192a4e" />
+
+  <foreignObject x="150"
+    y="0"
+    width="250"
+    height="225">
+    <div class="title-container">
+      <div class="title"
+        style="color:#49D496;">Vue</div>
+      <div class="subtitle">Custom Element</div>
+    </div>
+  </foreignObject>
+
+  <!-- title -->
+  <!-- <text fill="#49D496"
+    font-size="44"
+    font-weight="bold"
+    text-anchor="start"
+    dominant-baseline="middle"
+    x="50%"
+    y="100">
+    Vue
+  </text> -->
+
+  <!-- subtitle -->
+  <!-- <text fill="white"
+    xml:space="preserve"
+    font-size="28"
+    font-weight="bold">
+    <tspan x="138"
+      y="158">Custom Element</tspan>
+  </text> -->
+
+  <!-- logo -->
+  <!-- <g>
+    <path d="M100.544 64.0005L87.4961 86.6323L74.4486 64.0005H30.9978L87.4965 162L143.995 64.0005H100.544Z"
+      fill="#41B883" />
+    <path d="M100.544 64.0005L87.4961 86.6323L74.4486 64.0005H53.5974L87.4965 122.799L121.396 64.0005H100.544Z"
+      fill="#34495E" />
+  </g> -->
+
+  <!-- logo -->
+  <image x="0"
+    y="50%"
+    height="120"
+    width="120"
+    transform="translate(20,-60)"
+    href="https://derekw.vercel.app/me.png" />
+</svg>
