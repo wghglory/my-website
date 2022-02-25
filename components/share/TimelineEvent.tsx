@@ -11,8 +11,8 @@ export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
   return (
     <div className="space-y-6 sm:space-y-8">
       {eventList.map((e) => (
-        <div className="flex flex-col sm:flex-row" key={e.year}>
-          <div className="flex sm:w-1/2 lg:w-2/3">
+        <div className="flex flex-col justify-center sm:flex-row" key={e.year}>
+          <div className="flex max-w-sm sm:w-1/2">
             <div className="w-full">
               <div className="text-xl font-medium">{e.title}</div>
               <div className="text-gray-600 dark:text-gray-300">{e.organization}</div>
@@ -36,7 +36,7 @@ export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
               )}
             </div>
           </div>
-          <div className="hidden sm:-order-1 sm:block sm:w-1/2 lg:w-1/3">{e.year}</div>
+          <div className="hidden max-w-sm indent-12 sm:-order-1 sm:block sm:w-1/2">{e.year}</div>
         </div>
       ))}
     </div>
