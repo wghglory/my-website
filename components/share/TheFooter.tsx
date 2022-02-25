@@ -10,10 +10,14 @@ export default function TheFooter() {
   return (
     <footer className="border-t border-gray-200/80 bg-gray-200 pt-20 pb-10 dark:border-gray-700/80 dark:bg-gray-700">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 gap-20 text-center lg:grid-cols-2 lg:text-left">
-          <section className="lg:pl-[50%]">
+        <div className="grid grid-cols-1 gap-10 text-center lg:grid-cols-3 lg:gap-20 lg:px-16 lg:text-left">
+          <section>
             <AppLogo />
             <p>Staff Engineer in VMware</p>
+            <p className="mt-10">
+              Learn, think, share, collaborate. <br />
+              Make a progress every day.
+            </p>
           </section>
           <section className="flex flex-col gap-2">
             <div className="text-xl font-bold">Contact</div>
@@ -28,45 +32,39 @@ export default function TheFooter() {
               </Link>
             </div>
           </section>
-          <section className="lg:pl-[50%]">
-            <p>
-              Learn, think, share, collaborate. <br />
-              Make a progress every day.
-            </p>
-          </section>
           <section>
             <div className="text-xl font-bold">Sitemap</div>
             <nav>
               <ul>
-                <li className="py-3 text-center md:py-1 lg:text-left">
+                <li className="py-1 text-center lg:text-left">
                   <Link href="/">
                     <a className="pb-1 hover:border-b-2 hover:border-gray-900 hover:font-semibold dark:hover:border-gray-100 dark:hover:text-gray-100">
                       Home
                     </a>
                   </Link>
                 </li>
-                <li className="py-3 text-center md:py-1 lg:text-left">
+                <li className="py-1 text-center lg:text-left">
                   <Link href="/about">
                     <a className="pb-1 hover:border-b-2 hover:border-gray-900 hover:font-semibold dark:hover:border-gray-100 dark:hover:text-gray-100">
                       About
                     </a>
                   </Link>
                 </li>
-                <li className="py-3 text-center md:py-1 lg:text-left">
+                <li className="py-1 text-center lg:text-left">
                   <Link href="/#project">
                     <a className="pb-1 hover:border-b-2 hover:border-gray-900 hover:font-semibold dark:hover:border-gray-100 dark:hover:text-gray-100">
                       Projects
                     </a>
                   </Link>
                 </li>
-                <li className="py-3 text-center md:py-1 lg:text-left">
+                <li className="py-1 text-center lg:text-left">
                   <Link href="/posts">
                     <a className="pb-1 hover:border-b-2 hover:border-gray-900 hover:font-semibold dark:hover:border-gray-100 dark:hover:text-gray-100">
                       Blog
                     </a>
                   </Link>
                 </li>
-                <li className="py-3 text-center md:py-1 lg:text-left">
+                <li className="py-1 text-center lg:text-left">
                   <Link href="/snippets">
                     <a className="pb-1 hover:border-b-2 hover:border-gray-900 hover:font-semibold dark:hover:border-gray-100 dark:hover:text-gray-100">
                       Snippets
@@ -76,7 +74,7 @@ export default function TheFooter() {
               </ul>
             </nav>
           </section>
-          <section className="lg:pl-[50%]">
+          <section>
             <div className="whitespace-nowrap pb-2 text-center text-xs lg:text-left">
               All rights reserved © Guanghui Wang 2022
             </div>
