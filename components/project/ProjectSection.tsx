@@ -53,7 +53,7 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
           {projects.map((p) => (
             <SwiperSlide key={p.title}>
               <CarouselCard
-                imgSrc={p.cover_image}
+                imgSrc={p.cover.banner ?? ''}
                 title={p.title}
                 description={p.excerpt}
                 link={`/projects/${p.slug}`}
