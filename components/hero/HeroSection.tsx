@@ -2,12 +2,12 @@ import {motion} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import AboutMe from '/public/aboutme.svg';
-import UMLogo from '/public/companies/um.svg';
-import UnionbankLogo from '/public/companies/unionbank.svg';
-import UPMCLogo from '/public/companies/upmc.svg';
-import VMwareLogo from '/public/companies/vmware.svg';
-import DoorBg from '/public/door.svg';
+import AboutMe from '/public/images/aboutme.svg';
+import UMLogo from '/public/images/companies/um.svg';
+import UnionbankLogo from '/public/images/companies/unionbank.svg';
+import UPMCLogo from '/public/images/companies/upmc.svg';
+import VMwareLogo from '/public/images/companies/vmware.svg';
+import DoorBg from '/public/images/door.svg';
 import {fadeInVariant} from '@/lib/motion';
 
 import SocialIcons from '../share/SocialIcons';
@@ -34,9 +34,9 @@ export default function HeroSection() {
           </div>
           <div className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3">
             <DoorBg className="absolute h-full" />
-            <Image src="/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" />
+            <Image src="/images/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" />
             {/* <img
-              src="/me.png"
+              src="/images/me.png"
               className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
               alt="Guanghui Picture"
             /> */}

@@ -1,4 +1,4 @@
-import MedalIcon from '/public/medal.svg';
+import MedalIcon from '/public/images/medal.svg';
 
 export interface EventItem {
   year: string;
