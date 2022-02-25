@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-import PlaneIcon from '/public/telegram-plane.svg';
+import PlaneIcon from '/public/images/telegram-plane.svg';
 
 import AppLogo from './AppLogo';
 import SocialIcons from './SocialIcons';

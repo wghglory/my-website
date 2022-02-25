@@ -1,13 +1,13 @@
-import A11yIcon from '/public/responsibilities/a11y.svg';
-import TechShareIcon from '/public/responsibilities/demo.svg';
-import DesignIcon from '/public/responsibilities/design.svg';
-import ProjectSetupIcon from '/public/responsibilities/file-system.svg';
-import LanguageIcon from '/public/responsibilities/language.svg';
-import LibraryIcon from '/public/responsibilities/library.svg';
-import ManagementIcon from '/public/responsibilities/management.svg';
-import PaperIcon from '/public/responsibilities/paper.svg';
-import SystemIcon from '/public/responsibilities/system.svg';
-import TestIcon from '/public/responsibilities/test.svg';
+import A11yIcon from '/public/images/responsibilities/a11y.svg';
+import TechShareIcon from '/public/images/responsibilities/demo.svg';
+import DesignIcon from '/public/images/responsibilities/design.svg';
+import ProjectSetupIcon from '/public/images/responsibilities/file-system.svg';
+import LanguageIcon from '/public/images/responsibilities/language.svg';
+import LibraryIcon from '/public/images/responsibilities/library.svg';
+import ManagementIcon from '/public/images/responsibilities/management.svg';
+import PaperIcon from '/public/images/responsibilities/paper.svg';
+import SystemIcon from '/public/images/responsibilities/system.svg';
+import TestIcon from '/public/images/responsibilities/test.svg';
 
 const responsibilities = [
   {

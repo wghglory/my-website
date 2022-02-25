@@ -1,8 +1,8 @@
 import React from 'react';
 
-import EmailIcon from '/public/social/email.svg';
-import GithubIcon from '/public/social/github.svg';
-import LinkedInIcon from '/public/social/linkedin.svg';
+import EmailIcon from '/public/images/social/email.svg';
+import GithubIcon from '/public/images/social/github.svg';
+import LinkedInIcon from '/public/images/social/linkedin.svg';
 
 export default function SocialIcons({iconClass = 'btn-icon'}: {iconClass?: string}) {
   return (

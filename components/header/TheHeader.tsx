@@ -8,7 +8,7 @@ import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {useMedia} from 'react-use';
 
-import PlaneIcon from '/public/telegram-plane.svg';
+import PlaneIcon from '/public/images/telegram-plane.svg';
 
 import AppLogo from '../share/AppLogo';
 import MenuButton from './MenuButton';
