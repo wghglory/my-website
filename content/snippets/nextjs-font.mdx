@@ -1,0 +1,62 @@
+---
+title: Next.js Add Custom Font
+topics:
+  - nextjs
+date: 2022-02-26
+excerpt: Next.js Add Custom Font
+---
+
+Step 1: Add fonts to the public folder `public/fonts/[font-family-name]`.
+
+```
+public
+  - fonts
+    - EBGaramond
+      - EBGaramond-Bold.ttf
+      - EBGaramond-Regular.ttf
+    - Lato
+      - Lato-Regular.ttf
+      - Lato-Bold.ttf
+  - icons
+  - images
+```
+
+Step 2: In `global.css`, add custom font using @font-face
+
+```css
+@font-face {
+  font-family: 'EBGaramond';
+  src: url('/fonts/EBGaramond/EBGaramond-Regular.ttf');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'EBGaramond';
+  src: url('/fonts/EBGaramond/EBGaramond-Medium.ttf');
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+}
+```
+
+Step 3: Preload your font in the tag of your page for optimal performance
+
+```tsx
+import Head from 'next/head';
+import Link from 'next/link';
+
+export default function Layout() {
+  return (
+    <div>
+      <Head>
+        <link rel="preload" href="/fonts/EBGaramond/EBGaramond-Regular.ttf" as="font" crossOrigin="" />
+        <link rel="preload" href="/fonts/EBGaramond/EBGaramond-Medium.ttf" as="font" crossOrigin="" />
+      </Head>
+      <body>
+        <Main />
+      </body>
+    </div>
+  );
+}
+```
