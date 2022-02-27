@@ -37,6 +37,11 @@ body {
     'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 }
 
+/* fix post reference links not wrap */
+a {
+  word-break: break-word;
+}
+
 @layer base {
   body {
     @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
