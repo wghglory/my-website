@@ -1,7 +1,7 @@
 // Refer content/snippets/aspect-ratio.mdx
 // Refer https://htmldom.dev/show-a-loading-indicator-when-an-iframe-is-being-loaded/
 
-import {DrAspectRatio} from '@wghglory/dr-components';
+import {DrAspectRatio} from 'gloryui-react';
 import {useEffect, useRef} from 'react';
 import {FaSpinner} from 'react-icons/fa';
 

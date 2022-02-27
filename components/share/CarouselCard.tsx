@@ -1,4 +1,4 @@
-import {DrAspectRatio} from '@wghglory/dr-components';
+import {DrAspectRatio} from 'gloryui-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -27,11 +27,15 @@ export default function CarouselCard({
         />
       </DrAspectRatio>
       <div className="space-y-6 p-8">
-        <header className="text-center text-2xl font-semibold">{title}</header>
+        <header className="text-center text-2xl font-semibold">
+          <Link href={link}>
+            <a className="hover:text-king-500">{title}</a>
+          </Link>
+        </header>
         <p>{description}</p>
         <Link href={link}>
           <a
-            className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-queen-600 dark:hover:text-queen-400"
+            className="group flex cursor-pointer items-center justify-center gap-3 text-center hover:text-king-500"
             aria-label={`find out more about ${title}`}
           >
             View detail

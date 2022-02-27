@@ -1,4 +1,4 @@
-import {DrAspectRatio} from '@wghglory/dr-components';
+import {DrAspectRatio} from 'gloryui-react';
 
 // TODO: youtube and Bilibili loading
 export default function YouTube({id}: {id: string}) {
