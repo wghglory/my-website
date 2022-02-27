@@ -1,3 +1,4 @@
+import {DrAspectRatio} from '@wghglory/dr-components';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -14,7 +15,7 @@ export default function CarouselCard({
 }) {
   return (
     <div className="rounded-xl bg-gray-200 dark:bg-gray-700">
-      <div className="relative h-56">
+      <DrAspectRatio ratio="16:9">
         <Image
           src={imgSrc}
           layout="fill"
@@ -24,7 +25,7 @@ export default function CarouselCard({
           loading="lazy"
           priority={false}
         />
-      </div>
+      </DrAspectRatio>
       <div className="space-y-6 p-8">
         <header className="text-center text-2xl font-semibold">{title}</header>
         <p>{description}</p>
