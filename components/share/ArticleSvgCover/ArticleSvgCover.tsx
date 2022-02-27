@@ -34,7 +34,7 @@ export default function ArticleSvgCover({title, subtitle, topic}: {title: string
       </style>
 
       <foreignObject x="0" y="0" width="400" height="225">
-        <div className="absolute flex h-full w-full items-center justify-center gap-4 bg-gradient-to-b from-black via-gray-900 to-gray-700 object-cover duration-300 group-hover:scale-105">
+        <div className="flex h-full w-full items-center justify-center gap-4 bg-gradient-to-b from-black via-gray-900 to-gray-700 duration-300 group-hover:scale-105">
           <div className="w-32">
             <TopicLogo topic={topic} />
           </div>
