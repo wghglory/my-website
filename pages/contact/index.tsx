@@ -5,7 +5,7 @@ import {CgSpinner} from 'react-icons/cg';
 import {RiErrorWarningLine} from 'react-icons/ri';
 
 const inputClass =
-  'w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-300 focus:outline-none focus:ring focus:ring-queen-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:focus:border-gray-500 dark:focus:ring-sky-500';
+  'w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-300 focus:outline-none focus:ring focus:ring-queen-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:focus:border-gray-500 dark:focus:ring-king-500';
 
 export default function ContactPage() {
   const [status, setStatus] = useState('idle');
@@ -114,7 +114,7 @@ export default function ContactPage() {
             {status === 'error' && (
               <>
                 Something went wrong. Please send email to{' '}
-                <a href="mailto:wghglory89@gmail.com" className="text-queen-600 dark:text-sky-400">
+                <a href="mailto:wghglory89@gmail.com" className="text-king-600 dark:text-king-400">
                   wghglory89@gmail.com
                 </a>{' '}
                 manually.
