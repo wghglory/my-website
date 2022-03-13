@@ -16,7 +16,7 @@ import SocialIcons from '../share/SocialIcons';
 export default function HeroSection() {
   return (
     <section className="bg-white dark:bg-gray-900" id="home">
-      <div className="container m-auto px-6 lg:pt-12">
+      <div className="container m-auto px-6 lg:px-20 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <motion.div
             className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20"
@@ -61,7 +61,7 @@ export default function HeroSection() {
         </div>
       </div>
       <motion.div className="bg" initial="hidden" animate="visible" variants={rightToLeftVariant}>
-        <div className="container m-auto px-6">
+        <div className="container m-auto px-6 lg:px-20">
           <div className="flex h-28 items-center justify-center gap-4 lg:justify-start lg:gap-10">
             <VMwareLogo className="h-4" />
             <UnionbankLogo className="h-7" />

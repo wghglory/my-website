@@ -19,13 +19,13 @@ export default function SkillPlane({resolvedTheme}: {resolvedTheme: string}) {
           }
         }
         #plane {
-          animation: 1s planeMove ease-in-out alternate infinite;
+          animation: 2s planeMove ease-in-out alternate infinite;
           transform-origin: center center;
           transform-box: fill-box;
         }
         @media screen and (min-width: 640px) {
           #plane {
-            animation: 1s planeMove2 ease-in-out alternate infinite;
+            animation: 2s planeMove2 ease-in-out alternate infinite;
             transform-origin: center;
             transform-box: fill-box;
           }
