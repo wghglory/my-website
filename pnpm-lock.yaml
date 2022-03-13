@@ -5,6 +5,7 @@ specifiers:
   '@commitlint/config-conventional': ^16.2.1
   '@emailjs/browser': ^3.4.0
   '@giscus/react': ^1.1.2
+  '@lottiefiles/react-lottie-player': ^3.4.2
   '@playwright/test': ^1.19.2
   '@svgr/webpack': ^6.2.1
   '@tailwindcss/forms': ^0.5.0
@@ -56,6 +57,7 @@ specifiers:
 dependencies:
   '@emailjs/browser': 3.4.0
   '@giscus/react': 1.1.2_react-dom@17.0.2+react@17.0.2
+  '@lottiefiles/react-lottie-player': 3.4.2_react@17.0.2
   '@tailwindcss/forms': 0.5.0_tailwindcss@3.0.23
   '@tailwindcss/typography': 0.5.2_tailwindcss@3.0.23
   classnames: 2.3.1
@@ -2188,6 +2190,15 @@ packages:
   /@jsdevtools/rehype-toc/3.0.2:
     resolution: {integrity: sha512-n5JEf16Wr4mdkRMZ8wMP/wN9/sHmTjRPbouXjJH371mZ2LEGDl72t8tEsMRNFerQN/QJtivOxqK1frdGa4QK5Q==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@lottiefiles/react-lottie-player/3.4.2_react@17.0.2:
+    resolution: {integrity: sha512-UdrMXFVT7GWrZlxWCDxdNbo2Fzh7pygxdAY4JQh6Z9bNWXcvIEz4TZIYOq7pssjryAl+p2rurC2+C6p8bLLplg==}
+    peerDependencies:
+      react: ^17.0.2
+    dependencies:
+      lottie-web: 5.9.1
+      react: 17.0.2
     dev: false
 
   /@mdx-js/mdx/2.0.0:
@@ -6119,6 +6130,10 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lottie-web/5.9.1:
+    resolution: {integrity: sha512-3uKtU6BhIK6ZRCE/QyiXq/KuRvPeEAz/VFwqd99jPbpgFY9gHLw2krqvcuCFGepeW94BipS/B3TqIfTc9pUeZg==}
+    dev: false
 
   /lowlight/2.6.0:
     resolution: {integrity: sha512-Gas6VcSevLDRAtFP/kg3bj1Ozwncgd0jAgpIxIyNcO/Qm0csJnly9LLEdN75qc9t3l/g/JPFXCkFLe1LPxHozA==}

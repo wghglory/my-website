@@ -1,4 +1,5 @@
 import {sendForm} from '@emailjs/browser';
+import {Player} from '@lottiefiles/react-lottie-player';
 import {FormEvent, useState} from 'react';
 import {BsCheckCircle} from 'react-icons/bs';
 import {CgSpinner} from 'react-icons/cg';
@@ -55,9 +56,11 @@ export default function ContactPage() {
 
   return (
     <main className="container mx-auto my-10 max-w-2xl rounded-md p-5">
-      <div className="text-center">
+      <div className="text-center mx-7 flex items-center gap-2 justify-center">
         <h2 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Contact me</h2>
+        <Player autoplay loop src="/lottie/envelop.json" className="w-32"></Player>
       </div>
+
       <div className="m-7">
         <form id="form" onSubmit={submit}>
           <input type="hidden" name="_subject" value="New submission from guanghui website" />
