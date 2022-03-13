@@ -19,7 +19,7 @@ export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
               <div className="sm:hidden">{e.year}</div>
 
               {e.tags && (
-                <div className="space-x-2 pt-1">
+                <div className="space-x-2 space-y-2 pt-1">
                   {e.tags.GPA && (
                     <span className="inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">
                       GPA&nbsp;<strong className="font-bold">{e.tags.GPA}</strong>
