@@ -9,7 +9,7 @@ import UnionbankLogo from '/public/images/companies/unionbank.svg';
 import UPMCLogo from '/public/images/companies/upmc.svg';
 import VMwareLogo from '/public/images/companies/vmware.svg';
 import DoorBg from '/public/images/door.svg';
-import {fadeInVariant} from '@/lib/motion';
+import {fadeInVariant, itemVariant, listVariant, rightToLeftVariant} from '@/lib/motion';
 
 import SocialIcons from '../share/SocialIcons';
 
@@ -18,8 +18,13 @@ export default function HeroSection() {
     <section className="bg-white dark:bg-gray-900" id="home">
       <div className="container m-auto px-6 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
-          <div className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20">
-            <motion.div initial="hidden" animate="visible" variants={fadeInVariant}>
+          <motion.div
+            className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20"
+            initial="hidden"
+            animate="visible"
+            variants={listVariant}
+          >
+            <motion.div variants={itemVariant}>
               <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
                 <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
@@ -29,11 +34,15 @@ export default function HeroSection() {
                 also starting to fall in love with SVG, GSAP, framer motion!
               </p>
             </motion.div>
-            <div className="lg:mb-14">
+            <motion.div className="lg:mb-14" variants={itemVariant}>
               <SocialIcons />
-            </div>
-          </div>
-          <div className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3 items-center">
+            </motion.div>
+          </motion.div>
+          <motion.div
+            initial={{opacity: 0}}
+            animate={{opacity: 1, transition: {duration: 2}}}
+            className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3 items-center"
+          >
             <Player autoplay loop src="/lottie/developer.json" speed={0.5}></Player>
 
             {/* <DoorBg className="absolute h-full" /> */}
@@ -48,10 +57,10 @@ export default function HeroSection() {
                 <AboutMe aria-label="more about me" />
               </a>
             </Link> */}
-          </div>
+          </motion.div>
         </div>
       </div>
-      <div className="bg">
+      <motion.div className="bg" initial="hidden" animate="visible" variants={rightToLeftVariant}>
         <div className="container m-auto px-6">
           <div className="flex h-28 items-center justify-center gap-4 lg:justify-start lg:gap-10">
             <VMwareLogo className="h-4" />
@@ -60,7 +69,7 @@ export default function HeroSection() {
             <UPMCLogo className="h-5" />
           </div>
         </div>
-      </div>
+      </motion.div>
       <style>
         {`
           .bg {
