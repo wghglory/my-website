@@ -1,6 +1,67 @@
 export default function SkillPlane({resolvedTheme}: {resolvedTheme: string}) {
   return (
-    <svg className="inline w-full max-w-2xl lg:w-1/2" viewBox="0 0 1345 1644" fill="none">
+    <svg className="inline w-full max-w-5xl" viewBox="0 0 2000 1800" fill="none">
+      <style jsx>{`
+        @keyframes planeMove {
+          from {
+            transform: translate(200px, 100px);
+          }
+          to {
+            transform: translate(200px, 200px);
+          }
+        }
+        @keyframes planeMove2 {
+          from {
+            transform: rotate(66deg) translate(200px, -200px);
+          }
+          to {
+            transform: rotate(66deg) translate(200px, -420px);
+          }
+        }
+        #plane {
+          animation: 1s planeMove ease-in-out alternate infinite;
+          transform-origin: center center;
+          transform-box: fill-box;
+        }
+        @media screen and (min-width: 640px) {
+          #plane {
+            animation: 1s planeMove2 ease-in-out alternate infinite;
+            transform-origin: center;
+            transform-box: fill-box;
+          }
+
+          #business-skills > * {
+            transform: rotate(-90deg);
+            transform-box: fill-box;
+            transform-origin: center;
+          }
+
+          #economy-skills > * {
+            transform: rotate(-90deg);
+            transform-box: fill-box;
+            transform-origin: center;
+          }
+        }
+
+        @keyframes cloudMove {
+          0% {
+            transform: translate(100px, 140px) scale(0.9);
+          }
+          50% {
+            transform: translate(300px, 0px);
+          }
+          100% {
+            transform: translate(200px, -30px) scale(1);
+          }
+        }
+        .cloud-item:nth-of-type(2n) {
+          animation: 3s cloudMove linear 0.5s alternate infinite;
+        }
+        .cloud-item:nth-of-type(2n-1) {
+          animation: 3s cloudMove linear 1.5s alternate infinite;
+        }
+      `}</style>
+
       <g id="plane">
         <g id="engine">
           {resolvedTheme === 'light' ? (
