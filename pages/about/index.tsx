@@ -66,10 +66,10 @@ export default function AboutPage() {
 
   return (
     <main>
-      <SectionLayout id="about" title="Experience" className="">
+      <SectionLayout id="about" title="Experience" className="" lottie="travel">
         <TimelineEvents eventList={experienceList} />
       </SectionLayout>
-      <SectionLayout title="Education">
+      <SectionLayout title="Education" lottie="education">
         <TimelineEvents eventList={educationList} />
       </SectionLayout>
       <SectionLayout title="Responsibilities" className="">
