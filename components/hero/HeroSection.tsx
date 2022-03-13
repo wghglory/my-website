@@ -1,3 +1,4 @@
+import {Player} from '@lottiefiles/react-lottie-player';
 import {motion} from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -32,19 +33,21 @@ export default function HeroSection() {
               <SocialIcons />
             </div>
           </div>
-          <div className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3">
-            <DoorBg className="absolute h-full" />
-            <Image src="/images/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" />
+          <div className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3 items-center">
+            <Player autoplay loop src="/lottie/developer.json" speed={0.5}></Player>
+
+            {/* <DoorBg className="absolute h-full" /> */}
+            {/* <Image src="/images/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" /> */}
             {/* <img
               src="/images/me.png"
               className="z-[1] max-h-[300px] min-h-[200px] w-auto lg:max-h-[400px]"
               alt="Guanghui Picture"
             /> */}
-            <Link href="/about">
+            {/* <Link href="/about">
               <a className="absolute top-[45%]  z-10 w-16 cursor-pointer text-gray-200 hover:text-white lg:w-20">
                 <AboutMe aria-label="more about me" />
               </a>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
