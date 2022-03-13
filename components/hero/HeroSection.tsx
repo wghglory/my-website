@@ -41,7 +41,7 @@ export default function HeroSection() {
           <motion.div
             initial={{opacity: 0}}
             animate={{opacity: 1, transition: {duration: 2}}}
-            className="relative flex min-h-[250px] w-full justify-center text-queen-300 dark:text-gray-600 lg:w-1/3 items-center"
+            className="relative flex min-h-[250px] w-full items-center justify-center text-queen-300 dark:text-gray-600 lg:w-1/3"
           >
             <Player autoplay loop src="/lottie/developer.json" speed={0.5}></Player>
 

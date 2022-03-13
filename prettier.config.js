@@ -1,7 +1,22 @@
 module.exports = {
   arrowParens: 'always',
+  bracketSameLine: false,
+  bracketSpacing: false,
+  embeddedLanguageFormatting: 'auto',
+  htmlWhitespaceSensitivity: 'css',
+  insertPragma: false,
+  jsxSingleQuote: false,
+  printWidth: 120,
+  proseWrap: 'always',
+  quoteProps: 'as-needed',
+  requirePragma: false,
+  semi: true,
   singleQuote: true,
   tabWidth: 2,
-  semi: false,
+  trailingComma: 'all',
+  useTabs: false,
+  vueIndentScriptAndStyle: false,
   tailwindConfig: './tailwind.config.js',
+  // pnpm and yarn pnp needs to config explicitly
+  plugins: [require('prettier-plugin-tailwindcss')],
 };

@@ -10,7 +10,7 @@ export default function ExperienceSection() {
   return (
     // <section className="bg-white dark:bg-[#012038]" id="experience">
     <section className="bg-white dark:bg-gray-900" id="experience">
-      <div className="container m-auto px-6 lg:px-20 py-6 lg:py-16">
+      <div className="container m-auto px-6 py-6 lg:px-20 lg:py-16">
         <div className="flex flex-col justify-between sm:flex-row">
           <h2 className="flex items-center justify-center text-3xl sm:justify-start lg:py-6 lg:text-5xl">
             <strong className="py-6 text-4xl text-queen-500 lg:text-6xl">10</strong>&nbsp; Year Experience

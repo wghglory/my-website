@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "fix": "npx eslint --fix --ext .js,.ts,.tsx .",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(vue|js|jsx|ts|tsx|json|css|scss|md|html)\"",
+    "format": "prettier --write \"**/*.+(vue|js|jsx|ts|tsx|json|css|scss|md|html)\"",
     "prepare": "husky install",
     "commit": "commit",
     "test": "jest --watch",

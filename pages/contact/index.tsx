@@ -56,7 +56,7 @@ export default function ContactPage() {
 
   return (
     <main className="container mx-auto my-10 max-w-2xl rounded-md p-5">
-      <div className="text-center mx-7 flex items-center gap-2 justify-center">
+      <div className="mx-7 flex items-center justify-center gap-2 text-center">
         <h2 className="my-3 text-3xl font-semibold text-gray-700 dark:text-gray-200">Contact me</h2>
         <Player autoplay loop src="/lottie/envelop.json" className="w-32"></Player>
       </div>
