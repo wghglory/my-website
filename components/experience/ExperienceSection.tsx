@@ -17,7 +17,7 @@ export default function ExperienceSection() {
             <strong className="py-6 text-4xl text-queen-500 lg:text-6xl">10</strong>&nbsp; Year Experience
           </h2>
           <div className="flex justify-center">
-            <Player autoplay loop src="/lottie/sky.json" speed={0.5}></Player>
+            <Player autoplay loop src="/lottie/sky.json"></Player>
           </div>
         </div>
         <div className="text-center">

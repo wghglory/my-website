@@ -43,7 +43,7 @@ export default function HeroSection() {
             animate={{opacity: 1, transition: {duration: 1}}}
             className="relative flex min-h-[250px] w-full items-stretch text-queen-300 dark:text-gray-600 lg:w-1/2"
           >
-            <Player autoplay loop src="/lottie/developer.json" speed={0.5}></Player>
+            <Player autoplay loop src="/lottie/developer.json" speed={0.8}></Player>
 
             {/* <DoorBg className="absolute h-full" /> */}
             {/* <Image src="/images/me.png" alt="Guanghui Picture" priority={true} layout="fill" objectFit="contain" /> */}
