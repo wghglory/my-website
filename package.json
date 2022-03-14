@@ -3,7 +3,7 @@
   "author": "Guanghui Wang",
   "scripts": {
     "debug": "node --inspect-brk node_modules/.bin/next dev",
-    "dev": "next dev -p 9000",
+    "dev": "next dev -p 9000 -H 192.168.1.6",
     "build": "next build",
     "postbuild": "next-sitemap",
     "start": "next start",
