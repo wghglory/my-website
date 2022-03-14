@@ -1,3 +1,5 @@
+import AE from '/public/images/skills/ae.svg';
+import AI from '/public/images/skills/ai.svg';
 import Angular from '/public/images/skills/angular.svg';
 import Cypress from '/public/images/skills/cypress.svg';
 import Docker from '/public/images/skills/docker.svg';
@@ -9,6 +11,7 @@ import Mongodb from '/public/images/skills/mongodb.svg';
 import Nextjs from '/public/images/skills/nextjs.svg';
 import Nodejs from '/public/images/skills/nodejs.svg';
 import Nuxt from '/public/images/skills/nuxt.svg';
+import PS from '/public/images/skills/ps.svg';
 import React from '/public/images/skills/react.svg';
 import Tailwind from '/public/images/skills/tailwind.svg';
 import Typescript from '/public/images/skills/typescript.svg';
@@ -47,6 +50,12 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
       return <Tailwind />;
     case 'Typescript':
       return <Typescript />;
+    case 'PS':
+      return <PS />;
+    case 'AE':
+      return <AE />;
+    case 'AI':
+      return <AI />;
     default:
       return <div>Please add logo</div>;
   }

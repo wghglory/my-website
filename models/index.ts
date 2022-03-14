@@ -50,4 +50,7 @@ export type TopicType =
   | 'Nodejs'
   | 'Nuxt'
   | 'Tailwind'
-  | 'Typescript';
+  | 'Typescript'
+  | 'AI'
+  | 'AE'
+  | 'PS';

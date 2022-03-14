@@ -2,6 +2,12 @@ import {TopicType} from '@/models';
 
 export function getColor(topic: string) {
   switch (topic) {
+    case 'AE':
+      return '#9999ff';
+    case 'AI':
+      return '#ff9a00';
+    case 'PS':
+      return '#30a8ff';
     case 'Cypress':
     case 'Nextjs':
       return '#fff';

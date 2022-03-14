@@ -1,0 +1,43 @@
+---
+title: Create lottie by Adobe After Effects
+topics:
+  - lottie
+  - after effects
+  - animation
+date: 2022-03-14
+excerpt: Create a lottie animation by Adobe After Effects
+cover:
+  topic: AE
+  title: AE
+  subtitle: Adobe AE
+---
+
+## Create lottie by AE
+
+1. Download an interesting json from lottie official website.
+2. Open it via AE.
+3. I prefer to use figma to create svg and then save as `ai` file by AI.
+   > AE doesn't support to import svg now...
+4. **Important**! In AI, keep layers simple, remove clip path, groups.
+5. Import ai files (Create Composition)
+6. Now comes the most important part! After dragging ai files to Comp, we need to **Create Shapes from Vector Layer**
+   since only the converted layer is vector type.
+
+   ![Create Shape](/images/posts/ae-create-shape.png)
+
+7. Before working on the animation stuff, it's probably necessary to render the result to verify whether your ai files
+   are compatible with lottie. If not displaying well, go back to step 4.
+8. Edit the animation.
+9. Render by lottieFile extension.
+
+## Reference
+
+- [Lottie Animations](https://lottiefiles.com/private/animations)
+- [Youtube Create Lottie Animations in After Effects](https://www.youtube.com/watch?v=72qbebvwxnY&t=1727s)
+- [Youtube Learn After Effects in 10 Minutes! Beginner Tutorial](https://www.youtube.com/watch?v=hb2bbfiNBXA)
+- [lottie-react](https://www.youtube.com/watch?v=hb2bbfiNBXA)
+
+Adobe After Effects extensions:
+
+- bodymovin.zxp
+- lottie-ae-plugin.zxp (lottie official plugin)
