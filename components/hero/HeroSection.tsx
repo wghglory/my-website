@@ -19,7 +19,7 @@ export default function HeroSection() {
       <div className="container m-auto px-6 lg:px-20 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <motion.div
-            className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-2/3 lg:py-10 xl:py-20"
+            className="flex w-full max-w-5xl flex-col justify-center gap-6 lg:w-1/2 lg:py-10 xl:py-20"
             initial="hidden"
             animate="visible"
             variants={listVariant}
@@ -40,8 +40,8 @@ export default function HeroSection() {
           </motion.div>
           <motion.div
             initial={{opacity: 0}}
-            animate={{opacity: 1, transition: {duration: 2}}}
-            className="relative flex min-h-[250px] w-full items-center justify-center text-queen-300 dark:text-gray-600 lg:w-1/3"
+            animate={{opacity: 1, transition: {duration: 1}}}
+            className="relative flex min-h-[250px] w-full items-stretch text-queen-300 dark:text-gray-600 lg:w-1/2"
           >
             <Player autoplay loop src="/lottie/developer.json" speed={0.5}></Player>
 
@@ -74,6 +74,10 @@ export default function HeroSection() {
         {`
           .bg {
           background: linear-gradient(to right, transparent, rgba(249, 168, 212, 0.1) 60%, rgba(249, 168, 212, 0.3) 70%, rgba(216, 180, 254, .3) 80%, rgba(129, 140, 248, .5), transparent)
+          }
+
+          .lf-player-container {
+            width: 100%;
           }
         `}
       </style>
