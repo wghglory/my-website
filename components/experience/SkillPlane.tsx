@@ -3,44 +3,21 @@ export default function SkillPlane({resolvedTheme}: {resolvedTheme: string}) {
     <svg className="inline w-full max-w-2xl lg:w-1/2" viewBox="0 0 1345 1644" fill="none">
       <style jsx>{`
         @keyframes planeMove {
-          from {
-            transform: translate(200px, 100px);
+          0% {
+            transform: scale(1) rotate(0) translate(0, 0);
           }
-          to {
-            transform: translate(200px, 200px);
+          50% {
+            transform: scale(0.9) rotate(6deg) translate(40px, -20px);
           }
-        }
-        @keyframes planeMove2 {
-          from {
-            transform: rotate(66deg) translate(200px, -200px);
-          }
-          to {
-            transform: rotate(66deg) translate(200px, -420px);
+          100% {
+            transform: scale(1) rotate(0) translate(0, 0);
           }
         }
-        // #plane {
-        //   animation: 2s planeMove ease-in-out alternate infinite;
-        //   transform-origin: center center;
-        //   transform-box: fill-box;
-        // }
-        @media screen and (min-width: 640px) {
-          // #plane {
-          //   animation: 2s planeMove2 ease-in-out alternate infinite;
-          //   transform-origin: center;
-          //   transform-box: fill-box;
-          // }
 
-          #business-skills > * {
-            transform: rotate(-90deg);
-            transform-box: fill-box;
-            transform-origin: center;
-          }
-
-          #economy-skills > * {
-            transform: rotate(-90deg);
-            transform-box: fill-box;
-            transform-origin: center;
-          }
+        #plane {
+          animation: 6s planeMove ease-in-out infinite;
+          transform-origin: 40% 60%;
+          // transform-box: fill-box;
         }
 
         @keyframes cloud1Move {
