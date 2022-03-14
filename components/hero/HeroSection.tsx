@@ -25,7 +25,7 @@ export default function HeroSection() {
             variants={listVariant}
           >
             <motion.div variants={itemVariant}>
-              <h2 className="py-6 text-center text-3xl lg:text-left lg:text-5xl">
+              <h2 className="py-6 text-center text-3xl !leading-snug lg:text-left lg:text-5xl">
                 Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
                 <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
               </h2>
