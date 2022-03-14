@@ -1,3 +1,4 @@
+import {Player} from '@lottiefiles/react-lottie-player';
 import dynamic from 'next/dynamic';
 import {useTheme} from 'next-themes';
 
@@ -16,7 +17,7 @@ export default function ExperienceSection() {
             <strong className="py-6 text-4xl text-queen-500 lg:text-6xl">10</strong>&nbsp; Year Experience
           </h2>
           <div className="flex justify-center">
-            <Sky resolvedTheme={resolvedTheme!} />
+            <Player autoplay loop src="/lottie/sky.json" speed={0.5}></Player>
           </div>
         </div>
         <div className="text-center">
