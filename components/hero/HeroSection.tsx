@@ -15,7 +15,7 @@ import SocialIcons from '../share/SocialIcons';
 
 export default function HeroSection() {
   return (
-    <section className="bg-white dark:bg-gray-900" id="home">
+    <section className="overflow-hidden bg-white dark:bg-gray-900" id="home">
       <div className="container m-auto px-6 lg:px-20 lg:pt-12">
         <div className="flex flex-col justify-center gap-10 lg:flex-row lg:gap-20 xl:gap-28">
           <motion.div
