@@ -9,7 +9,7 @@ npx create-next-app --example with-tailwindcss my-website
 
 ## SVGR
 
-https://react-svgr.com/docs/next/#nextjs
+[https://react-svgr.com/docs/next/#nextjs](https://react-svgr.com/docs/next/#nextjs)
 
 ```js
 // svgr.config.js

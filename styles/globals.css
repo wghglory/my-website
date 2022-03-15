@@ -38,7 +38,8 @@ body {
 }
 
 /* fix post reference links not wrap */
-a {
+a,
+p {
   word-break: break-word;
 }
 
