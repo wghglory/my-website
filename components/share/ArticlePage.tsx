@@ -1,19 +1,15 @@
-import 'highlight.js/styles/night-owl.css';
-
 import {Giscus} from '@giscus/react';
 import Head from 'next/head';
-import Image from 'next/image';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {MDXRemote} from 'next-mdx-remote';
 import {useTheme} from 'next-themes';
 
-import Bilibili from '@/components/share/Bilibili';
-import CodeFrame from '@/components/share/CodeFrame';
 import TopicList from '@/components/share/TopicList';
-import YouTube from '@/components/share/Youtube';
 import {ContentDirectory} from '@/lib/file';
 import {MDXFile} from '@/models';
+
+import {mdxComponents} from './MdxComponents';
 
 // giscus currently converts title first letter to lower case, so let's use lowercase for now.
 const titlePrefix = {
@@ -30,7 +26,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
   const [, parentPath] = router.pathname.split('/');
 
   return (
-    <article className="container prose mx-auto max-w-7xl  px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
+    <article className="container prose mx-auto max-w-7xl px-8 py-10 prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-invert dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 md:prose-lg lg:prose-xl lg:p-20">
       <Head>
         <title>
           {titlePrefix[parentPath as ContentDirectory]}: {file.meta.title}
@@ -67,7 +63,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
           />
         </div>
       )}
-      <MDXRemote {...file.source} components={{YouTube, Bilibili, CodeFrame, Image}} />
+      <MDXRemote {...file.source} components={mdxComponents} />
       <div className="mb-4 mt-8 lg:mt-16">
         <Giscus
           repo="wghglory/my-website"
