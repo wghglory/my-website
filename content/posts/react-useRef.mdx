@@ -1,0 +1,234 @@
+---
+title: React useRef
+topics:
+  - react
+  - hooks
+date: 2022-03-17
+excerpt: React useRef API
+cover:
+  topic: React
+  title: React
+  subtitle: useRef
+---
+
+## Key points
+
+By using a ref, you ensure that:
+
+- You can **store information** between re-renders. (Unlike regular variables, which reset on every render.)
+- Changing it **does not trigger a re-render**. (Unlike state variables, which trigger a re-render.)
+- The **information is local** to each copy of your component. (Unlike the variables outside, which are shared.)
+
+> Changing a `ref` does not trigger a re-render, so `refs` are not appropriate for storing information that you want to
+> display on the screen. Use `state` for that instead.
+
+**Do not write or read `ref.current` during rendering.**
+
+```jsx
+function MyComponent() {
+  // 🚩 Don't write a ref during rendering
+  myRef.current = 123;
+
+  // 🚩 Don't read a ref during rendering
+  return <h1>{myOtherRef.current}</h1>;
+}
+```
+
+You can read or write `refs` **from event handlers or effects instead**.
+
+```jsx
+function MyComponent() {
+  useEffect(() => {
+    // ✅ You can read or write refs in effects
+    myRef.current = 123;
+  });
+
+  function handleClick() {
+    // ✅ You can read or write refs in event handlers
+    doSomething(myOtherRef.current);
+  }
+}
+```
+
+## Manipulating the DOM with a ref
+
+### Focusing a text input
+
+```jsx
+import {useRef} from 'react';
+
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  );
+}
+```
+
+### Scrolling an image into view
+
+```jsx
+import {useRef} from 'react';
+
+export default function CatFriends() {
+  const listRef = useRef(null);
+
+  function scrollToIndex(index) {
+    const listNode = listRef.current;
+    // This line assumes a particular DOM structure:
+    const imgNode = listNode.querySelectorAll('li > img')[index];
+    imgNode.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
+  }
+
+  return (
+    <>
+      <nav>
+        <button onClick={() => scrollToIndex(0)}>Tom</button>
+        <button onClick={() => scrollToIndex(1)}>Maru</button>
+        <button onClick={() => scrollToIndex(2)}>Jellylorum</button>
+      </nav>
+      <div>
+        <ul ref={listRef}>
+          <li>
+            <img src="https://placekitten.com/g/200/200" alt="Tom" />
+          </li>
+          <li>
+            <img src="https://placekitten.com/g/300/200" alt="Maru" />
+          </li>
+          <li>
+            <img src="https://placekitten.com/g/250/200" alt="Jellylorum" />
+          </li>
+        </ul>
+      </div>​{' '}
+    </>
+  );
+}
+```
+
+### Play and pausing a video
+
+```jsx
+import {useState, useRef} from 'react';
+
+export default function VideoPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const ref = useRef(null);
+
+  function handleClick() {
+    const nextIsPlaying = !isPlaying;
+    setIsPlaying(nextIsPlaying);
+
+    if (nextIsPlaying) {
+      ref.current.play();
+    } else {
+      ref.current.pause();
+    }
+  }
+
+  return (
+    <>
+      <button onClick={handleClick}>{isPlaying ? 'Pause' : 'Play'}</button>
+      <video width="250" ref={ref} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}>
+        <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
+      </video>​{' '}
+    </>
+  );
+}
+```
+
+### Exposing a ref to your own component
+
+Sometimes, you may want to let the parent component manipulate the DOM inside of your component. For example, maybe
+you’re writing a `MyInput` component, but you want the parent to be able to focus the input (which the parent has no
+access to). You can use a combination of `useRef` to hold the input and
+[`forwardRef`](https://beta.reactjs.org/apis/forwardref) to expose it to the parent component.
+
+```jsx
+import {forwardRef, useRef} from 'react';
+
+const MyInput = forwardRef((props, ref) => {
+  return <input {...props} ref={ref} />;
+});
+
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>Focus the input</button>
+    </>
+  );
+}
+```
+
+## Avoiding recreating the ref contents
+
+React saves the initial ref value once and ignores it on the next renders.
+
+```js
+function Video() {
+  const playerRef = useRef(new VideoPlayer());
+  // ...
+}
+```
+
+Although the result of `new VideoPlayer()` is only used for the initial render, you’re still calling this function on
+every render. This can be wasteful if it’s creating expensive objects.
+
+To solve it, you may initialize the ref like this instead:
+
+```js
+function Video() {
+  const playerRef = useRef(null);
+  if (playerRef.current === null) {
+    playerRef.current = new VideoPlayer();
+  }
+  // ...
+}
+```
+
+Normally, writing or reading `ref.current` during render is not allowed. However, it’s fine in this case because the
+result is always the same, and the condition only executes during initialization so it’s fully predictable.
+
+### [Typescript] How to avoid null checks when initializing useRef later
+
+If you use a type checker and don’t want to always check for `null`, you can try a pattern like this instead:
+
+```jsx
+function Video() {
+  const playerRef = useRef(null);
+
+  function getPlayer() {
+    if (playerRef.current !== null) {
+      return playerRef.current;
+    }
+    const player = new VideoPlayer();
+    playerRef.current = player;
+    return player;
+  }
+}
+```
+
+Here, the `playerRef` itself is nullable. However, you should be able to convince your type checker that there is no
+case in which `getPlayer()` returns `null`. Then use `getPlayer()` in your event handlers.
+
+## Reference
+
+[https://beta.reactjs.org/apis/useref](https://beta.reactjs.org/apis/useref)
