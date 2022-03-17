@@ -5,7 +5,7 @@ import {serialize} from 'next-mdx-remote/serialize';
 import path from 'path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
-import rehypeHighlight from 'rehype-highlight';
+import rehypePrism from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
 import rehypeToc from 'rehype-toc';
 
@@ -75,7 +75,7 @@ export const getMdxFileStaticProps = async (dir: ContentDirectory, slug: string)
           },
         ],
         [rehypeAutolinkHeadings, {behavior: 'wrap'}],
-        rehypeHighlight,
+        rehypePrism,
       ] as any,
     },
   });

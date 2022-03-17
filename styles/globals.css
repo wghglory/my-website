@@ -1,3 +1,6 @@
+@import url('./article.css');
+@import url('./prism-owl.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -104,9 +107,4 @@ p {
     @apply py-2 px-6;
     @apply btn-icon-accent;
   }
-}
-
-/* rehypeToc .toc class */
-.toc {
-  margin-top: 3rem;
 }

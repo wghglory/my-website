@@ -325,7 +325,7 @@ function ItemList({artworks, onToggle}) {
 
 ## Resetting state with a key
 
-```diff
+```jsx {13} showLineNumbers
 import {useState} from 'react';
 
 export default function App() {
@@ -338,7 +338,7 @@ export default function App() {
   return (
     <>
       <button onClick={handleReset}>Reset</button>
-+      <Form key={version} />
+      <Form key={version} />
     </>
   );
 }
@@ -378,16 +378,16 @@ export default function App() {
 
 CountLabel.js: The most important part if `set` function must be inside a condition, otherwise infinite loop.
 
-```diff
+```jsx {6-9} showLineNumbers
 import {useState} from 'react';
 
 export default function CountLabel({count}) {
   const [prevCount, setPrevCount] = useState(count);
   const [trend, setTrend] = useState(null);
-+  if (prevCount !== count) {
-+    setPrevCount(count);
-+    setTrend(count > prevCount ? 'increasing' : 'decreasing');
-+  }
+  if (prevCount !== count) {
+    setPrevCount(count);
+    setTrend(count > prevCount ? 'increasing' : 'decreasing');
+  }
   return (
     <>
       <h1>{count}</h1>
