@@ -3,12 +3,20 @@
   margin-top: 3rem;
 }
 
+pre {
+  overflow-x: auto;
+}
+
 /**
  * code line highlight and show line numbers
  * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
  * 1. Make the element just wide enough to fit its content.
  * 2. Always fill the visible space in .code-highlight.
  */
+.code-highlight {
+  float: left; /* 1 */
+  min-width: 100%; /* 2 */
+}
 
 .code-line {
   display: block;
