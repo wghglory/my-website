@@ -37,7 +37,7 @@ export function getColor(topic: string) {
 
 export default function TopicTitle({title, topic}: {title: string; topic: TopicType}) {
   return (
-    <div className="text-5xl font-bold" style={{color: getColor(topic)}}>
+    <div className="text-3xl font-bold lg:text-5xl" style={{color: getColor(topic)}}>
       {title}
     </div>
   );
