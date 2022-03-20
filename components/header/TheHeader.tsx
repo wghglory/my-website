@@ -51,58 +51,104 @@ export default function TheHeader() {
     router.push(destination);
   }
 
+  useEffect(() => {
+    let prevScrollPos = window.pageYOffset;
+
+    function handleNavbar() {
+      const currentScrollPos = window.pageYOffset;
+      if (prevScrollPos > currentScrollPos) {
+        // scroll up
+        document.getElementById('nav-container')!.style.transform = 'translateY(0)';
+        document.getElementById('nav-container')!.classList.add(`bg-white`, `dark:bg-black`, 'shadow-lg');
+
+        // scroll up to top
+        if (currentScrollPos === 0) {
+          document.getElementById('nav-container')!.classList.remove(`bg-white`, `dark:bg-black`, 'shadow-lg');
+        }
+      } else {
+        // scroll down and scroll down more than 80px
+        if (currentScrollPos > 80) {
+          // although -80px, in small screen, when showMenu is true, tailwind set translateY to 0 !important.
+          // check #nav-container
+          document.getElementById('nav-container')!.style.transform = 'translateY(-80px)';
+        }
+      }
+      prevScrollPos = currentScrollPos;
+    }
+
+    window.addEventListener('scroll', handleNavbar);
+
+    // dragging from small to large screen, menu should be closed
+    function handleResize() {
+      if (window.innerWidth >= 1024) {
+        setShowMenu(false);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('scroll', handleNavbar);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <FocusTrap active={showMenu && !isLg}>
       {/* // h-screen + body overflow hidden to display the menu in the screen */}
-      <header className={cn({'h-screen': showMenu}, 'flex flex-col bg-white dark:bg-gray-900 lg:h-auto')}>
-        <div className="container mx-auto flex h-20 items-center justify-between px-6">
-          <h1 aria-label="Guanghui Wang's Website">
-            <AppLogo />
-          </h1>
-          <nav className="hidden lg:block">
-            <ul className="flex gap-x-4 sm:gap-x-6 md:gap-x-8">
-              <li className="hover:text-orange-600">
-                <Link href="/">
-                  <a className="p-2">Home</a>
-                </Link>
-              </li>
-              <li className="hover:text-orange-600">
-                <Link href="/about">
-                  <a className="p-2">About</a>
-                </Link>
-              </li>
-              <li className="hover:text-orange-600">
-                <Link href="/#project">
-                  <a className="p-2">Projects</a>
-                </Link>
-              </li>
-              <li className="hover:text-orange-600">
-                <Link href="/posts">
-                  <a className="p-2">Blog</a>
-                </Link>
-              </li>
-              <li className="hover:text-orange-600">
-                <Link href="/snippets">
-                  <a className="p-2">Snippets</a>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <div className="hidden items-center gap-4 lg:flex">
-            <ThemeChanger />
-            <Link href="/contact">
-              <a className="btn-primary">
-                Contact
-                <PlaneIcon className="w-5" />
-              </a>
-            </Link>
-          </div>
-          <div className="inline-flex lg:hidden">
-            <MenuButton
-              onClick={() => {
-                setShowMenu(!showMenu);
-              }}
-            />
+      <header className={cn({'h-screen': showMenu}, 'flex flex-col bg-white pb-20 dark:bg-gray-900 lg:h-auto')}>
+        <div
+          id="nav-container"
+          className={`fixed z-50 w-full opacity-95 duration-500 ${showMenu ? '!translate-y-0' : ''}`}
+        >
+          <div className="container mx-auto flex h-20 items-center justify-between px-6">
+            <h1 aria-label="Guanghui Wang's Website">
+              <AppLogo />
+            </h1>
+            <nav className="hidden lg:block">
+              <ul className="flex gap-x-4 sm:gap-x-6 md:gap-x-8">
+                <li className="hover:text-orange-600">
+                  <Link href="/">
+                    <a className="p-2">Home</a>
+                  </Link>
+                </li>
+                <li className="hover:text-orange-600">
+                  <Link href="/about">
+                    <a className="p-2">About</a>
+                  </Link>
+                </li>
+                <li className="hover:text-orange-600">
+                  <Link href="/#project">
+                    <a className="p-2">Projects</a>
+                  </Link>
+                </li>
+                <li className="hover:text-orange-600">
+                  <Link href="/posts">
+                    <a className="p-2">Blog</a>
+                  </Link>
+                </li>
+                <li className="hover:text-orange-600">
+                  <Link href="/snippets">
+                    <a className="p-2">Snippets</a>
+                  </Link>
+                </li>
+              </ul>
+            </nav>
+            <div className="hidden items-center gap-4 lg:flex">
+              <ThemeChanger />
+              <Link href="/contact">
+                <a className="btn-primary">
+                  Contact
+                  <PlaneIcon className="w-5" />
+                </a>
+              </Link>
+            </div>
+            <div className="inline-flex lg:hidden">
+              <MenuButton
+                onClick={() => {
+                  setShowMenu(!showMenu);
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -113,7 +159,11 @@ export default function TheHeader() {
           //   className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}
           //   onKeyUp={keyPress}
           // >
-          <div className={`flex flex-1 flex-col gap-4 overflow-auto lg:hidden ${showMenu ? 'flex' : 'hidden'}`}>
+          <div
+            className={`fixed z-40 h-full w-full flex-col gap-4 overflow-hidden bg-white pt-20 dark:bg-gray-900 lg:hidden ${
+              showMenu ? 'flex' : 'hidden'
+            }`}
+          >
             <nav className="mt-auto">
               <ul>
                 <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
