@@ -10,7 +10,9 @@ module.exports = {
 
     return config;
   },
+  staticPageGenerationTimeout: 300,
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['www.notion.so', 'notion.so', 'images.unsplash.com', 'pbs.twimg.com'],
+    formats: ['image/avif', 'image/webp'],
   },
 };
