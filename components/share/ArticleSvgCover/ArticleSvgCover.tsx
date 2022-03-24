@@ -6,7 +6,7 @@ import TopicTitle from './ArticleTitle';
 // aspect ratio 16:9
 export default function ArticleSvgCover({title, subtitle, topic}: {title: string; subtitle: string; topic: TopicType}) {
   return (
-    <div className="absolute h-full w-full overflow-hidden py-4 px-6">
+    <div className="absolute h-full w-full overflow-hidden">
       <div className="flex h-full w-full items-center justify-center gap-4 bg-gradient-to-b from-black via-gray-900 to-gray-700 duration-300 group-hover:scale-105">
         <div className="w-24 lg:w-28">
           <TopicLogo topic={topic} />
