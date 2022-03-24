@@ -1,5 +1,6 @@
 @import url('./article.css');
 @import url('./prism-owl.css');
+@import url('./react-notion-x.css');
 @import url('./notion.css');
 
 @tailwind base;

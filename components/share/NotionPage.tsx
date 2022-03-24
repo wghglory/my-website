@@ -4,6 +4,7 @@ import Image from 'next/image';
 import {useTheme} from 'next-themes';
 import {ExtendedRecordMap} from 'notion-types';
 import {getPageTitle} from 'notion-utils';
+import {useEffect, useState} from 'react';
 import {defaultMapPageUrl, MapPageUrl, NotionRenderer} from 'react-notion-x';
 
 // -----------------------------------------------------------------------------
@@ -34,6 +35,10 @@ const NotionPage = ({
   rootDomain?: string;
 }) => {
   const {resolvedTheme} = useTheme();
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    setIsDark(resolvedTheme === 'dark');
+  }, [resolvedTheme]);
 
   if (!recordMap) {
     return null;
@@ -97,7 +102,7 @@ const NotionPage = ({
         mapPageUrl={customMapPageUrl}
         recordMap={recordMap}
         fullPage={true}
-        darkMode={resolvedTheme === 'dark'}
+        darkMode={isDark}
         rootDomain={rootDomain}
         rootPageId={rootPageId}
         previewImages={previewImagesEnabled}
