@@ -1,14 +1,11 @@
 import {GetStaticProps} from 'next';
-import dynamic from 'next/dynamic';
 import {ExtendedRecordMap} from 'notion-types';
 import {getAllPagesInSpace} from 'notion-utils';
-import React from 'react';
 import {defaultMapPageUrl} from 'react-notion-x';
 
+import NotionPage from '@/components/share/NotionPage';
 import {getPage, notion} from '@/lib/notion';
 import {isDev, previewImagesEnabled, rootDomain, rootNotionPageId, rootNotionSpaceId} from '@/lib/notion/config';
-
-const NotionPage = dynamic(() => import('@/components/share/NotionPage'), {ssr: false});
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const pageId = context.params?.pageId as string;
@@ -23,14 +20,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export async function getStaticPaths() {
-  if (isDev) {
-    return {
-      paths: [],
-      fallback: true,
-    };
-  }
+  // if (isDev) {
+  //   return {
+  //     paths: [],
+  //     fallback: true,
+  //   };
+  // }
 
-  const mapPageUrl = defaultMapPageUrl(rootNotionPageId);
+  const customMapPageUrl = (rootPageId?: string) => (pageId: string) => {
+    pageId = (pageId || '').replace(/-/g, '');
+
+    if (rootPageId && pageId === rootPageId) {
+      return '/notion';
+    } else {
+      return `/notion/${pageId}`;
+    }
+  };
+
+  const mapPageUrl = customMapPageUrl(rootNotionPageId);
 
   // This crawls all public pages starting from the given root page in order
   // for next.js to pre-generate all pages via static site generation (SSG).
@@ -42,7 +49,7 @@ export async function getStaticPaths() {
 
   const paths = Object.keys(pages)
     .map((pageId) => mapPageUrl(pageId))
-    .filter((path) => path && path !== '/');
+    .filter((path) => path && path !== '/notion');
 
   return {
     paths,

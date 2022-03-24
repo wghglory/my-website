@@ -1,3 +1,4 @@
 .notion-header {
-  display: none;
+  /* display: none; */
+  position: static;
 }
