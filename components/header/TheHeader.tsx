@@ -127,6 +127,11 @@ export default function TheHeader() {
                   </Link>
                 </li>
                 <li className="hover:text-orange-600">
+                  <Link href="/notion">
+                    <a className="p-2">Notion</a>
+                  </Link>
+                </li>
+                <li className="hover:text-orange-600">
                   <Link href="/snippets">
                     <a className="p-2">Snippets</a>
                   </Link>
@@ -184,6 +189,11 @@ export default function TheHeader() {
                 <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/posts')}>
                     Blog
+                  </button>
+                </li>
+                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
+                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/notion')}>
+                    Notion
                   </button>
                 </li>
                 <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
