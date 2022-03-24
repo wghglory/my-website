@@ -1,5 +1,5 @@
 // NOTE: rootNotionSpaceId is optional; set it to undefined if you don't want to use it.
-export const rootNotionPageId = '9bdcd90897794450a0a433b70eeb9c01';
+export const rootNotionPageId = 'My-Blog-fa13e514575041d7b0ed47aa1ba01055';
 export const rootNotionSpaceId = undefined;
 
 // NOTE: having this enabled can be pretty expensive as it re-generates preview
