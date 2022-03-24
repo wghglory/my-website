@@ -20,6 +20,7 @@
     "@emailjs/browser": "^3.4.0",
     "@giscus/react": "^1.1.2",
     "@lottiefiles/react-lottie-player": "^3.4.2",
+    "@netlify/plugin-nextjs": "^4.3.0",
     "@tailwindcss/forms": "^0.5.0",
     "@tailwindcss/typography": "^0.5.2",
     "classnames": "^2.3.1",
