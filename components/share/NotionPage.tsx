@@ -93,6 +93,7 @@ const NotionPage = ({
       </Head>
 
       <NotionRenderer
+        showTableOfContents
         mapPageUrl={customMapPageUrl}
         recordMap={recordMap}
         fullPage={true}

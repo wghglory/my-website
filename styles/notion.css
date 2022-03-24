@@ -1,4 +1,4 @@
+/* notion breadcrumb hide */
 .notion-header {
-  /* display: none; */
-  position: static;
+  display: none;
 }
