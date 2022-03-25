@@ -20,8 +20,10 @@ import {TextPlugin} from 'gsap/dist/TextPlugin';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
 import {ThemeProvider} from 'next-themes';
+import {ErrorBoundary} from 'react-error-boundary';
 
 import TheHeader from '@/components/header/TheHeader';
+import ErrorFallback from '@/components/share/ErrorFallback';
 import TheFooter from '@/components/share/TheFooter';
 
 /*
@@ -54,9 +56,15 @@ if (typeof window !== 'undefined') {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
+  const myErrorHandler = (error: Error, info: {componentStack: string}) => {
+    // Do something with the error
+    // E.g. log to an error logging client here
+    console.log(error, 'error boundary error');
+  };
+
   return (
     <ThemeProvider attribute="class">
-      <div className="flex flex-col">
+      <div className="flex min-h-screen flex-col">
         <Head>
           <title>Guanghui Wang Website</title>
           <link rel="icon" href="/favicon.ico" />
@@ -64,7 +72,11 @@ function MyApp({Component, pageProps}: AppProps) {
 
         <TheHeader />
 
-        <Component {...pageProps} />
+        <main className="flex-1">
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={myErrorHandler}>
+            <Component {...pageProps} />
+          </ErrorBoundary>
+        </main>
 
         <TheFooter />
       </div>

@@ -64,13 +64,6 @@ p {
   .btn-layout {
     @apply flex items-center gap-2 rounded-full transition focus:outline-none focus:ring-2 focus:ring-offset-2 active:scale-95;
   }
-
-  .btn-success {
-    @apply border border-green-600 bg-transparent text-green-600 dark:border-green-400 dark:bg-transparent dark:text-green-400;
-  }
-  .btn-error {
-    @apply border border-red-600 bg-transparent text-red-600 dark:border-red-400 dark:bg-transparent dark:text-red-400;
-  }
 }
 
 @layer components {
@@ -93,6 +86,17 @@ p {
   .btn-secondary {
     @apply py-2 px-6;
     @apply btn-icon;
+  }
+
+  .btn-success {
+    @apply py-2 px-6;
+    @apply btn-layout;
+    @apply border border-green-600 bg-transparent text-green-600 dark:border-green-400 dark:bg-transparent dark:text-green-400;
+  }
+  .btn-error {
+    @apply py-2 px-6;
+    @apply btn-layout;
+    @apply border border-red-600 bg-transparent text-red-600 dark:border-red-400 dark:bg-transparent dark:text-red-400;
   }
 
   /* accent used only in footer section where it has colorful background */
