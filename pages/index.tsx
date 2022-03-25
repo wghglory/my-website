@@ -8,11 +8,11 @@ import {FileMeta} from '@/models';
 
 export default function IndexPage({projects}: {projects: FileMeta[]}) {
   return (
-    <main>
+    <>
       <HeroSection />
       <ExperienceSection />
       <ProjectSection projects={projects} />
-    </main>
+    </>
   );
 }
 

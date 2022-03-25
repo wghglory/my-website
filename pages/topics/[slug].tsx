@@ -16,7 +16,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
   }
 
   return (
-    <main>
+    <div>
       <Head>
         <title>Topic: {topic}</title>
       </Head>
@@ -30,7 +30,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
           {files.length === 0 ? <NoData /> : <AppCardList path="/posts" files={files} />}
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
