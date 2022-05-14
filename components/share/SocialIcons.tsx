@@ -30,7 +30,7 @@ export default function SocialIcons({iconClass = 'btn-icon'}: {iconClass?: strin
         </a>
       </li>
       <li>
-        <a aria-label="send email" href="mailto:wghglory89@gmail.com" className={iconClass}>
+        <a aria-label="send email" href="mailto:guanghui-wang@foxmail.com" className={iconClass}>
           <EmailIcon className="w-8" />
         </a>
       </li>

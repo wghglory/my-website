@@ -41,7 +41,7 @@ export default function ContactPage() {
     //     formData[e.name] = e.value;
     //   }
     // });
-    // fetch('https://formsubmit.co/ajax/wghglory89@gmail.com', {
+    // fetch('https://formsubmit.co/ajax/guanghui-wang@foxmail.com', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -117,8 +117,8 @@ export default function ContactPage() {
             {status === 'error' && (
               <>
                 Something went wrong. Please send email to{' '}
-                <a href="mailto:wghglory89@gmail.com" className="text-king-600 dark:text-king-400">
-                  wghglory89@gmail.com
+                <a href="mailto:guanghui-wang@foxmail.com" className="text-king-600 dark:text-king-400">
+                  guanghui-wang@foxmail.com
                 </a>{' '}
                 manually.
               </>
