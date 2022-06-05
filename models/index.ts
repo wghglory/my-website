@@ -53,4 +53,5 @@ export type TopicType =
   | 'Typescript'
   | 'AI'
   | 'AE'
-  | 'PS';
+  | 'PS'
+  | 'Architect';

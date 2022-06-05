@@ -1,6 +1,7 @@
 import AE from '/public/images/skills/ae.svg';
 import AI from '/public/images/skills/ai.svg';
 import Angular from '/public/images/skills/angular.svg';
+import Architect from '/public/images/skills/architect.svg';
 import Cypress from '/public/images/skills/cypress.svg';
 import Docker from '/public/images/skills/docker.svg';
 import Figma from '/public/images/skills/figma.svg';
@@ -56,6 +57,8 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
       return <AE />;
     case 'AI':
       return <AI />;
+    case 'Architect':
+      return <Architect />;
     default:
       return <div>Please add logo</div>;
   }
