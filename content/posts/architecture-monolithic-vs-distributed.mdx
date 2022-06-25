@@ -1,0 +1,107 @@
+---
+title: Monolithic vs Distributed Architectures
+topics:
+  - architect
+date: 2022-05-06
+excerpt: This article introduces some common fallacy about different architectural styles.
+cover:
+  topic: Architect
+  title: Architect
+  subtitle: Architecture Fallacy
+---
+
+## Monolithic vs Distributed Architectures
+
+Monolithic:
+
+- Layered architecture
+- Pipeline architecture
+- Microkernel architecture
+
+Distributed:
+
+- Service-based architecture
+- Event-driven architecture
+- Space-based architecture
+- Service-oriented architecture
+- Microservice architecture
+
+### Fallacy 1: The network is reliable
+
+Service A made a request to Service B to process some data and does not receive a response because of a network issue.
+This is why things like timeouts and circuit breakers exist between services. The more a system relies on the network
+(such as microservices architecture), the potentially less reliable it becomes.
+
+### Fallacy 2: Latency Is Zero
+
+Ask yourself this question: do you know what the average round-trip latency is for a RESTful call in your production
+environment? Is it 60 milliseconds? Is it 500 milliseconds? When using any distributed architecture, architects must
+know this latency average. It is the only way of determining whether a distributed architecture is feasible,
+particularly when considering microservices.
+
+Assuming an average of 100 milliseconds of latency per request, chaining together 10 service calls to perform a
+particular business function adds 1,000 milliseconds to the request!
+
+### Fallacy 3: Bandwidth Is Infinite
+
+Bandwidth is usually not a concern in monolithic architectures, because once processing goes into a monolith, little or
+no bandwidth is required to process that business request. However, as shown in Figure 9-4, once systems are broken
+apart into smaller deployment units (services) in a distributed architecture such as microservices, communication to and
+between these services significantly utilizes bandwidth, causing networks to slow down, thus impacting latency (fallacy
+#2) and reliability (fallacy #1).
+
+Assume one wishlist service needs to call another profile service to get customer names. The customer profile service
+returns 45 attributes totaling 500 kb to the wish list service, which only needs the name (200 bytes). This is a form of
+coupling referred to as **stamp coupling**. This may not sound significant, but requests for the wish list items happen
+about 2,000 times a second. This means that this interservice call from the wish list service to the customer profile
+service happens 2,000 times a second. At 500 kb for each request, the amount of bandwidth used for that one interservice
+call (out of hundreds being made that second) is 1 Gb!
+
+Stamp coupling in distributed architectures consumes significant amounts of bandwidth. If the customer profile service
+were to only pass back the data needed by the wish list service (in this case 200 bytes), the total bandwidth used to
+transmit the data is only 400 kb. Stamp coupling can be resolved in the following ways:
+
+- Create private RESTful API endpoints
+- Use field selectors in the contract
+- Use GraphQL to decouple contracts
+- Use value-driven contracts with consumer-driven contracts (CDCs)
+- Use internal messaging endpoints
+
+### Fallacy 4: The Network Is Secure
+
+Security becomes much more challenging in a distributed architecture. Each endpoint to each distributed deployment unit
+must be secured so that unknown or bad requests do not make it to that service.
+
+### Fallacy 5: The Topology Never Changes
+
+Architects must be in constant communication with operations and network admiNistrators to know what is changing and
+when so that they can make adjustments accordingly to reduce the type of surprise.
+
+### Fallacy 6: There Is Only One Administrator
+
+There are dozens of network administrators in a typical large company, especially when you're working with distributed
+architectures.
+
+### Fallacy 7: Transport Cost Is Zero
+
+Distributed architectures cost significantly more than monolithic architectures, primarily due to increased needs for
+additional hardware, servers, gateways, firewalls, new subnets, proxies, and so on.
+
+Whenever embarking on a distributed architecture, we encourage architects to analyze the current server and network
+topology with regard to capacity, bandwidth, latency, and security zones to not get caught up in the trap of surprise
+with this fallacy.
+
+### Fallacy 8: The Network Is Homogeneous
+
+Most architects and developers assume a network is homogeneous—made up by only one network hardware vendor. Nothing
+could be farther from the truth. Most companies have multiple network hardware vendors in their infrastructure, if not
+more.
+
+## Other Distributed Considerations
+
+- Distributed logging
+
+- Distributed transactions: Transactional sagas, BASE transactions, which stands for (B)asic availability, (S)oft state,
+  and (E)ventual consistency
+
+- Contract maintenance and versioning
