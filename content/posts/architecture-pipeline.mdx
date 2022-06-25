@@ -1,0 +1,112 @@
+---
+title: Pipeline Architecture
+topics:
+  - architect
+date: 2022-05-09
+excerpt: This article introduces pipeline architectural styles.
+cover:
+  topic: Architect
+  title: Architect
+  subtitle: Pipeline Architecture
+---
+
+## Pipeline Architecture
+
+a.k.a pipes and filters architecture. As soon as developers and architects decided to split functionality into discrete
+parts, this pattern followed. Most developers know this architecture as this underlying principle behind Unix terminal
+shell languages, such as Bash and Zsh.
+
+### Topology
+
+The pipes and filters coordinate in a specific fashion, with pipes forming **one-way communication** between filters,
+usually in a **point-to-point fashion**.
+
+<Image src="/images/posts/pipeline-topology.png" width={1703} height={500} />
+
+#### Pipes
+
+Pipes in this architecture form the communication channel between filters. Each pipe is typically **unidirectional and
+point-to-point (rather than broadcast) for performance reasons**, accepting input from one source and always directing
+output to another. The payload carried on the pipes may be any data format, but architects favor smaller amounts of data
+to enable high performance.
+
+#### Filters
+
+Filters are self-contained, independent from other filters, and generally stateless. Filters should **perform one task
+only**. Composite tasks should be handled by a sequence of filters rather than a single one.
+
+Four types of filters exist within this architecture style:
+
+_Producer_ :
+
+The starting point of a process, outbound only, sometimes called the source.
+
+_Transformer_ :
+
+Accepts input, optionally performs a transformation on some or all of the data, then forwards it to the outbound pipe.
+Functional advocates will recognize this feature as map.
+
+_Tester_ :
+
+Accepts input, tests one or more criteria, then optionally produces output, based on the test. Functional programmers
+will recognize this as similar to reduce.
+
+_Consumer_ :
+
+The termination point for the pipeline flow. Consumers sometimes persist the final result of the pipeline process to a
+database, or they may display the final results on a user interface screen.
+
+> The unidirectional nature and simplicity of each of the pipes and filters encourages compositional reuse. Many
+> developers have discovered this ability using shells
+
+### Example
+
+Orchestrators and mediators such as _Apache Camel_ utilize the pipeline architecture to pass information from one step
+in a business process to another.
+
+## Architecture Characteristics Ratings
+
+- Deployability : 2
+- Elasticity : 1
+- Evolutionary : 3
+- Fault tolerance : 1
+- Modularity : 3
+- Overall Cost : 5 (cheap)
+- Performance : 2
+- Reliability : 3
+- Scalability : 1
+- Simplicity : 5
+- Testability : 3
+
+Overall cost and simplicity combined with modularity are the primary strengths of the pipeline architecture style. Being
+monolithic in nature, pipeline architectures don’t have the complexities associated with distributed architecture
+styles, are simple and easy to understand, and are relatively low cost to build and maintain. Architectural modularity
+is achieved through the separation of concerns between the various filter types and transformers. Any of these filters
+can be modified or replaced without impacting the other filters.
+
+Deployability and testability, while only around average, rate slightly higher than the layered architecture due to the
+level of modularity achieved through filters. That said, this architecture style is still a monolith, and as such,
+ceremony, risk, frequency of deployment, and completion of testing still impact the pipeline architecture.
+
+Like the layered architecture, overall reliability rates medium (three stars) in this architecture style, mostly due to
+the lack of network traffic, bandwidth, and latency found in most distributed architectures. We only gave it three stars
+for reliability because of the nature of the monolithic deployment of this architecture style in conjunction with
+testability and deployability issues (such as having to test the entire monolith and deploy the entire monolith for any
+given change).
+
+Elasticity and scalability rate very low (one star) for the pipeline architecture, primarily due to monolithic
+deployments. Although it is possible to make certain functions within a monolith scale more than others, this effort
+usually requires very complex design techniques such as multithreading, internal messaging, and other parallel pro
+cessing practices, techniques this architecture isn’t well suited for. However, because the pipeline architecture is
+always a single system quantum due to the monolithic user interface, backend processing, and monolithic database,
+applications can only scale to a certain point based on the single architecture quantum.
+
+Pipeline architectures don’t support fault tolerance due to monolithic deployments and the lack of architectural
+modularity. If one small part of a pipeline architecture causes an out-of-memory condition to occur, the entire
+application unit is impacted and crashes. Furthermore, overall availability is impacted due to the high mean time to
+recovery (MTTR) usually experienced by most monolithic applications, with startup times ranging anywhere from 2 minutes
+for smaller applications, up to 15 minutes or more for most large applications.
+
+## Reference
+
+Chapter 11 of Fundamentals of Software Architecture (An Engineering Approach)
