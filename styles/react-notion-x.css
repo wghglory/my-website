@@ -1025,6 +1025,8 @@ svg.notion-page-icon {
   align-items: center;
   height: 42px;
   padding: 4px 2px;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
   white-space: nowrap;
   overflow: hidden;
 }
@@ -1090,8 +1092,7 @@ svg.notion-page-icon {
 }
 
 .notion-table {
-  width: 100vw;
-  max-width: 100vw;
+  width: auto !important;
   align-self: center;
   overflow: auto hidden;
 }
@@ -1100,7 +1101,8 @@ svg.notion-page-icon {
   position: relative;
   float: left;
   min-width: var(--notion-max-width);
-  padding-left: 0;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
   transition: padding 200ms ease-out;
 }
 
