@@ -1,0 +1,83 @@
+---
+title: Layered Architecture
+topics:
+  - architect
+date: 2022-05-08
+excerpt: This article introduces layered architectural styles.
+cover:
+  topic: Architect
+  title: Architect
+  subtitle: Layered Architecture
+---
+
+## Layered Architecture
+
+Standard layered architecture style includes **presentation layer, business layer, persistence layer and database
+layer**.
+
+### Topology
+
+<Image src="/images/posts/layered-topology.png" width={1703} height={980} />
+
+The first variant combines the presentation, business, and persistence layers into a single deployment unit, with the
+database layer typically represented as a separate external physical database (or filesystem).
+
+The second variant physically separates the presentation layer into its own deployment unit, with the business and
+persistence layers combined into a second deployment unit. Again, with this variant, the database layer is usually
+physically separated through an external database or filesystem.
+
+A third variant combines all four standard layers into a single deployment, including the database layer. This variant
+might be useful for smaller applications with either an internally embedded database or an in-memory database. Many
+on-premises (“on-prem”) products are built and delivered to customers using this third variant.
+
+### Characteristics
+
+This separation of concerns concept within the layered architecture style makes it easy to build effective roles and
+responsibility models within the architecture.
+
+This allows developers to leverage their particular technical expertise to focus on the technical aspects of the domain
+(such as presentation logic or persistence logic)
+
+The layered architecture is a technically partitioned architecture (as opposed to a domain-partitioned architecture).
+Groups of components, rather than being grouped by domain (such as customer), are grouped by their technical role in the
+architecture (such as presentation or business). As a result, any particular business domain is spread throughout all of
+the layers of the architecture.
+
+Each layer can be either **closed or open**. There are times when it makes sense for certain layers to be open. For
+example, suppose there are shared objects within the business layer that contain common functionality for business
+components (such as date and string utility classes, auditing classes, logging classes, and so on).
+
+<Image src="/images/posts/layered-arch.png" width={1703} height={980} />
+
+Lack of overall agility (the ability to respond quickly to change)
+
+## Why use this architecture style?
+
+The layered architecture style is a good choice for **small, simple applications or websites**. It is also a good
+architecture choice, particularly as a **starting point**, for situations with very **tight budget and time
+constraints**. Because of the simplicity and familiarity among developers and architects, the layered architecture is
+perhaps one of the lowest-cost architecture styles, promoting ease of development for smaller applications. The layered
+architecture style is also a good choice when an architect is still analyzing business needs and requirements and is
+unsure which architecture style would be best.
+
+As applications using the layered architecture style grow, characteristics like maintainability, agility, testability,
+and deployability are adversely affected. For this reason, large applications and systems using the layered architecture
+might be better suited for other, more modular architecture styles.
+
+## Architecture Characteristics Ratings
+
+- Deployability : 1
+- Elasticity : 1
+- Evolutionary : 1
+- Fault tolerance : 1
+- Modularity : 1
+- Overall Cost : 5 (cheap)
+- Performance : 2
+- Reliability : 3
+- Scalability : 1
+- Simplicity : 5
+- Testability : 2
+
+## Reference
+
+Chapter 10 of Fundamentals of Software Architecture (An Engineering Approach)
