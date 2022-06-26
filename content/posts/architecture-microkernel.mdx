@@ -1,0 +1,77 @@
+---
+title: MicroKernel Architecture
+topics:
+  - architect
+date: 2022-05-10
+excerpt: This article introduces MicroKernel architectural styles.
+cover:
+  topic: Architect
+  title: Architect
+  subtitle: MicroKernel Architecture
+---
+
+## MicroKernel Architecture
+
+a.k.a plugin architecture. In VMware, vCD, as a core system, provides many plugins such as OSE and ALP. Some IDE like
+vscode, eclipse, provide a core system and plugins. Payment processing could be another example. Chrome and Firefox are
+another common product example. Suppose Payment Processing is the domain service representing the core system. Each
+payment method (credit card, PayPal, store credit, gift card, and purchase order) would be separate plugin components
+specific to the payment domain.
+
+### Topology
+
+The microkernel architecture style is a relatively simple monolithic architecture consisting of two architecture
+components: a core system and many plugin components. Application logic is divided between independent plugin components
+and the basic core system, providing extensibility, adaptability, and isolation of application features and custom
+processing logic.
+
+### Characteristics
+
+Ideally, plugin components should be independent of each other and have no dependencies between them.
+
+The communication between the plugin components and the core system is generally **point-to-point**, meaning the “pipe”
+that connects the plugin to the core system is usually a method invocation or function call to the entry-point class of
+the plugin component. In addition, the plugin component can be either **compile-based** or **runtime-based**. <u>Runtime
+plugin components can be added or removed at runtime without having to redeploy the core system or other plugins</u>,
+and they are usually managed through frameworks such as Open Service Gateway Initiative (OSGi) for Java, Penrose (Java),
+Jigsaw (Java), or Prism (.NET). Compile-based plugin components are much simpler to manage but require the entire
+monolithic application to be redeployed when modified, added, or removed.
+
+Point-to-point plugin components can be implemented as shared libraries (such as a JAR, DLL, or Gem).
+
+Plug-in components do not always have to be point-to-point communication with the core system. Other alternatives exist,
+including using REST or messaging as a means to invoke plug-in functionality, with each plug-in being a standalone
+service.
+
+It is not a common practice for plug-in components to connect directly to a centrally shared database. That said,
+plug-ins can have their own separate data stores only accessible to that plug-in.
+
+## Architecture Characteristics Ratings
+
+- Deployability : 3
+- Elasticity : 1
+- Evolutionary : 3
+- Fault tolerance : 1
+- Modularity : 3
+- Overall Cost : 5 (cheap)
+- Performance : 3
+- Reliability : 3
+- Scalability : 1
+- Simplicity : 4
+- Testability : 3
+
+The microkernel architecture style is unique in that it is the only architecture style that can be both domain
+partitioned and technically partitioned. While most microkernel architectures are technically partitioned, the domain
+partitioning aspect comes about mostly through a strong domain-to-architecture isomorphism.
+
+Testability, deployability, and reliability rate a little above average (three stars), primarily because functionality
+can be isolated to independent plug-in components.
+
+Regarding performance, because microkernel applications are generally small and don’t grow as big as most layered
+architectures. Also, they don’t suffer as much from the architecture sinkhole antipattern discussed in Chapter 10.
+Finally, microkernel architectures can be streamlined by unplugging unneeded functionality, therefore making the
+application run faster.
+
+## Reference
+
+Chapter 12 of Fundamentals of Software Architecture (An Engineering Approach)
