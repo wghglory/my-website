@@ -1,0 +1,108 @@
+---
+title: Service-based Architecture
+topics:
+  - architect
+date: 2022-05-12
+excerpt: This article introduces Service-based architectural styles.
+cover:
+  topic: Architect
+  title: Architect
+  subtitle: Service-based Architecture
+---
+
+## Service-based Architecture
+
+**Service-based architecture is a hybrid of the microservices architecture style** and is considered one of the most
+pragmatic architecture styles, mostly due to its architectural flexibility. Although service-based architecture is a
+**distributed architecture**, it doesn’t have the same level of complexity and cost as other distributed architectures.
+
+## Topology
+
+In most cases there is only a single instance of each domain service within a service-based architecture. However, based
+on scalability, fault tolerance, and throughput needs, multiple instances of a domain service can certainly exist
+
+<Image src="/images/posts/service-based-topology.png" width={1000} height={500} />
+
+### User interface variants
+
+<Image src="/images/posts/service-based-topology1.png" width={1000} height={1200} />
+
+### Database variants
+
+Similarly, opportunities may exist to break apart a single monolithic database into separate databases, even going as
+far as domain-scoped databases matching each domain service (similar to microservices). In these cases it is important
+to make sure the data in each separate database is not needed by another domain service.
+
+<Image src="/images/posts/service-based-topology2.png" width={1000} height={1200} />
+
+### Adding an API layer between the user interface and domain services
+
+<Image src="/images/posts/service-based-topology3.png" width={1000} height={500} />
+
+## Characteristics
+
+Because domain services are coarse-grained, regular ACID (atomicity, consistency, isolation, durability) database
+transactions involving database commits and rollbacks are used to ensure database integrity within a single domain
+service. Highly distributed architectures like microservices, on the other hand, usually have fine-grained services and
+use a distributed transaction technique known as BASE transactions (basic availability, soft state, eventual
+consistency) that rely on eventual consistency and hence do not support the same level of database integrity as ACID
+transactions in a service-based architecture.
+
+To illustrate this point, consider the example of a catalog checkout process within a service-based architecture.
+Suppose the customer places an order and the credit card used for payment has expired. Since this is an atomic
+transaction within the same service, everything added to the database can be removed using a rollback and a notice sent
+to the customer stating that the payment cannot be applied. Now consider this same process in a microservices
+architecture with smaller fine-grained services.
+
+First, the OrderPlacement service would accept the request, create the order, generate an order ID, and insert the order
+into the order tables. Once this is done, the order service would then make a remote call to the PaymentService, which
+would try to apply the payment. If the payment cannot be applied due to an expired credit card, then the order cannot be
+placed and the data is in an inconsistent state (the order information has already been inserted but has not been
+approved). In this case, what about the inventory for that order? Should it be marked as ordered and decremented? What
+if the inventory is low and another customer wishes to purchase the item? Should that new customer be allowed to buy it,
+or should the reserved inventory be reserved for the customer trying to place the order with an expired credit card?
+These are just a few of the questions that would need to be addressed when orchestrating a business process with
+multiple finer-grained services.
+
+Domain services, being coarse-grained, allow for better data integrity and consistency, but there is a trade-off. With
+service-based architecture, a change made to the order placement functionality in the OrderService would require testing
+the entire coarse-grained service (including payment processing), whereas with microservices the same change would only
+impact a small OrderPlacement service (requiring no change to the PaymentService). Furthermore, because more code is
+being deployed, there is more risk with service-based architecture that something might break (including payment
+processing), whereas with microservices each service has a single responsibility, hence less chance of breaking other
+functionality when being changed.
+
+## Database Partitioning
+
+Although not required, services within a service-based architecture **usually share a single, monolithic database** due
+to the small number of services (4 to 12) within a given application context. <u>This database coupling can present an
+issue with respect to database table schema changes. If not done properly, a table schema change can potentially impact
+every service</u>, making database changes a very costly task in terms of effort and coordination.
+
+The practice of creating a single shared library of entity objects is the least effective way of implementing
+service-based architecture. Any change to the database table structures would also require a change to the single shared
+library containing all of the corresponding entity objects, thus requiring a change and redeployment to every service.
+
+> One way to mitigate the impact and risk of database changes is to logically partition the database and manifest the
+> logical partitioning through federated shared libraries.
+
+## Architecture Characteristics Ratings
+
+- Deployability : 4
+- Elasticity : 2
+- Evolutionary : 3
+- Fault tolerance : 4
+- Modularity : 4
+- Overall Cost : 4
+- Performance : 3
+- Reliability : 4
+- Scalability : 3
+- Simplicity : 3
+- Testability : 4
+
+Service-based architecture is a domain-partitioned architecture, meaning that the structure is driven by the domain
+rather than a technical consideration.
+
+## Reference
+
+Chapter 13 of Fundamentals of Software Architecture (An Engineering Approach)
