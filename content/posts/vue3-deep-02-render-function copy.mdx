@@ -1,0 +1,61 @@
+---
+title: Vue3 S2 - Render Function
+topics:
+  - vue
+date: 2022-06-23
+excerpt: How to use render function
+cover:
+  title: Vue
+  subtitle: Vue Deep Dive
+  topic: Vue
+---
+
+Suppose we'd like to create a Stack component like below.
+
+```html
+<Stack size="4">
+  <div>hello world</div>
+  <div>hello world</div>
+  <Stack size="2">
+    <div>hello world</div>
+    <div>hello world</div>
+  </Stack>
+</Stack>
+```
+
+The rendered html will be like below, which actually manipulate the DOM. In this case, we can use the render function.
+
+```html
+<div class="stack">
+  <div class="mt-4">
+    <div>hello world</div>
+    <div>hello world</div>
+  </div>
+  <div class="stack">
+    <div class="mt-2">
+      <div>hello world</div>
+      <div>hello world</div>
+    </div>
+  </div>
+</div>
+```
+
+Our render function:
+
+```js
+import {h} from 'vue';
+
+const Stack = {
+  render() {
+    const slot = this.$slot.default ? this.$slot.default : [];
+
+    return h(
+      'div',
+      {class: 'stack'},
+      slot.map((child) => {
+        return h('div', {class: `mt-${this.$props.size}`}, [child]);
+      }),
+    );
+  },
+};
+```
