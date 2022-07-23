@@ -1,0 +1,166 @@
+---
+title: Vue3 S4 - Reactivity
+topics:
+  - vue
+date: 2022-06-25
+excerpt: Reactivity API
+cover:
+  title: Vue
+  subtitle: Vue Deep Dive
+  topic: Vue
+---
+
+## Dependency Detection, Notification
+
+```js
+let activeEffect;
+
+class Dep {
+  subscribers = new Set();
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+const dep = new Dep();
+
+watchEffect(() => {
+  dep.depend();
+  console.log('effect run');
+});
+
+dep.notify();
+```
+
+You will notice `effect run` appears twice because it executes at `watchEffect` and `dep.notify()`.
+
+We can further improve our code:
+
+```js
+let activeEffect;
+
+class Dep {
+  constructor(value) {
+    this.subscribers = new Set();
+    this._value = value;
+  }
+
+  get value() {
+    this.depend();
+    return this._value;
+  }
+
+  set value(newValue) {
+    this._value = newValue;
+    this.notify();
+  }
+
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+const dep = new Dep('hello');
+
+watchEffect(() => {
+  console.log(dep.value);
+});
+
+dep.value = 'changed';
+```
+
+## Reactive API
+
+```js
+let activeEffect;
+
+class Dep {
+  subscribers = new Set();
+  depend() {
+    if (activeEffect) {
+      this.subscribers.add(activeEffect);
+    }
+  }
+  notify() {
+    this.subscribers.forEach((effect) => {
+      effect();
+    });
+  }
+}
+
+function watchEffect(effect) {
+  activeEffect = effect;
+  effect();
+  activeEffect = null;
+}
+
+const state = reactive({count: 0});
+
+watchEffect(() => {
+  console.log(state.count);
+});
+
+state.count++;
+```
+
+```js
+const targetMap = new WeakMap();
+
+function getDep(target, key) {
+  let depsMap = targetMap.get(target);
+  if (!depsMap) {
+    depsMap = new Map();
+    targetMap.set(target, depsMap);
+  }
+  let dep = depsMap.get(key);
+  if (!dep) {
+    dep = new Dep();
+    depsMap.set(key, dep);
+  }
+  return dep;
+}
+
+const reactiveHandlers = {
+  get(target, key, receiver) {
+    const dep = getDep(target, key);
+    dep.depend();
+    return Reflect.get(target, key, receiver);
+  },
+  set(target, key, value, receiver) {
+    const dep = getDep(target, key);
+    const result = Reflect.set(target, key, value, receiver);
+    dep.notify();
+    return result;
+  },
+};
+
+function reactive(raw) {
+  return new Proxy(raw, reactiveHandlers);
+}
+```
