@@ -1,0 +1,21 @@
+---
+title: Angular ngTemplateOutlet
+topics:
+  - angular
+date: 2022-07-23
+excerpt: Angular ngTemplateOutlet providing context data
+---
+
+<Quote>Repeat Code Block</Quote>
+
+```html
+<ng-template #titleTemplate let-text="title">
+  <h4 class="bg-success p-2 text-white">{{text}}</h4>
+</ng-template>
+
+<ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{title: 'Header'}"> </ng-template>
+
+<div class="bg-info m-2 p-2 text-white">There are {{getProductCount()}} products.</div>
+
+<ng-template [ngTemplateOutlet]="titleTemplate" [ngTemplateOutletContext]="{title: 'Footer'}"> </ng-template>
+```
