@@ -1,0 +1,133 @@
+---
+title: Angular Validation
+topics:
+  - angular
+date: 2022-07-23
+excerpt: Angular Validation
+---
+
+## Validation Items
+
+- email
+- required
+- minlength.requiredLength
+- minlength.actualLength
+- maxlength.requiredLength
+- maxlength.actualLength
+- min.actual
+- min.min
+- max.actual
+- max.max
+- pattern.requiredPattern
+- pattern.actualValue
+
+## Simple Solution
+
+```html
+<li *ngIf="name.errors?.['minlength']">
+  Product names must be at least {{ name.errors?.['minlength'].requiredLength }} characters
+</li>
+```
+
+## Reusable
+
+```ts
+import {NgModel, ValidationErrors, NgForm} from '@angular/forms';
+
+export class ProductComponent {
+  getMessages(errs: ValidationErrors | null, name: string): string[] {
+    let messages: string[] = [];
+
+    for (let errorName in errs) {
+      switch (errorName) {
+        case 'required':
+          messages.push(`You must enter a ${name}`);
+          break;
+
+        case 'minlength':
+          messages.push(`A ${name} must be at least ${errs['minlength'].requiredLength} characters`);
+          break;
+
+        case 'pattern':
+          messages.push(`The ${name} contains illegal characters`);
+          break;
+      }
+    }
+    return messages;
+  }
+
+  getValidationMessages(state: NgModel, thingName?: string) {
+    let thing: string = state.path?.[0] ?? thingName;
+    return this.getMessages(state.errors, thing);
+  }
+
+  // display summary validation messages
+  getFormValidationMessages(form: NgForm): string[] {
+    let messages: string[] = [];
+
+    Object.keys(form.controls).forEach((k) => {
+      this.getMessages(form.controls[k].errors, k).forEach((m) => messages.push(m));
+    });
+    return messages;
+  }
+
+  submitting = false;
+
+  submitForm(form: NgForm) {
+    this.submitting = true;
+
+    if (form.valid) {
+      this.addProduct(this.newProduct);
+      form.resetForm();
+      this.submitting = false;
+    }
+  }
+}
+```
+
+```html
+<form #form="ngForm" (ngSubmit)="submitForm(form)">
+  <div class="bg-danger mb-2 p-2 text-white" *ngIf="submitting && form.invalid">
+    There are problems with the form. Below is the summary validation errors:
+    <ul>
+      <li *ngFor="let error of getFormValidationMessages(form)">{{error}}</li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Name</label>
+
+    <input
+      class="form-control"
+      name="name"
+      [(ngModel)]="newProduct.name"
+      #name="ngModel"
+      required
+      minlength="5"
+      pattern="^[A-Za-z ]+$"
+    />
+
+    <ul class="text-danger list-unstyled mt-1" *ngIf="(submitting || name.dirty) && name.invalid">
+      <li *ngFor="let error of getValidationMessages(name)">{{error}}</li>
+    </ul>
+  </div>
+
+  <button
+    class="btn btn-primary mt-2"
+    type="submit"
+    [disabled]="submitting && form.invalid"
+    [class.btn-secondary]="submitting && form.invalid"
+  >
+    Create
+  </button>
+</form>
+```
+
+```css
+form.ng-submitted input.ng-invalid {
+  border: 2px solid #ff0000;
+}
+form.ng-submitted input.ng-valid {
+  border: 2px solid #6bc502;
+}
+```
