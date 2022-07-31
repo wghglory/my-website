@@ -1,0 +1,29 @@
+---
+title: Angular ngDoCheck
+topics:
+  - angular
+date: 2022-07-23
+excerpt: IterableDiffer and ngDoCheck
+---
+
+```ts
+export class ProductTableComponent {
+  constructor(private repository: ProductRepository, differs: IterableDiffers) {
+    this.differ = differs.find(this.repository.getProducts()).create();
+  }
+
+  dataSource = new MatTableDataSource<Product>(this.repository.getProducts());
+  differ: IterableDiffer<Product>;
+
+  ngDoCheck() {
+    let changes = this.differ?.diff(this.repository.getProducts());
+
+    // if the data in the repository has been changed, then I refresh the data source, which has the effect of updating the table.
+    if (changes != null) {
+      this.dataSource.data = this.repository.getProducts();
+    }
+  }
+}
+```
+
+Another way: rxjs
