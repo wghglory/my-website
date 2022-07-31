@@ -1,0 +1,347 @@
+---
+title: Attribute Directive
+topics:
+  - angular
+date: 2022-07-09
+excerpt: Angular Custom Attribute Directive
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Directive
+---
+
+## Simple Directive
+
+Define a simple Attribute Directive:
+
+```ts
+import {Directive, ElementRef} from '@angular/core';
+
+@Directive({selector: '[pa-attr]'})
+export class PaAttrDirective {
+  constructor(element: ElementRef) {
+    element.nativeElement.classList.add('table-success', 'fw-bold');
+  }
+}
+```
+
+Apply the directive:
+
+```html {11}
+<table class="table-bordered table-striped table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of getProducts(); let i = index" pa-attr>
+      <td>{{i + 1}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.category}}</td>
+      <td>{{item.price}}</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## Reading Host Element Attribute
+
+Different columns apply different colors:
+
+```html {5,6}
+<tr *ngFor="let item of getProducts(); let i = index">
+  <td>{{i + 1}}</td>
+  <td>{{item.name}}</td>
+
+  <td pa-attr pa-attr-class="table-warning">{{item.category}}</td>
+  <td pa-attr pa-attr-class="table-info">{{item.price}}</td>
+</tr>
+```
+
+```ts
+import {Directive, ElementRef, Attribute} from '@angular/core';
+
+@Directive({selector: '[pa-attr]'})
+export class PaAttrDirective {
+  constructor(element: ElementRef, @Attribute('pa-attr-class') bgClass: string) {
+    element.nativeElement.classList.add(bgClass || 'table-success', 'fw-bold');
+  }
+}
+```
+
+## Using a Single Host Element Attribute
+
+```ts {6}
+import {Directive, ElementRef, Attribute} from '@angular/core';
+
+@Directive({
+  selector: '[pa-attr]',
+})
+export class PaAttrDirective {
+  constructor(element: ElementRef, @Attribute('pa-attr') bgClass: string) {
+    element.nativeElement.classList.add(bgClass || 'table-success', 'fw-bold');
+  }
+}
+```
+
+```html
+<td pa-attr="table-warning">{{item.category}}</td>
+<td pa-attr="table-info">{{item.price}}</td>
+```
+
+## Using a Input property
+
+```ts
+import {Directive, ElementRef, Input} from '@angular/core';
+
+@Directive({
+  selector: '[pa-attr]',
+})
+export class PaAttrDirective {
+  constructor(private element: ElementRef) {}
+
+  @Input('pa-attr') bgClass: string | null = '';
+
+  ngOnInit() {
+    this.element.nativeElement.classList.add(this.bgClass || 'table-success', 'fw-bold');
+  }
+}
+```
+
+## Detecting Input Changes
+
+```diff
+import {Directive, ElementRef, Input, SimpleChanges} from '@angular/core';
+
+@Directive({selector: '[pa-attr]'})
+export class PaAttrDirective {
+  constructor(private element: ElementRef) {}
+
+  @Input('pa-attr') bgClass: string | null = '';
+
+-  ngOnInit() {
+-    this.element.nativeElement.classList.add(this.bgClass || 'table-success', 'fw-bold');
+-  }
+
++  ngOnChanges(changes: SimpleChanges) {
++    let change = changes['bgClass'];
++
++    let classList = this.element.nativeElement.classList;
++    if (!change.isFirstChange() && classList.contains(change.previousValue)) {
++      classList.remove(change.previousValue);
++    }
++    if (!classList.contains(change.currentValue)) {
++      classList.add(change.currentValue);
++    }
++  }
+}
+```
+
+## Creating Custom Events
+
+```ts {6-10}
+import {Directive, ElementRef, Input, SimpleChanges, Output, EventEmitter} from '@angular/core';
+import {Product} from './product.model';
+
+@Directive({selector: '[pa-attr]'})
+export class PaAttrDirective {
+  constructor(private element: ElementRef) {
+    this.element.nativeElement.addEventListener('click', () => {
+      if (this.product != null) {
+        this.click.emit(this.product.category);
+      }
+    });
+  }
+
+  @Input('pa-attr') bgClass: string | null = '';
+  @Input('pa-product') product: Product = new Product();
+
+  @Output('pa-category') click = new EventEmitter<string>();
+
+  ngOnChanges(changes: SimpleChanges) {
+    let change = changes['bgClass'];
+
+    let classList = this.element.nativeElement.classList;
+    if (!change.isFirstChange() && classList.contains(change.previousValue)) {
+      classList.remove(change.previousValue);
+    }
+    if (!classList.contains(change.currentValue)) {
+      classList.add(change.currentValue);
+    }
+  }
+}
+```
+
+```html
+<tr
+  *ngFor="let item of getProducts(); let i = index"
+  [pa-attr]="getProducts().length < 6 ? 'table-success' : 'table-warning'"
+  [pa-product]="item"
+  (pa-category)="newProduct.category = $event"
+>
+  <td>{{i + 1}}</td>
+  <td>{{item.name}}</td>
+
+  <td [pa-attr]="item.category == 'Soccer' ? 'table-info' : null">{{item.category}}</td>
+  <td [pa-attr]="'table-info'">{{item.price}}</td>
+</tr>
+```
+
+## Creating Host Element Bindings ❤️
+
+The example directive relies on the browser’s DOM API to manipulate its host element, both to add and remove class
+memberships and to receive the click event. Working with the DOM API in an Angular application is a useful technique,
+but it does mean that your directive can be used only in applications that are run in a web browser. <strong>Angular is
+intended to be run in a range of different execution environments, and not all of them can be assumed to provide the DOM
+API.</strong>
+
+<Quote>
+  Even if you are sure that a directive will have access to the DOM, the same results can be achieved in a more elegant
+  way using standard Angular directive features: property and event bindings. Rather than use the DOM to add and remove
+  classes, a class binding can be used on the host element. And rather than use the addEventListener method, an event
+  binding can be used to deal with the mouse click.
+</Quote>
+
+Behind the scenes, Angular implements these features using the DOM API when the directive is used in a web browser—or
+some equivalent mechanism when the directive is used in a different environment.
+
+<Quote>
+  Bindings on the host element are defined using two decorators, `@HostBinding` and `@HostListener`, both of which are
+  defined in the @angular/core module.
+</Quote>
+
+```ts {15, 20}
+import {
+  Directive,
+  ElementRef,
+  Input,
+  SimpleChanges,
+  Output,
+  EventEmitter,
+  HostListener,
+  HostBinding,
+} from '@angular/core';
+import {Product} from './product.model';
+
+@Directive({selector: '[pa-attr]'})
+export class PaAttrDirective {
+  @Input('pa-attr') @HostBinding('class') bgClass: string | null = '';
+  @Input('pa-product') product: Product = new Product();
+
+  @Output('pa-category') click = new EventEmitter<string>();
+
+  @HostListener('click') triggerCustomEvent() {
+    if (this.product != null) {
+      this.click.emit(this.product.category);
+    }
+  }
+}
+```
+
+Using the host element bindings means that the directive constructor can be removed since there is no longer any need to
+access the HTML element via the ElementRef object. Instead, Angular takes care of setting up the event listener and
+setting the element’s class membership through the property binding.
+
+## Creating a Two-Way Binding on the Host Element
+
+```html {5,6}
+<div class="form-group bg-info p-2 text-white">
+  <label>Name:</label>
+
+  <input
+    class="bg-primary form-control text-white"
+    [paModel]="newProduct.name"
+    (paModelChange)="newProduct.name = $event"
+  />
+
+  Or
+
+  <input class="bg-primary form-control text-white" [(paModel)]="newProduct.name" />
+</div>
+```
+
+```ts
+import {Input, Output, EventEmitter, Directive, HostBinding, HostListener, SimpleChange} from '@angular/core';
+
+@Directive({selector: 'input[paModel]'})
+export class PaModel {
+  @Input('paModel') modelProperty: string | undefined = '';
+
+  @HostBinding('value') fieldValue: string = '';
+
+  ngOnChanges(changes: {[property: string]: SimpleChange}) {
+    let change = changes['modelProperty'];
+
+    if (change.currentValue != this.fieldValue) {
+      this.fieldValue = changes['modelProperty'].currentValue || '';
+    }
+  }
+
+  @Output('paModelChange') update = new EventEmitter<string>();
+
+  @HostListener('input', ['$event.target.value'])
+  updateValue(newValue: string) {
+    this.fieldValue = newValue;
+    this.update.emit(newValue);
+  }
+}
+```
+
+## Exporting a Directive for Use in a Template Variable ❤️
+
+Angular has a built-in directive: `ngForm`. The `form` template variable is assigned `ngForm`, which is then used to
+access validation information for the HTML form.
+
+```html
+<form #form="ngForm" (ngSubmit)="submitForm(form)"></form>
+```
+
+```diff
+import {Input, Output, EventEmitter, Directive, HostBinding, HostListener, SimpleChange} from '@angular/core';
+
+@Directive({
+  selector: 'input[paModel]',
++  exportAs: 'paModel',
+})
+export class PaModel {
++  direction: string = 'None';
+
+  @Input('paModel') modelProperty: string | undefined = '';
+
+  @HostBinding('value') fieldValue: string = '';
+
+  ngOnChanges(changes: {[property: string]: SimpleChange}) {
+    let change = changes['modelProperty'];
+
+    if (change.currentValue != this.fieldValue) {
+      this.fieldValue = changes['modelProperty'].currentValue || '';
+
++      this.direction = 'Model';
+    }
+  }
+
+  @Output('paModelChange') update = new EventEmitter<string>();
+
+  @HostListener('input', ['$event.target.value'])
+  updateValue(newValue: string) {
+    this.fieldValue = newValue;
+    this.update.emit(newValue);
+
++    this.direction = 'Element';
+  }
+}
+```
+
+> The exportAs property of the @Directive decorator specifies a name that will be used to refer to the directive in
+> template variables. This example uses paModel as the value—also known as the identifier—for the exportAs property, and
+> you should try to use names that make it clear which directive is providing the functionality.
+
+```html
+<input class="bg-primary form-control text-white" [(paModel)]="newProduct.name" #pa="paModel" />
+
+<div class="bg-info p-1 text-white">Direction: {{pa.direction}}</div>
+```
