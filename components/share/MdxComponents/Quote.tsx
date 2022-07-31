@@ -3,9 +3,11 @@ import cn from 'classnames';
 export default function Quote({
   color = 'green',
   children,
+  title,
 }: {
   color: 'green' | 'sky' | 'orange' | 'red';
   children: React.ReactNode;
+  title?: string;
 }) {
   return (
     <div
@@ -19,6 +21,7 @@ export default function Quote({
         'my-6 rounded border-l-4  px-4 py-1',
       )}
     >
+      {title && <div className="py-4 text-3xl">{title}</div>}
       {children}
     </div>
   );
