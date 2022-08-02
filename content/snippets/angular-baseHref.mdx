@@ -1,0 +1,32 @@
+---
+title: Angular baseHref
+topics:
+  - angular
+date: 2022-07-24
+excerpt: Angular baseHref
+---
+
+```ts
+import {APP_BASE_HREF, PlatformLocation, registerLocaleData} from '@angular/common';
+
+export function getBaseHref(platformLocation: PlatformLocation): string {
+  return platformLocation.getBaseHrefFromDOM();
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: APP_BASE_HREF,
+      useFactory: getBaseHref,
+      deps: [PlatformLocation],
+    },
+  ],
+})
+export class AppModule {}
+```
+
+```ts
+export class ConsumeComponent {
+  constructor(@Inject(APP_BASE_HREF) baseHref: string) {}
+}
+```
