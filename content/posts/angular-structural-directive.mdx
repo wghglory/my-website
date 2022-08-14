@@ -1,0 +1,559 @@
+---
+title: Structural Directive
+topics:
+  - angular
+date: 2022-07-10
+excerpt: Angular Custom Structural Directive
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Directive
+---
+
+## \*ngIf
+
+Suppose let's create a `*paIf` like `*ngIf`, and use it as `<ng-template [paIf]="showTable"></ng-template>` or `*paIf`.
+
+```ts
+import {Directive, SimpleChanges, ViewContainerRef, TemplateRef, Input} from '@angular/core';
+
+@Directive({selector: '[paIf]'})
+export class PaStructureDirective {
+  constructor(private container: ViewContainerRef, private template: TemplateRef<Object>) {}
+
+  @Input('paIf') expressionResult: boolean | undefined;
+
+  ngOnChanges(changes: SimpleChanges) {
+    let change = changes['expressionResult'];
+
+    if (!change.isFirstChange() && !change.currentValue) {
+      // clear element
+      this.container.clear();
+    } else if (change.currentValue) {
+      // add a view to the view container, arg is a TemplateRef object, which represents the content of ng-template element
+      this.container.createEmbeddedView(this.template);
+    }
+  }
+}
+```
+
+The `ViewContainerRef` object is used to manage the contents of the view container, which is the part of the HTML
+document where the ng-template element appears and for which the directive is responsible.
+
+As its name suggests, the view container is responsible for managing a collection of views. A view is a region of HTML
+elements that contains directives, bindings, and expressions, and they are created and managed using the methods and
+properties provided by the ViewContainerRef class.
+
+## Useful ViewContainerRef Methods and properties
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    [
+      'element',
+      <span>
+        returns an <code>ElementRef</code> object that represents the container element
+      </span>,
+    ],
+    [
+      'createEmbeddedView(template)',
+      'This method uses a template to create a new view. This method also accepts optional arguments for context data and an index position that specifies where the view should be inserted. The result is a ViewRef object that can be used with the other methods in this table',
+    ],
+    ['clear()', 'remove all views from the container'],
+    ['length', 'number of views in the container'],
+    [
+      'get(index)',
+      <span>
+        return the <code>viewRef</code> object representing the view at the specified index
+      </span>,
+    ],
+    [
+      'indexOf(view)',
+      <span>
+        return the index of the specified <code>ViewRef</code> object
+      </span>,
+    ],
+    ['insert(view, index)', 'insert a view at the specified index'],
+    ['remove(index)', 'remove and destroy the view at the specified index'],
+    [
+      'detach(index)',
+      'detach the view at the specified index without destroying it so that it can be repositioned with the insert method',
+    ],
+  ]}
+/>
+
+## \*ngFor
+
+We're gonna create a \*paFor and consume it like below:
+
+```html
+<tbody>
+  <ng-template [paForOf]="getProducts()" let-item>
+    <tr>
+      <td colspan="4">{{item.name}}</td>
+    </tr>
+  </ng-template>
+</tbody>
+```
+
+The name of this attribute is important. When using an ng-template element, the name of the data source attribute must
+end with `Of` to support the concise syntax, which I will introduce shortly.
+
+The second attribute `let-item` is used to define the implicit value, which allows the currently processed object to be
+referred to within the `ng-template` element as the directive iterates through the data source. Unlike other template
+variables, the implicit variable isn’t assigned a value, and its purpose is only to define the variable name.
+
+In this example, I have used `let-item` to tell Angular that I want the implicit value to be assigned to a variable
+called item, which is then used within a string interpolation binding to display the `name` property of the current data
+item.
+
+```ts
+import {Directive, ViewContainerRef, TemplateRef, Input} from '@angular/core';
+
+@Directive({selector: '[paForOf]'})
+export class PaIteratorDirective {
+  constructor(private container: ViewContainerRef, private template: TemplateRef<Object>) {}
+
+  @Input('paForOf') dataSource: any;
+
+  ngOnInit() {
+    this.container.clear();
+    for (let i = 0; i < this.dataSource.length; i++) {
+      this.container.createEmbeddedView(this.template, new PaIteratorContext(this.dataSource[i]));
+    }
+  }
+}
+
+class PaIteratorContext {
+  constructor(public $implicit: any) {}
+}
+```
+
+When calling the `createEmbeddedView` method, the directive provides two arguments: the `TemplateRef` object received
+through the constructor and a context object. The `TemplateRef` object provides the content to insert into the
+container, and the context object provides the data for the implicit value, which is specified using a property called
+`$implicit`. It is this object, with its `$implicit` property, that is assigned to the item template variable and that
+is referred to in the string interpolation binding. To provide templates with the context object in a type-safe way, I
+defined a class called `PaIteratorContext`, whose only property is called `$implicit`.
+
+### Providing Additional Context Data
+
+Structural directives can provide templates with additional values to be assigned to template variables and used in
+bindings. For example, the ngFor directive provides odd, even, first, and last values. Context values are provided
+through the same object that defines the `$implicit` property
+
+```diff
+@Directive({
+  selector: '[paForOf]',
+})
+export class PaIteratorDirective {
+  constructor(private container: ViewContainerRef, private template: TemplateRef<Object>) {}
+
+  @Input('paForOf') dataSource: any;
+
+  ngOnInit() {
+    this.container.clear();
+    for (let i = 0; i < this.dataSource.length; i++) {
+      this.container.createEmbeddedView(
+        this.template,
++        new PaIteratorContext(this.dataSource[i], i, this.dataSource.length),
+      );
+    }
+  }
+}
+
+class PaIteratorContext {
++   odd: boolean;
++   even: boolean;
++   first: boolean;
++   last: boolean;
+
++   constructor(public $implicit: any, public index: number, total: number) {
++     this.odd = index % 2 == 1;
++     this.even = !this.odd;
++     this.first = index == 0;
++     this.last = index == total - 1;
++   }
+}
+```
+
+Consume the directive:
+
+```html
+<ng-template [paForOf]="getProducts()" let-item let-i="index" let-odd="odd" let-even="even">
+  <tr [class.table-info]="odd" [class.table-warning]="even">
+    <td>{{i + 1}}</td>
+    <td>{{item.name}}</td>
+    <td>{{item.category}}</td>
+    <td>{{item.price}}</td>
+  </tr>
+</ng-template>
+```
+
+### Dealing with Property-Level Data Changes
+
+```diff
+class PaIteratorContext {
+  odd: boolean;
+  even: boolean;
+  first: boolean;
+  last: boolean;
+
+  constructor(public $implicit: any, public index: number, total: number) {
+    this.odd = index % 2 == 1;
+    this.even = !this.odd;
+    this.first = index == 0;
+    this.last = index == total - 1;
+
++    setInterval(() => {
++      this.odd = !this.odd;
++      this.even = !this.even;
++      this.$implicit.price++;
++    }, 2000);
+  }
+}
+```
+
+This code means every 2s, the odd and even will switch and price slowly increases.
+
+### Dealing with Collection-Level Data Changes
+
+The second type of change occurs when the objects within the collection are added, removed, or replaced. Angular doesn’t
+detect this kind of change automatically, which means the iterating directive’s `ngOnChanges` method won’t be invoked.
+Receiving notifications about collection-level changes is done by implementing the `ngDoCheck` method.
+
+bad code:
+
+```diff
+export class PaIteratorDirective {
+  constructor(private container: ViewContainerRef, private template: TemplateRef<Object>) {}
+  @Input('paForOf') dataSource: any;
+
++  ngOnInit() {
++    this.updateContent();
++  }
++  ngDoCheck() {
++    console.log('ngDoCheck Called');
++    this.updateContent();
++  }
++  private updateContent() {
++    this.container.clear();
++    for (let i = 0; i < this.dataSource.length; i++) {
++      this.container.createEmbeddedView(
++        this.template,
++        new PaIteratorContext(this.dataSource[i], i, this.+dataSource.length),
++      );
++    }
++  }
+}
+```
+
+Why bad? Because every key stroke in the page will trigger ngDoCheck, which triggered the views to clear and
+re-generate.
+
+How to solve this issue?
+
+```diff
+import {
+  Directive,
+  ViewContainerRef,
+  TemplateRef,
+  Input,
+  IterableDiffer,
+  IterableDiffers,
+  IterableChangeRecord,
+} from '@angular/core';
+
+@Directive({
+  selector: '[paForOf]',
+})
+export class PaIteratorDirective {
+  private differ: IterableDiffer<any> | undefined;
+  constructor(
+    private container: ViewContainerRef,
+    private template: TemplateRef<Object>,
++    private differs: IterableDiffers,
+  ) {}
+  @Input('paForOf') dataSource: any;
+
+  ngOnInit() {
+    // Angular includes built-in classes, known as differs, that can detect changes in different types of objects. The IterableDiffers.find method accepts an object and returns an IterableDifferFactory object that is capable of creating a differ class for that object. The IterableDifferFactory class defines a create method that returns a IterableDiffer object that will perform the change detection
++    this.differ = <IterableDiffer<any>>this.differs.find(this.dataSource).create();
+  }
+
+  ngDoCheck() {
+    // The IterableDiffer.diff method accepts an object for comparison and returns an IterableChanges object, which contains a list of the changes, or null if there have been no changes. Checking for the null result allows the directive to avoid unnecessary work when the ngDoCheck method is called for changes elsewhere in the application
++    let changes = this.differ?.diff(this.dataSource);
+
++    if (changes != null) {
++      console.log('ngDoCheck called, changes detected');
++      let arr: IterableChangeRecord<any>[] = [];
++      changes.forEachAddedItem((addition) => arr.push(addition));
++      arr.forEach((addition) => {
++        if (addition.currentIndex != null) {
++          this.container.createEmbeddedView(
++            this.template,
++            new PaIteratorContext(addition.item, addition.currentIndex, arr.length),
++          );
++        }
++      });
+    }
+  }
+}
+```
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    ['forEachItem(func)', 'This method invokes the specified function for each object in the collection.'],
+    [
+      'forEachPreviousItem(func)',
+      'This method invokes the specified function for each object in the previous version of the collection.',
+    ],
+    ['forEachAddedItem(func)', 'This method invokes the specified function for each new object in the collection.'],
+    [
+      'forEachMovedItem(func)',
+      'This method invokes the specified function for each object whose position has changed.',
+    ],
+    [
+      'forEachRemovedItem(func)',
+      'This method invokes the specified function for each object that was removed from the collection.',
+    ],
+    [
+      'forEachIdentityChange(func)',
+      'This method invokes the specified function for each object whose identity has changed.',
+    ],
+  ]}
+/>
+
+Add delete functionality:
+
+```diff
+import {
+  Directive,
+  ViewContainerRef,
+  TemplateRef,
+  Input,
+  IterableDiffer,
+  IterableDiffers,
+  ChangeDetectorRef,
+  IterableChangeRecord,
+  ViewRef,
+} from '@angular/core';
+
+export class PaIteratorDirective {
+  private differ: IterableDiffer<any> | undefined;
++  private views: Map<any, PaIteratorContext> = new Map<any, PaIteratorContext>();
+
+  constructor(
+    private container: ViewContainerRef,
+    private template: TemplateRef<Object>,
+    private differs: IterableDiffers,
+    private changeDetector: ChangeDetectorRef,
+  ) {}
+
+  @Input('paForOf') dataSource: any;
+
+  ngOnInit() {
+    this.differ = <IterableDiffer<any>>this.differs.find(this.dataSource).create();
+  }
+  ngDoCheck() {
+    let changes = this.differ?.diff(this.dataSource);
+    if (changes != null) {
+      let arr: IterableChangeRecord<any>[] = [];
+      changes.forEachAddedItem((addition) => arr.push(addition));
+      arr.forEach((addition) => {
+        if (addition.currentIndex != null) {
++          let context = new PaIteratorContext(addition.item, addition.currentIndex, arr.length);
++          context.view = this.container.createEmbeddedView(this.template, context);
++          this.views.set(addition.trackById, context);
+        }
+      });
++      let removals = false;
++      changes.forEachRemovedItem((removal) => {
++        removals = true;
++        let context = this.views.get(removal.trackById);
++        if (context != null && context.view != null) {
++          this.container.remove(this.container.indexOf(context.view));
++          this.views.delete(removal.trackById);
++        }
++      });
++      if (removals) {
++        let index = 0;
++        this.views.forEach((context) => context.setData(index++, this.views.size));
++      }
+    }
+  }
+}
+
+class PaIteratorContext {
+  index: number = 0;
+  odd: boolean = false;
+  even: boolean = false;
+  first: boolean = false;
+  last: boolean = false;
++  view: ViewRef | undefined;
+
+  constructor(public $implicit: any, public position: number, total: number) {
+    this.setData(position, total);
+  }
+  setData(index: number, total: number) {
+    this.index = index;
+    this.odd = index % 2 == 1;
+
+    this.even = !this.odd;
+    this.first = index == 0;
+    this.last = index == total - 1;
+  }
+}
+```
+
+Two tasks are required to handle removed objects. The first task is updating the set of views by removing the ones that
+correspond to the items provided by the `forEachRemovedItem` method. This means keeping track of the mapping between the
+data objects and the views that represent them, which I have done by adding a `ViewRef` property to the
+`PaIteratorContext` class and using a `Map` to collect them, indexed by the value of the
+`IterableChangeRecord.trackById` property. When processing the collection changes, the directive handles each removed
+object by retrieving the corresponding PaIteratorContext object from the Map, getting its `ViewRef` object, and passing
+it to the `ViewContainerRef.remove` element to remove the content associated with the object from the view container.
+
+The second task is to update the context data for those objects that remain so that the bindings that rely on a view’s
+position in the view container are updated correctly. The directive calls the `PaIteratorContext.setData` method for
+each context object left in the Map to update the view’s position in the container and to update the total number of
+views that are in use.
+
+## Querying the Host Element Content
+
+a attribute directive operates on `td` elements and that binds to the class property of the host element. The `setColor`
+method accepts a Boolean parameter that, when the value is true, sets the class property to table-dark.
+
+```ts
+import {Directive, HostBinding} from '@angular/core';
+@Directive({
+  selector: 'td',
+})
+export class PaCellColor {
+  @HostBinding('class')
+  bgClass: string = '';
+
+  setColor(dark: Boolean) {
+    this.bgClass = dark ? 'table-dark' : '';
+  }
+}
+```
+
+The PaCellColor class will be the directive that is embedded in the host element’s content in this example. The goal is
+to write another directive that will query its host element to locate the embedded directive and invoke its setColor
+method. To that end, I added a file called cellColorSwitcher.directive
+
+```ts
+import {Directive, Input, SimpleChanges, ContentChild} from '@angular/core';
+import {PaCellColor} from './cellColor.directive';
+@Directive({
+  selector: 'table',
+})
+export class PaCellColorSwitcher {
+  @Input('paCellDarkColor') modelProperty: Boolean | undefined;
+  @ContentChild(PaCellColor) contentChild: PaCellColor | undefined;
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.contentChild != null) {
+      this.contentChild.setColor(changes['modelProperty'].currentValue);
+    }
+  }
+}
+```
+
+The `@ContentChild` decorator tells Angular that the directive needs to query the host element’s content and assign the
+first result of the query to the property. The argument to the `@ContentChild` director is one or more directive
+classes. In this case, the argument to the `@ContentChild` decorator is PaCellColor, which tells Angular to locate the
+first PaCellColor object contained within the host element’s content and assign it to the decorated property.
+
+> You can also query using template variable names, such that `@ContentChild`("myVariable") will find the first
+> directive that has been assigned to myVariable.
+
+The query result provides the PaCellColorSwitcher directive with access to the child component and allows it to call the
+setColor method in response to changes to the input property.
+
+> if you want to include the descendants of children in the results, then you can configure the query, like this:
+> `@ContentChild(PaCellColor, { descendants: true})`.
+
+```html
+<div class="form-check">
+  <label class="form-check-label">Dark Cell Color</label>
+  <input type="checkbox" class="form-check-input" [(ngModel)]="darkColor" />
+</div>
+<table class="table-sm table-bordered table-striped table" [paCellDarkColor]="darkColor"></table>
+
+<!-- darkColor: boolean = false; -->
+```
+
+## Querying Multiple Content Children
+
+The `@ContentChild` decorator finds the first directive object that matches the argument and assigns it to the decorated
+property. If you want to receive all the directive objects that match the argument, then you can use the
+`@ContentChildren` decorator instead.
+
+```ts
+import {Directive, Input, SimpleChanges, ContentChildren, QueryList} from '@angular/core';
+
+import {PaCellColor} from './cellColor.directive';
+
+@Directive({
+  selector: 'table',
+})
+export class PaCellColorSwitcher {
+  @Input('paCellDarkColor') modelProperty: Boolean | undefined;
+  @ContentChildren(PaCellColor, {descendants: true}) contentChildren: QueryList<PaCellColor> | undefined;
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.updateContentChildren(changes['modelProperty'].currentValue);
+  }
+
+  private updateContentChildren(dark: Boolean) {
+    if (this.contentChildren != null && dark != undefined) {
+      this.contentChildren.forEach((child, index) => {
+        child.setColor(index % 2 ? dark : !dark);
+      });
+    }
+  }
+}
+```
+
+## Receiving Query Change Notifications
+
+The results of content queries are live, meaning that they are automatically updated to reflect additions, changes, or
+deletions in the host element’s content. Receiving a notification when there is a change in the query results requires
+using the Observable interface
+
+```diff
+import {Directive, Input, SimpleChanges, ContentChildren, QueryList} from '@angular/core';
+import {PaCellColor} from './cellColor.directive';
+
+@Directive({
+  selector: 'table',
+})
+export class PaCellColorSwitcher {
+  @Input('paCellDarkColor') modelProperty: Boolean | undefined;
+  @ContentChildren(PaCellColor, {descendants: true}) contentChildren: QueryList<PaCellColor> | undefined;
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.updateContentChildren(changes['modelProperty'].currentValue);
+  }
+
++  ngAfterContentInit() {
++    if (this.modelProperty != undefined) {
++      this.contentChildren?.changes.subscribe(() => {
++        this.updateContentChildren(this.modelProperty as Boolean);
++      });
++    }
++  }
+
+  private updateContentChildren(dark: Boolean) {
+    if (this.contentChildren != null && dark != undefined) {
+      this.contentChildren.forEach((child, index) => {
+        child.setColor(index % 2 ? dark : !dark);
+      });
+    }
+  }
+}
+```
