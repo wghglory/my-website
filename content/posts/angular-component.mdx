@@ -1,0 +1,149 @@
+---
+title: Understanding Component
+topics:
+  - angular
+date: 2022-07-11
+excerpt: Angular Component
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Component
+---
+
+## Advanced Styling Feature
+
+### Setting View Encapsulation
+
+By default, component-specific styles are implemented by writing the CSS that has been applied to the component so that
+it targets special attributes.
+
+```html
+<style>
+  div[_ngcontent-oni-c43] {
+    background-color: lightcoral;
+  }
+</style>
+
+<div _ngcontent-oni-c43="" class="form-group">
+  <label _ngcontent-oni-c43="">Name</label>
+  <input
+    _ngcontent-oni-c43=""
+    name="name"
+    class="form-control ng-untouched ng-pristine ng-valid"
+    ng-reflect-name="name"
+  />
+</div>
+```
+
+<Quote>
+  This is known as the component’s **view encapsulation** behavior, and what Angular is doing is emulating a feature
+  known as the shadow DOM.
+</Quote>
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    [
+      'Emulated',
+      'When this value is specified, Angular emulates the shadow DOM by writing content and styles to add attributes, as described earlier. This is the default behavior if no encapsulation value is specified in the @Component decorator.',
+    ],
+    [
+      'ShadowDom',
+      'When this value is specified, Angular uses the browser’s shadow DOM feature. This will work only if the browser implements the shadow DOM.',
+    ],
+    [
+      'None',
+      'When this value is specified, Angular simply adds the unmodified CSS styles to the head section of the HTML document and lets the browser figure out how to apply the styles using the normal CSS precedence rules.',
+    ],
+  ]}
+/>
+
+> The ShadowDom and None values should be used with caution. Browser support for the shadow DOM feature is improving but
+> has been patchy and was made more complex because there was an earlier version of the shadow DOM feature that was
+> abandoned in favor of the current approach.
+
+> The None option adds all the styles defined by components to the head section of the HTML document and lets the
+> browser figure out how to apply them. This has the benefit of working in all browsers, but the results are
+> unpredictable, and there is no isolation between the styles defined by different components.
+
+```diff
+import {Component, Output, EventEmitter, ViewEncapsulation} from '@angular/core';
+import {Product} from './product.model';
+
+@Component({
+  selector: 'pa-productform',
+  templateUrl: 'productForm.component.html',
+  styleUrls: ['productForm.component.css'],
++  encapsulation: ViewEncapsulation.ShadowDom,
+})
+export class ProductFormComponent {}
+```
+
+### Using the Shadow DOM CSS Selectors
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    [':host', 'match the component’s host element.'],
+    [':host-context(.classSelector)', 'match ancestors of the host element that have a specific class'],
+    [
+      '/deep/ , >>>, or ::ng-deep',
+      'used by a parent component to define styles that affect the elements in child component templates. This selector should be used only when the @Component decorator’s encapsulation property is set to emulated.',
+    ],
+  ]}
+/>
+
+```css
+/* find the current host's ancestors which has .angularApp class, and all input under that */
+:host-context(.angularApp) input {
+  background-color: lightgray;
+}
+```
+
+Some CSS style properties, such as `font-style`, are inherited by default, which means that setting such a property in a
+parent component will affect the elements in child component templates because the browser automatically applies the
+style.
+
+Other properties, such as `border`, are not inherited by default, and setting such a property in a parent component does
+not affect child component templates unless the `/deep/` or `>>>` selector is used.
+
+```diff
+@Component({
+  selector: 'app',
+  templateUrl: 'template.html',
++  styles: ['/deep/ div { border: 2px black solid; font-style:italic '],
+})
+export class ProductComponent {}
+```
+
+## Querying Template Content
+
+```diff
++ import {Component, Input, QueryList, ViewChildren} from '@angular/core';
+import {PaCellColor} from './cellColor.directive';
+
+@Component({selector: 'paProductTable', templateUrl: 'productTable.component.html'})
+export class ProductTableComponent {
++  @ViewChildren(PaCellColor) viewChildren: QueryList<PaCellColor> | undefined;
+
+// Called when the component’s view has been initialized.
+// The results of the view queries are set before this method is invoked.
++  ngAfterViewInit() {
++    this.viewChildren?.changes.subscribe(() => {
++      this.updateViewChildren();
++    });
++    this.updateViewChildren();
++  }
+
++  private updateViewChildren() {
++    setTimeout(() => {
++      this.viewChildren?.forEach((child, index) => {
++        child.setColor(index % 2 ? true : false);
++      });
++    }, 0);
++  }
+
+// called after the component’s view has been checked as part of the change detection process.
++  ngAfterViewChecked() {}
+}
+```
