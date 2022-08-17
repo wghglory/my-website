@@ -1,0 +1,191 @@
+---
+title: Angular Module
+topics:
+  - angular
+date: 2022-07-14
+excerpt: Angular Module
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Module
+---
+
+## Creating a Model Module
+
+- src/app/model/product.model.ts (`necessary`)
+- src/app/model/datasource.model.ts
+- src/app/model/repository.model.ts
+
+datasource.model.ts:
+
+```ts
+import {Injectable} from '@angular/core';
+import {Product} from './product.model';
+
+@Injectable()
+export class DataSource {
+  private data: Product[];
+
+  constructor() {
+    this.data = new Array<Product>(
+      new Product(1, 'Kayak', 'Watersports', 275),
+      new Product(2, 'Lifejacket', 'Watersports', 48.95),
+      new Product(3, 'Soccer Ball', 'Soccer', 19.5),
+      new Product(4, 'Corner Flags', 'Soccer', 34.95),
+      new Product(5, 'Thinking Cap', 'Chess', 16),
+    );
+  }
+
+  getData(): Product[] {
+    return this.data;
+  }
+}
+```
+
+repository.model.ts:
+
+```ts
+import {Injectable} from '@angular/core';
+import {Product} from './product.model';
+import {StaticDataSource} from './static.datasource';
+
+@Injectable()
+export class Repository {
+  private products: Product[];
+  private locator = (p: Product, id?: number) => p.id == id;
+
+  constructor(private dataSource: StaticDataSource) {
+    this.products = new Array<Product>();
+
+    this.dataSource.getData().forEach((p) => this.products.push(p));
+  }
+
+  getProducts(): Product[] {
+    return this.products;
+  }
+
+  getProduct(id: number): Product | undefined {
+    return this.products.find((p) => this.locator(p, id));
+  }
+
+  saveProduct(product: Product) {
+    if (product.id == 0 || product.id == null) {
+      product.id = this.generateID();
+      this.products.push(product);
+    } else {
+      let index = this.products.findIndex((p) => this.locator(p, product.id));
+      this.products.splice(index, 1, product);
+    }
+  }
+
+  deleteProduct(id: number) {
+    let index = this.products.findIndex((p) => this.locator(p, id));
+    if (index > -1) {
+      this.products.splice(index, 1);
+    }
+  }
+
+  private generateID(): number {
+    let candidate = 100;
+    while (this.getProduct(candidate) != null) {
+      candidate++;
+    }
+    return candidate;
+  }
+}
+```
+
+model.module.ts:
+
+```ts
+import {NgModule} from '@angular/core';
+import {DataSource} from './datasource.model';
+import {Repository} from './repository.model';
+
+@NgModule({providers: [Repository, DataSource]})
+export class ModelModule {}
+```
+
+## Message Module
+
+src/app/message folder.
+
+message.model.ts:
+
+```ts
+export class Message {
+  constructor(public text: string, public error: boolean = false) {}
+}
+```
+
+message.service.ts:
+
+```ts
+import {Injectable} from '@angular/core';
+import {Message} from './message.model';
+import {Observable, ReplaySubject, Subject} from 'rxjs';
+
+@Injectable()
+export class MessageService {
+  // ReplaySubject: new subscribers will immediately receive the most recent message.
+  messages: Observable<Message> = new ReplaySubject<Message>(1);
+
+  reportMessage(msg: Message) {
+    (this.messages as Subject<Message>).next(msg);
+  }
+}
+```
+
+message.component.ts:
+
+```ts
+import {Component} from '@angular/core';
+import {MessageService} from './message.service';
+import {Message} from './message.model';
+
+@Component({selector: 'paMessages', templateUrl: 'message.component.html'})
+export class MessageComponent {
+  lastMessage?: Message;
+
+  constructor(messageService: MessageService) {
+    messageService.messages.subscribe((msg) => (this.lastMessage = msg));
+  }
+}
+```
+
+message.component.html:
+
+```html
+<div *ngIf="lastMessage" class="bg-primary p-2 text-center text-white" [class.bg-danger]="lastMessage.error">
+  <h4>{{lastMessage.text}}</h4>
+</div>
+```
+
+message.module.ts:
+
+```ts
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {MessageComponent} from './message.component';
+import {MessageService} from './message.service';
+
+@NgModule({
+  imports: [BrowserModule],
+  declarations: [MessageComponent],
+  exports: [MessageComponent],
+  providers: [MessageService],
+})
+export class MessageModule {}
+```
+
+## Utility/Shared Module
+
+Include pipes, directives, and services. I will call it `shared.module.ts`. This module will import model module.
+
+```ts
+export class SharedModule {}
+```
+
+## Feature/Component Module
+
+For small apps, create a components module under `src/app/components/`.
