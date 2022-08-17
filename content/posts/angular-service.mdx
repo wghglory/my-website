@@ -1,0 +1,346 @@
+---
+title: Angular Services
+topics:
+  - angular
+date: 2022-07-13
+excerpt: Angular Service
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Services
+---
+
+## Angular Providers
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    [
+      'Class provider',
+      'This provider is configured using a class. Dependencies on the service are resolved by an instance of the class, which Angular creates.',
+    ],
+    [
+      'Value provider',
+      'This provider is configured using an object, which is used to resolve dependencies on the service.',
+    ],
+    [
+      'Factory provider',
+      'This provider is configured using a function. Dependencies on the service are resolved using an object that is created by invoking the function.',
+    ],
+    [
+      'Existing service provider',
+      'This provider is configured using the name of another service and allows aliases for services to be created.',
+    ],
+  ]}
+/>
+
+## Inject Token
+
+`logger` is the token. `provide: <token>`.
+
+```ts
+{ provide: "logger", useClass: LogService }
+```
+
+```ts
+@Injectable()
+export class DiscountService {
+  constructor(@Inject('logger') private logger: LogService) {}
+}
+```
+
+### Using Opaque Tokens
+
+Why? Avoid token duplicated name.
+
+```ts
+import {Injectable, InjectionToken} from '@angular/core';
+
+export const LOG_SERVICE = new InjectionToken('logger');
+```
+
+And register like this:
+
+```ts
+providers: [{ provide: LOG_SERVICE, useClass: LogService }],
+```
+
+Consume the service:
+
+```ts
+constructor(@Inject(LOG_SERVICE) private logger: LogService) { }
+```
+
+## Class Provider
+
+Use a class as the token.
+
+```ts
+providers: [{ provide: LogService, useClass: LogService, multi: false }],
+```
+
+When to use?
+
+Suppose we have a logger service, and we'd like to create a SpecialLoggerService, which extends LoggerService.
+
+```ts
+import {Injectable, InjectionToken} from '@angular/core';
+
+export const LOG_SERVICE = new InjectionToken('logger');
+
+export enum LogLevel {
+  DEBUG,
+  INFO,
+  ERROR,
+}
+
+@Injectable()
+export class LogService {
+  minimumLevel: LogLevel = LogLevel.INFO;
+
+  logInfoMessage(message: string) {
+    this.logMessage(LogLevel.INFO, message);
+  }
+
+  logDebugMessage(message: string) {
+    this.logMessage(LogLevel.DEBUG, message);
+  }
+
+  logErrorMessage(message: string) {
+    this.logMessage(LogLevel.ERROR, message);
+  }
+
+  logMessage(level: LogLevel, message: string) {
+    if (level >= this.minimumLevel) {
+      console.log(`Message (${LogLevel[level]}): ${message}`);
+    }
+  }
+}
+
+@Injectable()
+export class SpecialLogService extends LogService {
+  constructor() {
+    super();
+    this.minimumLevel = LogLevel.DEBUG;
+  }
+  override logMessage(level: LogLevel, message: string) {
+    if (level >= this.minimumLevel) {
+      console.log(`Special Message (${LogLevel[level]}): ${message}`);
+    }
+  }
+}
+```
+
+```ts
+providers: [
+  { provide: LOG_SERVICE, useClass: SpecialLogService }
+],
+```
+
+Now if we inject `LOG_SERVICE`, we will use `SpecialLogService`.
+
+### Resolving a Dependency with Multiple Objects
+
+Register the service with `multi` true:
+
+```ts
+providers: [
+  { provide: LOG_SERVICE, useClass: LogService, multi: true },
+  { provide: LOG_SERVICE, useClass: SpecialLogService, multi: true }
+],
+```
+
+Consume the service:
+
+> The services are received **as an array** by the constructor.
+
+```ts
+export class DiscountService {
+  private logger?: LogService;
+
+  constructor(@Inject(LOG_SERVICE) loggers: LogService[]) {
+    this.logger = loggers.find((l) => l.minimumLevel == LogLevel.DEBUG);
+  }
+}
+```
+
+## Using the Value Provider
+
+The value provider is used when you want to take responsibility for creating the service objects yourself, rather than
+leaving it to the class provider. This can also be useful when services are simple types, such as string or number
+values, which can be a useful way of providing access to common configuration settings.
+
+```ts
+let logger = new LogService();
+logger.minimumLevel = LogLevel.DEBUG;
+
+@NgModule({
+  providers: [{provide: LogService, useValue: logger}],
+})
+export class AppModule {}
+```
+
+## Using the Factory Provider
+
+The factory provider uses a function to create the object required to resolve a dependency.
+
+- provide: token
+
+- deps: specifies an array of provider tokens that will be resolved and passed to the function specified by the
+  useFactory property.
+
+- useFactory: specifies the function that will create the service object. The objects produced by resolving the tokens
+  specified by the deps property will be passed to the function as arguments. The result returned by the function will
+  be used as the service object.
+
+- multi: allow multiple providers to be combined to provide an array of objects that will be used to resolve a
+  dependency on the token.
+
+```ts
+providers: [{
+  provide: LogService,
+  useFactory: () => {
+    let logger = new LogService();
+    logger.minimumLevel = LogLevel.DEBUG;
+    return logger;
+  }
+}],
+```
+
+> The real flexibility of this provider comes when the deps property is used, which allows for dependencies to be
+> created on other services.
+
+```ts
+// log.service.ts
+import {Injectable, InjectionToken} from '@angular/core';
+
+export const LOG_SERVICE = new InjectionToken('logger');
+export const LOG_LEVEL = new InjectionToken('log_level');
+
+export enum LogLevel {
+  DEBUG,
+  INFO,
+  ERROR,
+}
+```
+
+```ts
+// app.module
+import {LogService, LOG_SERVICE, SpecialLogService, LogLevel, LOG_LEVEL} from './log.service';
+
+let logger = new LogService();
+logger.minimumLevel = LogLevel.DEBUG;
+
+@NgModule({
+  providers: [
+    {provide: LOG_LEVEL, useValue: LogLevel.DEBUG},
+    {
+      provide: LogService,
+      deps: [LOG_LEVEL],
+      useFactory: (level: LogLevel) => {
+        let logger = new LogService();
+
+        logger.minimumLevel = level;
+        return logger;
+      },
+    },
+  ],
+})
+export class AppModule {}
+```
+
+1. Whenever injecting `LOG_LEVEL`, it returns `LogLevel.DEBUG` due to useValue.
+1. When injecting LogService, it depends on `LOG_LEVEL`, useFactory injects `LogLevel.DEBUG`, so that
+   logger.minimumLevel is debug.
+
+## Using the Existing Service Provider
+
+This provider is used to create aliases for services so they can be targeted using more than one token.
+
+```ts
+@NgModule({
+  providers: [
+    {provide: LOG_LEVEL, useValue: LogLevel.DEBUG},
+    {provide: 'debugLevel', useExisting: LOG_LEVEL},
+    {
+      provide: LogService,
+      deps: [LOG_LEVEL],
+      useFactory: (level: LogLevel) => {
+        let logger = new LogService();
+
+        logger.minimumLevel = level;
+        return logger;
+      },
+    },
+  ],
+})
+export class AppModule {}
+```
+
+The token for the new service is the string `debugLevel`, and it is aliased to the provider with the `LOG_LEVEL` token.
+Using either token will result in the dependency being resolved with the same value.
+
+## Using Local Providers
+
+There is a hierarchy of injectors corresponding to the application’s tree of components and directives. Each component
+and directive can have its own injector, and each injector can be configured with its own set of providers, known as
+local providers.
+
+Sometimes we don't want a single root service!
+
+### Creating Local Providers in a Component
+
+- providers: create a provider used to resolve dependencies of view and content children.
+- viewProviders: create a provider used to resolve dependencies of view children.
+
+Use this LogService first, if not found, go up until root.
+
+```diff
+import {LogService} from './log.service';
+
+@Component({
+  selector: 'paProductTable',
+  templateUrl: 'productTable.component.html',
++  providers: [LogService],
+})
+export class ProductTableComponent {}
+```
+
+### Controlling Dependency Resolution
+
+- `@Host`: This decorator restricts the search for a provider to the nearest component.
+- `@Optional`: This decorator stops Angular from reporting an error if the dependency cannot be resolved.
+- `@SkipSelf`: This decorator excludes the providers defined by the component/directive whose dependency is being
+  resolved.
+
+#### Restricting the Provider Search
+
+The `@Host` decorator <span class="text-red-600">restricts the search</span> for a suitable provider so that it stops
+once the closest component has been reached. The decorator is typically combined with `@Optional`, which prevents
+Angular from throwing an exception if a service dependency cannot be resolved.
+
+```ts
+export class PaDisplayValueDirective {
+  constructor(@Inject(VALUE_SERVICE) @Host() @Optional() serviceValue: string) {
+    this.elementContent = serviceValue || 'No Value';
+  }
+}
+```
+
+#### Skipping Self-Defined Providers
+
+By default, the providers defined by a component are used to resolve its dependencies. The `@SkipSelf` decorator can be
+applied to constructor arguments to tell Angular to ignore the local providers and start the search at the next level in
+the application hierarchy, which means that the local providers will be used only to resolve dependencies for children.
+
+```ts
+@Component({
+  // won't be used by itself, but TestComponent's children will use it
+  viewProviders: [{provide: VALUE_SERVICE, useValue: 'Oranges'}],
+})
+export class TestComponent {
+  constructor(@Inject(VALUE_SERVICE) @SkipSelf() private serviceValue: string) {
+    console.log('Service Value: ' + serviceValue);
+  }
+}
+```
