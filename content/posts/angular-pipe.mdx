@@ -1,0 +1,248 @@
+---
+title: Angular Pipes
+topics:
+  - angular
+date: 2022-07-12
+excerpt: Angular Pipe
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Pipes
+---
+
+## Built-in Pipes
+
+- number
+- currency
+- percent
+- date
+- uppercase
+- lowercase
+- titlecase
+- json
+- slice: selects items from an array or characters from a string.
+  `<tr *paFor="let item of getProducts() | slice:0:(itemCount ?? 1); let i = index; let odd = odd;>`
+- keyvalue: transforms an object or map into a series of key-value pairs
+- i18nSelect: selects a text value to display for a set of values
+- i18nPlural: selects a pluralized string for a value
+
+## Currency and Number Pipe
+
+```html
+<!-- Format as US dollars  -->
+{{item.price | currency:"USD":"symbol"}}
+
+<!-- {{item.price | currency:"USD":"symbol":"2.2-2"}} -->
+
+<!-- <minIntegerDigits>.<minFactionDigits>-<maxFractionDigits> -->
+{{item.price | number:"3.2-2"}} e.g. 048.87
+```
+
+- minIntegerDigits: This value specifies the minimum number of digits. The default value is 1.
+- minFractionDigits: This value specifies the minimum number of fractional digits. The default value is 0.
+- maxFractionDigits: This value specifies the maximum number of fractional digits. The default value is 3.
+
+number pipe is locale sensitive, so if using French, the above number will be 048,87
+
+```ts
+import {LOCALE_ID} from '@angular/core';
+import localeFr from '@angular/common/locales/fr';
+import {registerLocaleData} from '@angular/common';
+
+registerLocaleData(localeFr);
+
+@NgModule({
+  providers: [{provide: LOCALE_ID, useValue: 'fr-FR'}],
+})
+export class AppModule {}
+```
+
+You can override the application’s locale setting by specifying a locale as a configuration option for the pipe, like
+this:
+
+```html
+{{item.price | number:"3.2-2":"en-US"}} e.g. 048.87
+```
+
+## Date Pipe
+
+```ts
+dateObject: Date = new Date(2020, 1, 20);
+dateString: string = '2020-02-20T00:00:00.000Z';
+dateNumber: number = 1582156800000;
+```
+
+```html
+<div>Date formatted from object: {{ dateObject | date }}</div>
+<div>Date formatted from string: {{ dateString | date }}</div>
+<div>Date formatted from number: {{ dateNumber | date }}</div>
+```
+
+<Table
+  columns={['Name', 'Description']}
+  data={[
+    [
+      'short',
+      'equivalent to the component string M/d/yy, h:mm a. It presents the date in a concise format, including the time component.',
+    ],
+    [
+      'medium',
+      'equivalent to the component string MMM d, y, h:mm:ss a. It presents the date as a more expansive format, including the time component.',
+    ],
+    [
+      'shortDate',
+      'equivalent to the component string M/d/yy. It presents the date in a concise format and excludes the time component.',
+    ],
+    [
+      'mediumDate',
+      'equivalent to the component string MMM d, y. It presents the date in a more expansive format and excludes the time component.',
+    ],
+    ['longDate', 'equivalent to the component string MMMM d, y. It presents the date and excludes the time component.'],
+    [
+      'fullDate',
+      'equivalent to the component string EEEE, MMMM d, y. It presents the date fully and excludes the date format.',
+    ],
+    ['shortTime', 'equivalent to the component string h:mm a.'],
+    ['mediumTime', 'equivalent to the component string h:mm:ss a.'],
+  ]}
+/>
+
+```html
+<div>Date formatted from object: {{ dateObject | date:"shortDate" }}</div>
+<div>Date formatted from string: {{ dateString | date:"mediumDate" }}</div>
+<div>Date formatted from number: {{ dateNumber | date:"longDate" }}</div>
+
+<div>Date formatted from object: {{ dateObject | date:"shortDate":"UTC":"fr-FR" }}</div>
+<div>Date formatted from string: {{ dateString | date:"mediumDate":"UTC":"fr-FR" }}</div>
+<div>Date formatted from number: {{ dateNumber | date:"longDate":"UTC":"fr-FR" }}</div>
+```
+
+## i18nSelect Selecting Values 👏
+
+The `i18nSelect` pipe selects a string based on a value, allowing context-sensitive values to be displayed to the user.
+The mapping between values and strings is defined as a simple map.
+
+```ts
+// component
+selectMap = {Watersports: 'stay dry', Soccer: 'score goals', other: 'have fun'};
+
+// in template
+{{ item.category | i18nSelect:selectMap }}
+```
+
+## i18nPlural Pluralizing Values
+
+The `i18nPlural` pipe is used to select an expression that describes a numeric value.
+
+```ts
+numberMap = {
+  '=1': 'one product',
+  '=2': 'two products',
+  other: '# products',
+};
+```
+
+```html
+<div>There are {{ 1 | i18nPlural:numberMap }}</div>
+<div>There are {{ 2 | i18nPlural:numberMap }}</div>
+<div>There are {{ 100 | i18nPlural:numberMap }}</div>
+```
+
+> In VMware, refer https://ngx.eng.vmware.com/@vmw/ngx-vip/plural-format/documentation
+
+## Custom Pipes
+
+Add tax Pipe:
+
+```ts
+import {Pipe} from '@angular/core';
+
+@Pipe({name: 'addTax'})
+export class PaAddTaxPipe {
+  defaultRate: number = 10;
+
+  transform(value: any, rate?: any): number {
+    let valueNumber = Number.parseFloat(value);
+    let rateNumber = rate == undefined ? this.defaultRate : Number.parseInt(rate);
+    return valueNumber + valueNumber * (rateNumber / 100);
+  }
+}
+```
+
+```html
+<select class="form-select" [value]="taxRate || 0" (change)="taxRate=$any($event).target.value">
+  <option value="0">None</option>
+  <option value="10">10%</option>
+  <option value="20">20%</option>
+  <option value="50">50%</option>
+</select>
+<div>{{ item.price | addTax:(taxRate || 0) }}</div>
+```
+
+## Combine Pipes
+
+```html
+{{ item.price | addTax:(taxRate || 0) | currency:"USD":"symbol" }}
+```
+
+## Creating Impure Pipes
+
+<Quote color="red">
+  Caution impure pipes should be used sparingly because angular has to call the transform method whenever there is any
+  data change or user interaction in the application, just in case it might result in a different result from the pipe.
+  if you do create an impure pipe, then keep it as simple as possible. performing complex operations, such as sorting an
+  array, can devastate the performance of an angular application.
+</Quote>
+
+```diff
+@Pipe({
+  name: 'filter',
++  pure: false,
+})
+export class PaCategoryFilterPipe {
+  transform(products: Product[] | undefined, category: string | undefined): Product[] {
+    if (products == undefined) {
+      return [];
+    }
+    return category == undefined ? products : products.filter((p) => p.category == category);
+  }
+}
+```
+
+### Inject Service in impure pipe
+
+```ts
+import {Injectable} from '@angular/core';
+@Injectable()
+export class DiscountService {
+  private discountValue: number = 10;
+  public get discount(): number {
+    return this.discountValue;
+  }
+
+  public set discount(newValue: number) {
+    this.discountValue = newValue || 0;
+  }
+
+  public applyDiscount(price: number) {
+    return Math.max(price - this.discountValue, 5);
+  }
+}
+```
+
+```ts
+import {Pipe} from '@angular/core';
+import {DiscountService} from './discount.service';
+
+@Pipe({name: 'discount', pure: false})
+export class PaDiscountPipe {
+  constructor(private discount: DiscountService) {}
+
+  transform(price: number): number {
+    return this.discount.applyDiscount(price);
+  }
+}
+```
+
+> this feature should be used with caution because it means that the transform method will be called after every change
+> in the application, not just when the service is changed.
