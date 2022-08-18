@@ -10,6 +10,8 @@ cover:
   subtitle: Form
 ---
 
+<Quote color="sky">source code can be found from [my github](https://github.com/wghglory/angular-form).</Quote>
+
 ## Useful Basic FormControl Members
 
 <Table
@@ -324,4 +326,207 @@ productForm: FormGroup = new FormGroup({
     </ul>
   </div>
 </ng-container>
+```
+
+---
+
+## FormArray - Creating Form Components Dynamically
+
+The `FormGroup` class is useful when the structure and number of elements in the form are known in advance. For
+applications that need to **dynamically add and remove elements, Angular provides the FormArray class**. Both
+`FormArray` and `FormControl` are derived from the `AbstractControl` class and provide the same features for managing
+FormGroup objects; the difference is that the `FormArray` class allows `FormControl` objects to be created <u>without
+specifying names and stores its controls as an array, making it easier to add and remove controls.</u>
+
+### Useful FormArray Members for Managing Controls
+
+- `controls`: This property returns an array containing the child controls.
+- `length`: This property returns the number of controls that are in the FormArray.
+- `at(index)`
+- `push(control)`
+- `insert(index, control)`
+- `setControl(index, control)`
+- `removeAt(index)`: This method replaces the control at the specified index.
+- `clear()`
+
+### The FormArray Methods for Setting Values
+
+- `setValue(values)`
+- `patchValue(values)`
+- `reset(values)`
+
+Now let's change keywords type to `string[]`.
+
+```diff
+export class Product {
+  constructor(
+    public id?: number,
+    public name?: string,
+    public category?: string,
+    public price?: number,
+    public details?: Details,
+  ) {}
+}
+
+export class Details {
++  constructor(public supplier?: string, public keywords?: string[]) {}
+}
+```
+
+```diff
+export class ProductDataSource {
+  constructor() {
+    this.data = new Array<Product>(
++      new Product(1, 'Kayak', 'Watersports', 275, {supplier: 'Acme', keywords: ['boat', 'small']}),
++      new Product(2, 'Lifejacket', 'Watersports', 48.95, {supplier: 'Smoot Co', keywords: ['safety']}),
+      new Product(3, 'Soccer Ball', 'Soccer', 19.5),
+    );
+  }
+}
+```
+
+```diff
+export class FormComponent implements OnInit {
++  keywordGroup = new FormArray([this.createKeywordFormControl()]);
+
+  productForm: FormGroup = new FormGroup({
+    name: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(3), Validators.pattern('^[A-Za-z ]+$')],
+      updateOn: 'change',
+    }),
+    category: new FormControl('', {validators: Validators.required}),
+    price: new FormControl('', {validators: [Validators.required, Validators.pattern('^[0-9.]+$')]}),
+    details: new FormGroup({
+      supplier: new FormControl('', {validators: Validators.required}),
+-      keywords: new FormControl('', {validators: Validators.required}),
++      keywords: this.keywordGroup,
+    }),
+  });
+
+  createKeywordFormControl(): FormControl {
++    return new FormControl('', {validators: Validators.pattern('^[A-Za-z ]+$')});
+  }
+
++  addKeywordControl() {
++    this.keywordGroup.push(this.createKeywordFormControl());
++  }
+
++  removeKeywordControl(index: number) {
++    this.keywordGroup.removeAt(index);
++  }
+
+  handleStateChange(newState: StateUpdate) {
+    this.editing = newState.mode == MODES.EDIT;
++    this.keywordGroup.clear();
+
+    if (this.editing && newState.id) {
+      Object.assign(this.product, this.repository.getProduct(newState.id) ?? new Product());
+
++      // create keyword input, whose count is based on the product keywords
++      this.product.details?.keywords?.forEach((val) => {
++        this.keywordGroup.push(this.createKeywordFormControl());
++      });
+    } else {
+      this.product = new Product();
+    }
+
++    // at least create one keyword input
++    if (this.keywordGroup.length == 0) {
++      this.keywordGroup.push(this.createKeywordFormControl());
++    }
+
++    // populate or clear the form controls when user clicks the Create New Product or Edit button:
++    this.productForm.reset(this.product);
+  }
+
+  submitForm() {
+    if (this.productForm.valid) {
+       // filter out empty keyword controls
++      this.product = this.productForm.value;
++      const keywords = this.product.details?.keywords?.filter((keyword) => keyword === '');
++      if (this.product.details) {
++        this.product.details.keywords = keywords;
++      }
+
+      this.repository.saveProduct(this.product);
+      this.product = new Product();
+
+      this.keywordGroup.clear();
+      this.keywordGroup.push(this.createKeywordFormControl());
+
+      this.productForm.reset();
+    }
+  }
+
+  resetForm() {
++    this.keywordGroup.clear();
++    this.keywordGroup.push(this.createKeywordFormControl());
+
+    this.editing = true;
+    this.product = new Product();
+    this.productForm.reset();
+  }
+}
+```
+
+```html
+<ng-container formGroupName="details">
+  <div class="form-group">
+    <label>Supplier</label>
+    <input class="form-control" formControlName="supplier" />
+    <ul class="text-danger list-unstyled mt-1">
+      <li *validationErrors="productForm; control: 'details.supplier'; label: 'supplier'; let err">{{ err }}</li>
+    </ul>
+  </div>
+  <!-- <div class="form-group">
+      <label>Keywords</label>
+      <input class="form-control" formControlName="keywords" />
+      <ul class="text-danger list-unstyled mt-1">
+        <li *validationErrors="productForm; control: 'details.keywords'; label: 'keyword'; let err">{{ err }}</li>
+      </ul>
+    </div> -->
+  <ng-container formGroupName="keywords">
+    <button class="btn btn-sm btn-primary my-2" (click)="addKeywordControl()" type="button">Add Keyword</button>
+
+    <div class="form-group" *ngFor="let c of keywordGroup.controls; let i = index; let count = count">
+      <label>Keyword {{ i + 1 }}</label>
+      <div class="input-group">
+        <input class="form-control" [formControlName]="i" [value]="c.value" />
+        <button *ngIf="count > 1" class="btn btn-danger" type="button" (click)="removeKeywordControl(i)">Delete</button>
+      </div>
+      <ul class="text-danger list-unstyled mt-1">
+        <li *validationErrors="productForm; control: 'details.keywords.' + i; label: 'keyword'; let err">{{ err }}</li>
+      </ul>
+    </div>
+  </ng-container>
+</ng-container>
+```
+
+We can create many keyword controls, when user submit the form, several keyword controls can be empty, we can use
+required validator to forbidden the submission. But I'd rather not force user to stop and hit delete button and allow
+empty values to be submitted. We can filter out empty strings from `form.value`.
+
+The other way is to use the below FilteredFormArray:
+
+```ts
+import {FormArray} from '@angular/forms';
+
+export type ValueFilter = (value: any) => boolean;
+
+/**
+ * filter out unwanted values ('' or null) for FormArray controls
+ * There are two issues with using methods like this.
+ * 1. that internal methods `_updateValue` are subject to change or removal without notice, which means that figure releases of Angular may remove the _ updateValue method and break the code
+ * 2. Angular packages are compiled using a TypeScript setting that excludes internal methods from the type declaration files that are used during project development. So TypeScript compiler doesn’t know that the FormArray class defines an _updateValue method and won’t allow the use of the override or the super keywords. For this reason, I have had to copy the original code from the FormArray class and integrate support for filtering, rather than just calling the FormArray implementation of the method and filtering the result.
+ */
+export class FilteredFormArray extends FormArray {
+  filter: ValueFilter | undefined = (val) => val === '' || val == null;
+
+  // _updateValue is internal API: originally defined as an abstract method in the AbstractControl class and then overridden in the FormArray class.
+  _updateValue() {
+    (this as {value: any}).value = this.controls
+      .filter((control) => (control.enabled || this.disabled) && !this.filter?.(control.value))
+      .map((control) => control.value);
+  }
+}
 ```
