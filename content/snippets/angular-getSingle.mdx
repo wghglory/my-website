@@ -1,0 +1,149 @@
+---
+title: Angular GetSingle from Cache
+topics:
+  - angular
+date: 2022-07-26
+excerpt: Get Single API cached from get All API when navigating from list
+---
+
+Usually, we list data collection in a page, and click edit button and pass id for the data, navigate to edit page. Since
+we already have the data in list, we can reuse it before making a GET single API call to improve user experience.
+
+## Way 1: `ReplaySubject`
+
+```ts
+import {ReplaySubject} from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class StoragePolicyService {
+  constructor(private readonly http: HttpClient) {}
+
+  // in list component, get All call subscribe method, push data to cachedData. This is the cache STORE
+  cachedData = new ReplaySubject<StoragePolicy[]>(1);
+
+  getStoragePolicies() {
+    return this.http.get<StoragePolicy[]>(`${ENV.apiPrefix}/core/storage-policies?limit=1000&offset=0`);
+  }
+
+  getStoragePolicy(id: string) {
+    return this.http.get<StoragePolicy>(`${ENV.apiPrefix}/core/storage-policies/${id}`);
+  }
+
+  // in single component, emit data from cachedData
+  getStoragePolicyFromCache(id: string) {
+    const subject = new ReplaySubject<StoragePolicy | undefined>(1);
+
+    this.cachedData.subscribe((res) => {
+      subject.next(res.find((p) => p.id === id));
+      subject.complete();
+    });
+    return subject;
+  }
+}
+```
+
+Get all component:
+
+```diff
+this.storagePolicyService
+  .getStoragePolicies()
+  .pipe(takeUntil(this.unsubscribe))
+  .subscribe({
+    next: (res) => {
+      this.data = res;
+      this.loading = false;
+
+      // save data to cached STORE
++      this.storagePolicyService.cachedData.next(res);
++      this.storagePolicyService.cachedData.complete();
+    },
+  });
+```
+
+Get single component:
+
+```ts
+import {ActivatedRoute, Router} from '@angular/router';
+import {StoragePolicyService} from '@oss-shared/services/storage-policy.service';
+import {Subject} from 'rxjs';
+import {finalize, takeUntil} from 'rxjs/operators';
+
+@Component({})
+export class StoragePolicyPublishComponent implements OnInit, OnDestroy {
+  constructor(private route: ActivatedRoute, private storagePolicyService: StoragePolicyService) {
+    this.storagePolicyId = this.route.snapshot.paramMap.get('id');
+  }
+
+  storagePolicyId: string;
+
+  unsubscribe = new Subject();
+
+  loading = false;
+  error: CommonError;
+  storagePolicy: StoragePolicy;
+
+  ngOnInit() {
+    // get data from cached STORE
+    this.storagePolicyService.getStoragePolicyFromCache(this.storagePolicyId).subscribe((p) => {
+      this.storagePolicy = p;
+    });
+
+    // real get single API
+    this.getStoragePolicy(this.storagePolicyId);
+  }
+
+  getStoragePolicy(id: string) {
+    // if no data is found from cache STORE, meaning loading the single page directly, otherwise it's navigated from list.
+    if (!this.storagePolicy) {
+      this.loading = true;
+    }
+    this.error = null;
+
+    this.storagePolicyService
+      .getStoragePolicy(id)
+      .pipe(
+        takeUntil(this.unsubscribe),
+        finalize(() => (this.loading = false)),
+      )
+      .subscribe({
+        next: (res) => {
+          this.storagePolicy = res;
+        },
+        error: (err) => (this.error = mapError(err)),
+      });
+  }
+}
+```
+
+## Way 2: Optional Parameters
+
+http://localhost:4200/form/edit/2<b>;name=Lifejacket;price=48.95</b>
+
+List component:
+
+```html
+<button [routerLink]="['/form', 'edit', item.id, {name: item.name, price: item.price}]">Edit</button>
+```
+
+Single component:
+
+```ts
+export class SingleComponent {
+  product: any;
+
+  constructor(activeRoute: ActivatedRoute) {
+    const id = activeRoute.snapshot.params['id'];
+
+    if (id != null) {
+      this.product.name = activeRoute.snapshot.params['name'];
+
+      let price = activeRoute.snapshot.params['price'];
+      this.product.price == Number.parseFloat(price);
+
+      this.productForm.patchValue(this.product);
+    }
+  }
+}
+```
