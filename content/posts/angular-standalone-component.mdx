@@ -1,0 +1,253 @@
+---
+title: Standalone Components
+topics:
+  - angular
+date: 2022-11-14
+excerpt: Angular 14 new feature
+cover:
+  # banner: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
+  topic: Angular
+  title: Angular
+  subtitle: Standalone Components
+---
+
+## Introduction
+
+Standalone components, as the new feature introduced in `Angular v14`, **are not part of an NgModule and define their
+dependencies (like module imports) directly**. But this doesn't necessarily let us do anything that we couldn't do with
+the existing Angular, it just changes some of the architecture.
+
+React, Vue and other frameworks don't have NgModule concept. They can import components and use them directly. Angular
+community enables this feature so react developers can get hands-on experience easily.
+
+Let's review angular history.
+
+### SharedModule 👴
+
+A SharedModule, as recommended by the
+[Angular Coding Style Guide](https://angular.io/guide/styleguide#shared-feature-module), is a single Angular module with
+generic components, directives and pipes that are shared between feature modules in your Angular application.
+
+Creating a project global place for all common things, like widgets or pipes to transform values, makes sense. You can
+share them between multiple modules and every developer knows where to put new common components.
+
+<Quote color="sky">
+  The approach also has drawbacks. In general, we want to create small, encapsulated and reusable units. Creating a
+  single shared module may get pretty large as the project grows.
+</Quote>
+
+### SCAM 😄
+
+[There has been a tendency that NgModule includes fewer contents](https://sandroroth.com/blog/angular-shared-scam).
+Think about Material UI.
+
+<Quote>
+  `Single Angular Component Module`, is the concept of creating Angular Modules with only one component (or directive /
+  pipe). This brings a few benefits.
+</Quote>
+
+- **Smaller modules**: A SCAM is small and that is what we mostly want: small units of code, like small functions,
+  classes - and also modules.
+- **Clear responsibility**: You and every other developer in your team will know what that module is responsible for.
+- **Clear dependency**: You can easily check where your component is used by checking where your module is imported.
+
+<Quote color="red">
+  You don't have to take "single component" literally, neither "single" nor "component". SCAM also applies to directives
+  and pipes. And it's **NOT** about exactly one element. A SCAM may have additional components that are only used
+  internally, or it may even export multiple components that always belong together (like a component for an accordion
+  and a component for an accordion entry). The pattern should bring you benefits and it's not meant to limit you.
+</Quote>
+
+#### SCAM in action
+
+We can apply the SCAM pattern for our SharedModule. We create a shared folder and instead of just one module we create
+multiple, small, shared modules there. It looks something like this:
+
+```
+src/
+└── app/
+    └── shared/
+        ├── accordion/
+        │   ├── accordion.component.css|html|ts
+        │   ├── accordion-group.component.css|html|ts
+        │   └── accordion.module.ts
+        ├── button/
+        │   ├── button.component.css|html|ts
+        │   └── button.module.ts
+        └── some-transformation/
+            ├── some-transformation.pipe.ts
+            └── some-transformation.module.ts
+```
+
+This example has three shared modules: accordion, button and some-transformation.
+
+#### Tree-shaking and lazy loading
+
+You may ask if the SCAM pattern provides any advantages regarding tree-shaking and lazy loading. The short answer is:
+**no**.
+
+The Angular Ivy renderer, will not include unused components even if they are imported and exported in your
+SharedModule. In addition, it will move components into lazy loaded chunks even if other components of the same module
+are used in your main bundle.
+
+## Standalone components use another standalone component
+
+```ts {9-10}
+import {CommonModule} from '@angular/common';
+import {Component, Inject, OnInit} from '@angular/core';
+import {AboutDialogComponent} from '@oss-core/about-dialog/about-dialog.component';
+
+@Component({
+  selector: 'berry-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  imports: [CommonModule, AboutDialogComponent],
+  standalone: true,
+})
+export class NavbarComponent {}
+```
+
+Here `AboutDialogComponent` is another standalone component. So we can import and use another Standalone component in a
+standalone component.
+
+## NgModule components use standalone components
+
+```ts
+@NgModule({
+  imports: [StandaloneComponent]
+})
+```
+
+## Lazy loading standalone components
+
+```ts {5-9}
+const path: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'prefix'},
+  {path: 'home', title: 'Home Page', component: HomeComponent},
+  {path: 'about', title: 'About Standalone Page', component: AboutStandaloneComponent},
+  {
+    path: 'lazy-standalone',
+    title: 'Lazy Standalone Page',
+    loadComponent: () => import('./lazy-standalone.component').then((m) => m.LazyStandaloneComponent),
+  },
+  {
+    path: 'lazy-module',
+    title: 'Lazy module Page',
+    loadChildren: () => import('./lazy-module/lazy-module.module').then((m) => m.LazyModule),
+  },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes), AboutStandaloneComponent],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
+
+## Creating module-less applications
+
+In future, all components may be standalone by default. No `app.module.ts` or `app-routing.module.ts`.
+
+routes.ts:
+
+```ts
+export const path: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'prefix'},
+  {path: 'home', title: 'Home Page', component: HomeComponent},
+  {path: 'about', title: 'About Standalone Page', component: AboutStandaloneComponent},
+  {
+    path: 'lazy-standalone',
+    title: 'Lazy Standalone Page',
+    loadComponent: () => import('./lazy-standalone.component').then((m) => m.LazyStandaloneComponent),
+  },
+  {
+    path: 'lazy-module',
+    title: 'Lazy module Page',
+    loadChildren: () => import('./lazy-module/lazy-module.module').then((m) => m.LazyModule),
+  },
+];
+```
+
+main.ts:
+
+```ts
+import {bootstrapApplication} from '@angular/platform-browser';
+import {routes} from './app/routes';
+
+// 2 params: rootComponent, config
+bootstrapApplication(AppComponent, {
+  providers: [importProvidersFrom(RouterModule.forRoot(routes))],
+}).catch((err) => console.log(err));
+```
+
+Now you probably will find an error about `router-outlet`. Because `app.component.ts` is now a standalone component, so
+you can import `RouterModule`.
+
+```diff
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule,
++  RouterModule,
++  ChildStandaloneComponent,
++  FormsModule, // ...any module required for this component
+  ],
+})
+export class AppComponent {}
+```
+
+## Lazy loading feature modules in module-less
+
+Assume we have a feature module `admin.module.ts`. How can we use this module's components inside a standalone
+component?
+
+```ts
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {UsersComponent} from './users/users. component';
+import {RouterModule, Routes} from '@angular/router';
+
+const routes: Routes = [{path: '', component: UsersComponent}];
+
+@NgModule({
+  declarations: [UsersComponent],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+})
+export class AdminModule {}
+```
+
+routes.ts:
+
+```ts
+export const path: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'prefix'},
+  {path: 'home', title: 'Home Page', component: HomeComponent},
+  {path: 'about', title: 'About Standalone Page', component: AboutStandaloneComponent},
+  {
+    path: 'lazy-standalone',
+    title: 'Lazy Standalone Page',
+    loadComponent: () => import('./lazy-standalone.component').then((m) => m.LazyStandaloneComponent),
+  },
+  {
+    path: 'admin',
+    title: 'Admin',
+    loadChildren: () => import('./admin/admin.module').then((m) => m.AdminModule),
+  },
+];
+```
+
+## Thoughts
+
+### Better than regular modules?
+
+Right now, standalone components don't really reduce any quantity of work. Yes, you don't need the module file anymore,
+but now each component needs each of these pieces and in a lot of cases, we're seeing that we have to duplicate things.
+We have to import the router module multiple times or the forms module multiple times, rather than just importing it
+once inside of the module and having it be available to the component. So right now, standalone components aren't
+reducing the quantity of work that we have to do.
+
+### Lower learning curve?
+
+One thing that standalone components may have is a lower learning curve. Modules sometimes are confusing to people that
+are new to Angular and learning Angular, so having a application that doesn't have a route module might be slightly
+easier for somebody to learn.
