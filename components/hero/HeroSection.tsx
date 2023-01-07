@@ -26,12 +26,16 @@ export default function HeroSection() {
           >
             <motion.div variants={itemVariant}>
               <h2 className="py-6 text-center text-3xl !leading-snug lg:text-left lg:text-5xl">
-                Web Developer Loving <span className="text-sky-600/80 dark:text-sky-500">React</span> and{' '}
-                <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
+                Web Developer Loving
+                <p className="space-x-4">
+                  <span className="text-red-600/80 dark:text-red-500">Angular</span>
+                  <span className="text-sky-600/80 dark:text-sky-500">React</span>
+                  <span className="text-teal-600/90 dark:text-teal-500">Vue</span>
+                </p>
               </h2>
               <p>
                 Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love modern UI technologies and
-                also starting to fall in love with SVG, GSAP, framer motion!
+                also starting to fall in love with Solidjs, GSAP, framer motion!
               </p>
             </motion.div>
             <motion.div className="lg:mb-14" variants={itemVariant}>
