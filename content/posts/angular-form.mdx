@@ -91,9 +91,10 @@ cover:
 
 ```ts
 export class FormComponent {
-  nameField: FormControl = new FormControl('', {
+  nameField = new FormControl('', {
     validators: [Validators.required, Validators.minLength(3), Validators.pattern('^[A-Za-z ]+$')],
     updateOn: 'change', // change(default), blur, submit
+    nonNullable: true,
   });
 
   ngOnInit() {
@@ -294,12 +295,28 @@ Now our form.component.html can use the directive to show all errors for a speci
 
 ## Nested FormGroup and Validation
 
+```ts
+export interface ContactFormGroup {
+  name: FormControl<string>;
+  email: FormControl<string>;
+  category: FormControl<string>;
+  price: FormControl<string>;
+  details: FormGroup<{
+    supplier: FormControl<string>;
+    keywords: FormControl<string>;
+  }>;
+  contactNumber?: FormControl<number | null>; //? makes controls as optional
+}
+```
+
 ```diff
-productForm: FormGroup = new FormGroup({
-  name: new FormControl('', {
+productForm = new FormGroup<ContactFormGroup>({
+  name: new FormControl<string>('', {
     validators: [Validators.required, Validators.minLength(3), Validators.pattern('^[A-Za-z ]+$')],
     updateOn: 'change',
+    nonNullable: true
   }),
+  email: new FormControl<string>('', {nonNullable: false}),
   category: new FormControl('', {validators: Validators.required}),
   price: new FormControl('', {validators: [Validators.required, Validators.pattern('^[0-9.]+$')]}),
 +  details: new FormGroup({
@@ -389,7 +406,7 @@ export class ProductDataSource {
 export class FormComponent implements OnInit {
 +  keywordGroup = new FormArray([this.createKeywordFormControl()]);
 
-  productForm: FormGroup = new FormGroup({
+  productForm = new FormGroup({
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(3), Validators.pattern('^[A-Za-z ]+$')],
       updateOn: 'change',
