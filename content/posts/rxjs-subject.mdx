@@ -14,7 +14,21 @@ cover:
 
 ### Subject
 
-Subject is the simplest way to create an object that is both an Observer and an Observable.
+A Subject is a special type of Observable that implements the Observer interface.
+
+It's a special type of Observable that is also an Observer.
+
+Subject is multicast.
+
+```ts
+actionSubject = new Subject<string>();
+
+// Call next() to emit items
+this.actionSubject.next('tools');
+
+// Call subscribe() to receive notifications
+this.actionSubject.subscribe((item) => console.log(item));
+```
 
 <Quote color="red" title="Limitations">
   when a new subscriber is created using the subscribe method, it won’t receive an event until the next time the next
@@ -23,6 +37,21 @@ Subject is the simplest way to create an object that is both an Observer and an 
 </Quote>
 
 ### BehaviorSubject
+
+A special type of Subject that
+
+- Buffers its `last` emitted value
+- **Emits that value to any late subscribers**
+- Requires a **default value**
+- Emits that default value if it hasn't yet emitted any items
+
+```ts
+aSub = new BehaviorSubject<number>(0);
+```
+
+Use BehaviorSubject if you want an initial value.
+
+**Very Important** when using `combineLatest`.
 
 BehaviorSubject class keeps track of the last event it processed and sends it to new subscribers as soon as they call
 the subscribe method.

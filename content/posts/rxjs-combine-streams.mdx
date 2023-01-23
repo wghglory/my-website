@@ -36,8 +36,7 @@ cover:
 
 `forkJoin([a$, b$, c$])`
 
-- Emits a value to the output Observable - And completes Emitted value combines the `last` emitted value from each input
-  observable into an array
+- Emitted value combines the `last` emitted value from each input observable into an array
 
 - To wait to process any results and `Only emits one time`, until all input Observables complete
 
@@ -45,25 +44,16 @@ cover:
 
 ### Caveats
 
-- ** Don't use when working with Observables that don't complete, Such as action streams**
+- **Don't use when working with Observables that don't complete, Such as action streams**
 
 ## withLatestFrom
 
 `a$.pipe(withLatestFrom(b$, c$))`: when a$ emits, get the latest of a$, b$, c$.
 
-Creates an Observable whose values are defined:
-
-- Using the `latest` values from each input Observable
-- But only when the source Observable emits
-
 - Pipeable operator
 
-When an item is emitted from the `source Observable`,
-
-- If all Observables have emitted at least once
-- Emits a value to the output Observable
-
-- Emitted value combines the `latest` emitted value from each input Observable into an array
+Only when `source Observable` emits, and If all Observables have emitted at least once, it will combine the `latest`
+emitted value from each Observable into an array as the emit value of the output Observable
 
 - Completes when the source Observable completes
 
@@ -126,4 +116,125 @@ productsWithCategory$ = combineLatest([this.products$, this.productCategories$])
     ),
   ),
 );
+```
+
+## Combine action stream with data stream
+
+Now let's step further. We want to filter products by category dropdown.
+
+```ts
+products$ = combineLatest([this.productService.products$, this.action$]).pipe(
+  map(([products, category]) => products.filter((product) => product.category === category)),
+);
+```
+
+### Creating an Action Stream
+
+category dropdown selection will trigger to emit the categoryId.
+
+```ts
+private categorySelectedSubject = new Subject<number>();
+categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+
+// expose subject emit method
+onSelected = (categoryId: string) => {
+  this.categorySelectedSubject.next(+categoryId);
+};
+```
+
+```html
+<select (change)="onSelected($event.target.value)">
+  <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
+</select>
+```
+
+## Reacting to Actions
+
+1. Create an action stream (Subject/BehaviorSubject)
+1. Combine the action stream and data stream to react to each emission from the action stream
+1. Emit a value to the action stream when an action occurs
+
+```ts
+products$ = combineLatest([this.productService.products$, this.categorySelectedAction$]).pipe(
+  map(([products, categoryId]) =>
+    products.filter((product) => (categoryId ? product.categoryId === categoryId : true)),
+  ),
+);
+```
+
+## Starting with an Initial Value
+
+1. startWith
+
+```ts
+this.categorySelectedAction$.pipe(startWith(0));
+```
+
+2. BehaviorSubject
+
+```ts
+private categorySelectedSubject = new BehaviorSubject<number>(0);
+categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+```
+
+### Final code
+
+```html
+<!-- categoryId select -->
+<select (change)="onSelected($any($event.target).value)">
+  <option value="0">- Display All Categories-</option>
+  <option *ngFor="let category of categories$ | async" [value]="category.id">{{ category.name }}</option>
+</select>
+
+<!-- product with category -->
+<table *ngIf="products$ | async as products">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Category</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.productName }}</td>
+      <td>{{ product.category }}</td>
+      <td>{{ product.price | currency : 'USD' : 'symbol' : '1.2-2' }}</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+```ts
+@Component({
+  templateUrl: './product-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ProductListComponent {
+  constructor(private productService: ProductService, private productCategoryService: ProductCategoryService) {}
+
+  private categorySelectedSubject = new BehaviorSubject<number>(0);
+  categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+
+  products$ = combineLatest([this.productService.productsWithCategory$, this.categorySelectedAction$]).pipe(
+    map(([products, selectedCategoryId]) =>
+      products.filter((product) => (selectedCategoryId ? product.categoryId === selectedCategoryId : true)),
+    ),
+    catchError((err) => {
+      this.errorMessage = err;
+      return EMPTY;
+    }),
+  );
+
+  categories$ = this.productCategoryService.productCategories$.pipe(
+    catchError((err) => {
+      this.errorMessage = err;
+      return EMPTY;
+    }),
+  );
+
+  onSelected(categoryId: string): void {
+    this.categorySelectedSubject.next(+categoryId);
+  }
+}
 ```
