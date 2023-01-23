@@ -1,0 +1,117 @@
+---
+title: Angular Declarative Approach
+topics:
+  - angular
+  - RxJS
+date: 2022-11-14
+excerpt: Declarative approach using RxJS stream and async pipe
+cover:
+  # banner: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
+  topic: Angular
+  title: Angular
+  subtitle: Async Pipe
+---
+
+<Quote>
+  A declarative programming paradigm concerned with `data streams` and the `propagation of change`. Code is reactive
+  when an input change leads to an automatic change in output.
+</Quote>
+
+## Reactive Development
+
+- React to user actions
+- React to state changes
+- Combine data streams
+- Be resilient to failure
+- Manage state
+- Communicate between components
+
+Going Reactive:
+
+- Working with Observables
+- Leverage RxJS directly operators
+- Improve performance
+- Simplify code, easy to read and understand
+
+Think RxJS like a conveyor.
+
+1. Conveyor Start (Emits items) -- `subscribe`
+1. Item passes through a set of operations -- `pipe`
+1. As an observer. Next item, process it -- `next()`; Error occurred, handle it -- `error()`; Complete, you're done --
+   `complete()`
+1. Stop -- `unsubscribe`
+
+## ChangeDetectionStrategy.OnPush
+
+Improves performance by minimizing change detection cycles.
+
+Component is only checked when:
+
+- `@Input` properties change
+- Event emits
+- A bound Observable emits
+
+## Procedural Example
+
+```ts
+export class HomeComponent {
+  // this feels like a declarative, but we have to look at all the places that itemsLeftInStock to understand how the logic works.
+  itemsLeftInStock = this.itemService.getItemsLeftInStock();
+
+  buyItem() {
+    this.itemsLeftInStock = this.itemsLeftInStock - 1;
+  }
+}
+```
+
+## Declarative Approach
+
+- Leverage the RxJS Observable and operators' power
+- Combine data streams
+- React to user actions
+
+## Declarative vs Procedural approach
+
+Procedural Approach: **Pass Parameters**
+
+```ts
+// product.service.ts
+getProducts(page: number) {
+  return this.http.get<Product[]>('/api/products', {params: {page}});
+}
+
+// component
+this.productService
+  .getProducts(1)
+  .subscribe({next: (products) => (this.products = products), error: (err) => (this.errorMessage = err)});
+```
+
+Declarative Approach: **React to Actions** ❤️
+
+```ts
+// product.service.ts
+products$ = this.requestedPage$.pipe(switchMap((page) => this.http.get<Product[]>('/api/products', {params: {page}})));
+
+// component
+products$ = this.productService.products$.pipe(
+  catchError((err) => {
+    this.errorMessage = err;
+    return EMPTY;
+  }),
+);
+```
+
+## operators
+
+### Combination operator
+
+- combine to single: `merge`, `concat`
+- flatten higher-order Observable: `mergeAll`
+- emit combined value: `combineLatest`, `forkJoin`, `withLatestFrom`
+
+## Caveats
+
+1. Don't know `this.variable` too much in angular component function, because it's hard to trace where the variable get
+   changed. You need lots of context to understand what's going on. Unit Test is also harder.
+
+   `subscribe` to variables and assign variables inside the subscribe next function is like this approach.

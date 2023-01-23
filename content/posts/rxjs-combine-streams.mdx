@@ -1,0 +1,129 @@
+---
+title: Combine streams
+topics:
+  - angular
+  - RxJS
+date: 2023-01-11
+excerpt: forkJoin, combineLatest, withLatestFrom
+cover:
+  # banner: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
+  topic: RxJS
+  title: RxJS
+  subtitle: RxJS Operator
+---
+
+## combineLatest
+
+`combineLatest([a$, b$, c$])`
+
+- Emitted value combines the `latest` emitted value from each input Observable into an array
+
+- When an item is emitted from `any` Observable
+
+  - If all Observables have emitted `at least once`
+  - Emits a value to the output Observable
+
+- Static creation function, not a pipeable operator
+
+- Completes when all input Observables complete
+
+### Caveats
+
+- To work with multiple data sets
+- **To reevaluate state when an action occurs**, such as user action, filter items, click next page
+
+## forkJoin
+
+`forkJoin([a$, b$, c$])`
+
+- Emits a value to the output Observable - And completes Emitted value combines the `last` emitted value from each input
+  observable into an array
+
+- To wait to process any results and `Only emits one time`, until all input Observables complete
+
+- Static creation function, not a pipeable operator
+
+### Caveats
+
+- ** Don't use when working with Observables that don't complete, Such as action streams**
+
+## withLatestFrom
+
+`a$.pipe(withLatestFrom(b$, c$))`: when a$ emits, get the latest of a$, b$, c$.
+
+Creates an Observable whose values are defined:
+
+- Using the `latest` values from each input Observable
+- But only when the source Observable emits
+
+- Pipeable operator
+
+When an item is emitted from the `source Observable`,
+
+- If all Observables have emitted at least once
+- Emits a value to the output Observable
+
+- Emitted value combines the `latest` emitted value from each input Observable into an array
+
+- Completes when the source Observable completes
+
+### Caveats
+
+- To react to changes in only one Observable
+- To regulate the output of the other Observables
+
+## Demo
+
+Product model includes categoryId. In UI, we want to display the category. Category data rarely changes, and it's a
+small dataset. So we can load it once.
+
+```diff
+export interface Product {
+  id: number;
+  productName: string;
+  productCode?: string;
+  description?: string;
+  price?: number;
+  categoryId?: number;
++  category?: string;
+}
+```
+
+Good examples:
+
+```ts
+productsWithCategory$ = combineLatest([this.products$, this.productCategories$]);
+// output: [product[], category[]]
+
+productsWithCategory$ = forkJoin([this.products$, this.productCategories$]);
+// output: [product[], category[]]
+```
+
+Bad example: Why cannot we use `withLatestFrom`? Because we are not sure if productCategories$ is returned earlier. If
+products$ returns earlier, at the emit time, productCategories$ is not complete, it never emits a value, the output
+observable cannot be emitted.
+
+```ts
+productsWithCategory$ = this.products$.pipe(withLatestFrom(this.productCategories$));
+// output: [product[], category[]]
+```
+
+Full example:
+
+```ts
+products$ = this.http.get<Product[]>(this.url);
+productCategories$ = this.http.get<ProductCategory[]>(this.categoriesUrl);
+
+productsWithCategory$ = combineLatest([this.products$, this.productCategories$]).pipe(
+  map(([products, categories]) =>
+    products.map(
+      (product) =>
+        ({
+          ...product,
+          price: product.price * 1.5,
+          category: categories.find((c) => product.categoryId === c.id).name,
+        } as Product),
+    ),
+  ),
+);
+```

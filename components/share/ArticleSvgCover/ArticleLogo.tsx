@@ -14,6 +14,7 @@ import Nodejs from '/public/images/skills/nodejs.svg';
 import Nuxt from '/public/images/skills/nuxt.svg';
 import PS from '/public/images/skills/ps.svg';
 import React from '/public/images/skills/react.svg';
+import RxJS from '/public/images/skills/RxJS.svg';
 import Tailwind from '/public/images/skills/tailwind.svg';
 import Typescript from '/public/images/skills/typescript.svg';
 import Vue from '/public/images/skills/vue.svg';
@@ -29,6 +30,8 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
       return <React />;
     case 'Angular':
       return <Angular />;
+    case 'RxJS':
+      return <RxJS />;
     case 'Docker':
       return <Docker />;
     case 'Figma':

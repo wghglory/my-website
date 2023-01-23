@@ -40,6 +40,7 @@ export type TopicType =
   | 'Vue'
   | 'React'
   | 'Angular'
+  | 'RxJS'
   | 'Docker'
   | 'Figma'
   | 'Flutter'
