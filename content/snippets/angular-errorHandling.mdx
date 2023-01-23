@@ -1,0 +1,23 @@
+---
+title: Angular error handling
+topics:
+  - angular
+date: 2022-07-27
+excerpt: Angular error handling
+---
+
+```ts
+private errorSubject = new Subject<string>();
+error$ = this.errorSubject.asObservable();
+
+product$ = this.productService.selectedProduct$.pipe(
+  catchError((err) => {
+    this.errorSubject.next(err);
+    return EMPTY;
+  }),
+);
+```
+
+```html
+<div *ngIf="error$ | async as errorMessage">{{ errorMessage }}</div>
+```
