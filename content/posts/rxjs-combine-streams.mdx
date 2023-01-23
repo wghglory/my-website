@@ -203,6 +203,8 @@ categorySelectedAction$ = this.categorySelectedSubject.asObservable();
     </tr>
   </tbody>
 </table>
+
+<div class="alert alert-danger" *ngIf="errorMessage$ | async as errorMessage">{{ errorMessage }}</div>
 ```
 
 ```ts
@@ -213,6 +215,9 @@ categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 export class ProductListComponent {
   constructor(private productService: ProductService, private productCategoryService: ProductCategoryService) {}
 
+  private errorMessageSubject = new Subject<string>();
+  errorMessage$ = this.errorMessageSubject.asObservable();
+
   private categorySelectedSubject = new BehaviorSubject<number>(0);
   categorySelectedAction$ = this.categorySelectedSubject.asObservable();
 
@@ -221,14 +226,14 @@ export class ProductListComponent {
       products.filter((product) => (selectedCategoryId ? product.categoryId === selectedCategoryId : true)),
     ),
     catchError((err) => {
-      this.errorMessage = err;
+      this.errorMessageSubject.next(err);
       return EMPTY;
     }),
   );
 
   categories$ = this.productCategoryService.productCategories$.pipe(
     catchError((err) => {
-      this.errorMessage = err;
+      this.errorMessageSubject.next(err);
       return EMPTY;
     }),
   );
