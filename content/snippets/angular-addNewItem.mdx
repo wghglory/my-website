@@ -1,0 +1,18 @@
+---
+title: Angular Add New Item to List
+topics:
+  - angular
+date: 2022-07-28
+excerpt: add a new item to the list using scan. Client-side adding so server doesn't have to refresh the list
+---
+
+```ts
+merge(
+  this.products$,
+  this.insertAction$.pipe(
+    concatMap((newProd) => {
+      return this.http.post<Product>(this.url, newProd);
+    }),
+  ),
+).pipe(scan((acc, value) => (value instanceof Array ? [...value] : [...acc, value]), [] as Product[]));
+```
