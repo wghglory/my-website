@@ -1,0 +1,138 @@
+---
+title: Angular Caching
+topics:
+  - Angular
+date: 2022-07-08
+excerpt: Cache by share and shareReplay
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Cache
+---
+
+## Why Cache
+
+- Improves responsiveness
+- Reduces bandwidth and network consumption
+- Reduces backend server load
+- Reduces redundant computations
+
+### Classic Caching Pattern
+
+```ts
+// product.service.ts:
+private products: Product[] = [];
+
+getProducts = () => {
+  if (this.products) {
+    return of(this.products);
+  }
+
+  return this.http.get<Product[]>(this.url).pipe(tap((data) => (this.products = data)));
+};
+```
+
+### Declarative Caching Pattern
+
+```ts
+private url = 'api/products';
+
+products$ = this.http.get<Product[]>(this.url).pipe(shareReplay(1));
+```
+
+## [shareReplay](https://rxjs.dev/api/index/function/shareReplay)
+
+- Replays the defined number of emissions on subscription: `shareReplay(1)`
+- shareReplay is a multicast operator
+- Returns a Subject that shares a single subscription to the underlying source
+- Takes in an optional buffer size, which is the number of items cached and replayed
+- The items stays cached forever, even after there are no more subscribers
+
+Used for
+
+- Sharing Observables
+- Caching data in the application
+- Replaying emissions to late subscribers
+
+<Quote>
+**Add shareReplay to any Observable pipeline you wish to share and replay to all new Subscribers.**
+
+Retain retrieved data in a service
+
+- No need for another HTTP request
+- Reduces redundant computations
+- Improves performance and responsiveness
+
+</Quote>
+
+```ts
+productCategories$ = this.http.get<ProductCategory[]>(this.url).pipe(shareReplay(1));
+```
+
+## share
+
+```ts
+share({
+  connector: () => new ReplaySubject(1),
+  resetOnComplete: false,
+  resetOnError: false,
+  resetOnRefCountZero: false,
+});
+```
+
+- Similar to shareReplay
+- By default, doesn't have a buffer
+- Doesn't replay that buffer. This ability to replay values on subscription is what differentiates share and
+  shareReplay.
+
+## Cache Invalidation
+
+1. Invalidating the cache on a time interval
+
+1. Always getting fresh data on update operations (same as 3, call `refreshSub.next()` when updating operations)
+
+1. Allowing the user to control when data is refreshed
+
+<CodeFrame
+  src="https://stackblitz.com/edit/angular-ivy-8ivuag?file=src%2Fapp%2Fnba.service.ts"
+  title="user clears cache manually"
+/>
+
+```ts
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, map, tap, shareReplay, switchMap} from 'rxjs';
+
+@Injectable({providedIn: 'root'})
+export class NbaService {
+  private refreshSub$ = new BehaviorSubject<void>(undefined);
+  private api = 'https://www.balldontlie.io/api/v1/';
+  private teamUrl = this.api + 'players';
+
+  apiRequest$ = this.http.get<any[]>(this.teamUrl).pipe(
+    map((value: any) => {
+      return value?.data.map((player) => ({
+        ...player,
+        fullName: `${player.first_name} ${player.last_name}`,
+        processed: new Date().toISOString(),
+      }));
+    }),
+  );
+
+  players$ = this.refreshSub$.pipe(
+    switchMap(() => this.apiRequest$), // will return a new api instance
+    shareReplay(1),
+  );
+
+  constructor(private http: HttpClient) {}
+
+  refreshPlayers() {
+    this.refreshSub$.next();
+  }
+}
+```
+
+## Reference
+
+- [https://dev.to/this-is-angular/how-caching-data-in-angular-with-rxjs-27mj](https://dev.to/this-is-angular/how-caching-data-in-angular-with-rxjs-27mj)
+- [https://blog.thoughtram.io/angular/2018/03/05/advanced-caching-with-rxjs.html](https://blog.thoughtram.io/angular/2018/03/05/advanced-caching-with-rxjs.html)
