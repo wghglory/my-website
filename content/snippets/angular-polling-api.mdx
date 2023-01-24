@@ -1,0 +1,47 @@
+---
+title: Angular polling
+topics:
+  - angular
+date: 2022-07-29
+excerpt: refresh data every X seconds
+---
+
+```ts
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {switchMap, map} from 'rxjs/operators';
+import {timer} from 'rxjs';
+
+const REFRESH_INTERVAL = 2000;
+
+export interface Player {
+  id: number;
+  first_name: string;
+  last_name: string;
+}
+
+export interface PlayerResponse {
+  data: Array<Player>;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PlayerService {
+  constructor(private http: HttpClient) {}
+
+  api$ = this.http.get<PlayerResponse>('https://www.balldontlie.io/api/v1/players').pipe(
+    map((response) => {
+      return response.data;
+    }),
+  );
+
+  players$ = timer(0, REFRESH_INTERVAL).pipe(
+    switchMap(() => {
+      return this.api$;
+    }),
+  );
+}
+```
+
+[https://codesandbox.io/s/polling-api-call-zplybi?file=/src/app/app.component.html](https://codesandbox.io/s/polling-api-call-zplybi?file=/src/app/app.component.html)
