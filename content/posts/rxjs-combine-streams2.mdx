@@ -1,0 +1,72 @@
+---
+title: Combine streams series 2
+topics:
+  - angular
+  - RxJS
+date: 2023-01-12
+excerpt: get it all vs just in time
+cover:
+  # banner: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
+  topic: RxJS
+  title: RxJS
+  subtitle: RxJS Operator
+---
+
+## Just in time vs Get it all
+
+In the previous post, we talked about how to combine streams via forkJoin, combineLatest, withLatestFrom. In this post,
+we're going to focus on 2 approaches to handle data of the related data streams.
+
+1. Get It All: `combineLatest`. The APIs call input parameters are independent, but their results are related. Good
+   especially for small data set.
+
+   ```ts
+   // get suppliers in advance, selected products will map supplier accordingly
+   suppliers$ = this.http.get<Supplier[]>(this.suppliersUrl).pipe(shareReplay(1), catchError(this.handleError));
+
+   selectedProductSuppliers$ = combineLatest([this.selectedProduct$, this.supplierService.suppliers$]).pipe(
+     map(([selectedProduct, suppliers]) =>
+       suppliers.filter((supplier) => selectedProduct?.supplierIds?.includes(supplier.id)),
+     ),
+   );
+   ```
+
+1. Just in time: `mergeMap`. Only retrieves required data.
+
+   ```ts
+   supplierWithMergeMap$ = of(1, 5, 8).pipe(
+     mergeMap((supplierId) => this.http.get<Supplier>(`${this.url}/${supplierId}`)),
+   );
+   ```
+
+   ```ts
+   selectedProductSuppliers$ = this.selectedProduct$.pipe(
+     switchMap((product) =>
+       from(product.supplierIds).pipe(
+         mergeMap((supplierId) => this.http.get<Supplier>(`${this.url}/${supplierId}`)),
+         toArray(), // Merge the emissions into a single array for display
+       ),
+     ),
+   );
+   ```
+
+   An easier way:
+
+   ```ts
+   // search suppliers just in time for the selected product
+   selectedProductSuppliers$ = this.selectedProduct$.pipe(
+     switchMap((product) =>
+       forkJoin(product.supplierIds.map((supplierId) => this.http.get<Supplier>(`${this.suppliersUrl}/${supplierId}`))),
+     ),
+   );
+   ```
+
+## vm to combine streams
+
+```ts
+// <div *ngIf="vm$ | async as vm">
+
+vm$ = combineLatest([this.product$, this.productSuppliers$, this.pageTitle$]).pipe(
+  map(([product, productSuppliers, pageTitle]) => ({product, productSuppliers, pageTitle})),
+);
+```
