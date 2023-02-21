@@ -1,0 +1,129 @@
+---
+title: Typescript Tricks
+topics:
+  - typescript
+date: 2022-7-6
+excerpt: Some typescript tricks for angular developers
+cover:
+  topic: Typescript
+  title: Typescript
+  subtitle: Typescript Tricks
+---
+
+## Generate type data automatically
+
+Problem: In many cases, we have to work with JSON data received from a third-party API or a backend service that does
+not provide type information (and that isn't listed on DefinitelyTyped)
+
+Solution:
+
+Use tools such as [json2ts.com](http://json2ts.com) to generate type data. If using vscode, there's a plugin called
+`JSON to TS`.
+
+## Building objects step by step
+
+Very often, we have to retrieve information from multiple different sources before we can build an object.
+
+```ts
+export interface Option {
+  id: numbers;
+  displayOrder?: number;
+  text: string;
+}
+
+// assume options are from another API
+export interface Question {
+  id: numbers;
+  text: string;
+  displayOrder: number;
+  options: Option[];
+}
+```
+
+Below code won't make the compiler happy:
+
+```ts
+let myQuestion: Question = {
+  id: 1102,
+  displayOrder: 1,
+  text: 'Which of the following is a prime number',
+};
+```
+
+We could make the `options` property optional in the `Question` interface, but that would be cheating.
+
+Solution:
+
+use te `Partial` type:
+
+```ts
+let myQuestion: Partial<Question> = {
+  id: 1102,
+  displayOrder: 1,
+  text: 'Which of the following is a prime number',
+};
+```
+
+## Union types instead of enums
+
+Enums aren't incredibly convenient in Typescript compared to other languages:
+
+```ts
+enum GamePadInput {
+  Up = "Up",
+  Down = "DOWN",
+  Left = "LEFT",
+  Right = "RIGHT'
+}
+```
+
+Enums get compiled into a big monster of javascript, which affects performance.
+
+```js
+var GamePadInput;
+(function (GamePadInput) {
+  GamePadInput['Up'] = 'UP';
+  GamePadInput['Down'] = 'DOWN';
+  GamePadInput['Left'] = 'LEFT';
+  GamePadInput['Right'] = 'RIGHT';
+})(GamePadInput | (GamePadInput = {}));
+```
+
+On the other hand, union types are shorter and leaner as they don't get compiled into anything - and in that example,
+they are just strings:
+
+```ts
+export type GamePadInput = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+```
+
+And they can be combined to be even more powerful:
+
+```ts
+export type AuthAction = LoginSuccessfulAction | LoginErrorAction | LogoutSuccessfulAction;
+```
+
+## Nullish coalescing operator (??)
+
+This operator aims to remove such code from our codebase:
+
+```ts
+if (value !== null && value !== undefined) {
+  a = value;
+} else {
+  a = 'some default value';
+}
+```
+
+Instead, since Typescript 3.7, we can do: `a = value ?? 'some default value';`
+
+Smart Javascript developers have been doing this forever as an alternative: `a = value || 'some default value';`
+
+But `0`, `NaN`, and empty strings are falsy values, so if `value === 0` or `value === ''`, the default value would be
+assigned to a.
+
+This behavior is fixed by the `??` operator:
+
+```ts
+console.log(0 ?? 42); // outputs 0
+console.log('' ?? 42); // outputs ""
+```
