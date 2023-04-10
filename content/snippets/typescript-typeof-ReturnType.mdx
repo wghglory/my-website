@@ -1,0 +1,29 @@
+---
+title: Typescript typeof and ReturnType
+topics:
+  - typescript
+date: 2020-07-08
+excerpt: caveats for typeof and ReturnType
+---
+
+`ReturnType` takes a function type and produces its return type:
+
+```ts
+type Predicate = (x: unknown) => boolean;
+type K = ReturnType<Predicate>;
+// type K = boolean;
+```
+
+Don't forget `typeof` in below typing. `type P = ReturnType<f>;` is wrong.
+
+```ts
+function f() {
+  return {x: 10, y: 3};
+}
+type P = ReturnType<typeof f>;
+
+// type P = {
+//     x: number;
+//     y: number;
+// }
+```
