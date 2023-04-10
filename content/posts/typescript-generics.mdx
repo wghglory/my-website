@@ -1,0 +1,103 @@
+---
+title: Typescript Generics
+topics:
+  - typescript
+date: 2020-07-08
+excerpt: Typescript generics
+cover:
+  # banner: https://www.framer.com/_next/image?url=%2Fimages%2Fteams%2FUI%402x.png&w=2820&q=96
+  topic: Typescript
+  title: Typescript
+  subtitle: Typescript Generics
+---
+
+## Generic Types
+
+The type of generic functions is just like those of non-generic functions, with the type parameters listed first,
+similarly to function declarations:
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+let myIdentity: <Type>(arg: Type) => Type = identity;
+```
+
+We could also have used a different name for the generic type parameter in the type, so long as the number of type
+variables and how the type variables are used line up.
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+let myIdentity: <Input>(arg: Input) => Input = identity;
+```
+
+⚡️ We can also write the generic type as a call signature of an object literal type:
+
+```ts
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+let myIdentity: {<Type>(arg: Type): Type} = identity;
+```
+
+Which leads us to writing our first generic interface. Let’s take the object literal from the previous example and move
+it to an interface:
+
+```ts
+interface GenericIdentityFn {
+  <Type>(arg: Type): Type;
+}
+
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+let myIdentity: GenericIdentityFn = identity;
+```
+
+In a similar example, we may want to move the generic parameter to be a parameter of the whole interface. This lets us
+see what type(s) we’re generic over (e.g. `Dictionary<string>` rather than just `Dictionary`). This makes the type
+parameter visible to all the other members of the interface.
+
+```ts
+interface GenericIdentityFn<Type> {
+  (arg: Type): Type;
+}
+
+function identity<Type>(arg: Type): Type {
+  return arg;
+}
+
+let myIdentity: GenericIdentityFn<number> = identity;
+```
+
+## Using Type Parameters in Generic Constraints
+
+You can declare a type parameter that is constrained by another type parameter. For example, here we’d like to get a
+property from an object given its name. We’d like to ensure that we’re not accidentally grabbing a property that does
+not exist on the obj, so we’ll place a constraint between the two types:
+
+```ts
+function getProperty<Type, Key extends keyof Type>(obj: Type, key: Key) {
+  return obj[key];
+}
+
+let x = {a: 1, b: 2, c: 3, d: 4};
+```
+
+Simplify:
+
+```ts
+function getProperty<Type>(obj: Type, key: keyof Type) {
+  return obj[key];
+}
+```
+
+## Reference
+
+[Typescript official generics documentation](https://www.typescriptlang.org/docs/handbook/2/generics.html)
