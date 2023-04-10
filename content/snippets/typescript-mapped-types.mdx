@@ -1,0 +1,171 @@
+---
+title: Typescript mapped types
+topics:
+  - Typescript
+date: 2020-07-10
+excerpt: caveats for mapped types
+---
+
+```ts
+type OptionsFlags<Type> = {
+  [Property in keyof Type]: boolean;
+};
+```
+
+In this example, OptionsFlags will take all the properties from the type Type and change their values to be a boolean.
+
+```ts
+type FeatureFlags = {
+  darkMode: () => void;
+  newUserProfile: () => void;
+};
+
+type FeatureOptions = OptionsFlags<FeatureFlags>;
+// type FeatureOptions = {
+//   darkMode: boolean;
+//   newUserProfile: boolean;
+// };
+```
+
+Mapping an interface to Reactive FormGroup:
+
+```ts
+export type Form<T> = {
+  [P in keyof T]: FormControl<T[P]>;
+};
+```
+
+## Mapping Modifiers
+
+There are two additional modifiers which can be applied during mapping: `readonly` and `?` which affect mutability and
+optionality respectively.
+
+You can remove or add these modifiers by prefixing with `-` or `+`. If you don’t add a prefix, then `+` is assumed.
+
+```ts
+// Removes 'readonly' attributes from a type's properties
+type CreateMutable<Type> = {
+  -readonly [Property in keyof Type]: Type[Property];
+};
+
+type LockedAccount = {
+  readonly id: string;
+  readonly name: string;
+};
+
+type UnlockedAccount = CreateMutable<LockedAccount>;
+// type UnlockedAccount = {
+//     id: string;
+//     name: string;
+// }
+```
+
+```ts
+// Removes 'optional' attributes from a type's properties
+type Concrete<Type> = {
+  [Property in keyof Type]-?: Type[Property];
+};
+
+type MaybeUser = {
+  id: string;
+  name?: string;
+  age?: number;
+};
+
+type User = Concrete<MaybeUser>;
+// type User = {
+//   id: string;
+//   name: string;
+//   age: number;
+// };
+```
+
+## Key Remapping via `as`
+
+In TypeScript 4.1 and onwards, you can re-map keys in mapped types with an as clause in a mapped type:
+
+```ts
+type MappedTypeWithNewProperties<Type> = {
+  [Properties in keyof Type as NewKeyType]: Type[Properties];
+};
+```
+
+You can leverage features like template literal types to create new property names from prior ones:
+
+```ts
+type Getters<Type> = {
+  [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property];
+};
+
+interface Person {
+  name: string;
+  age: number;
+  location: string;
+}
+
+type LazyPerson = Getters<Person>;
+// type LazyPerson = {
+//     getName: () => string;
+//     getAge: () => number;
+//     getLocation: () => string;
+// }
+```
+
+You can filter out keys by producing `never` via a conditional type:
+
+```ts
+// Remove the 'kind' property
+type RemoveKindField<Type> = {
+  [Property in keyof Type as Exclude<Property, 'kind'>]: Type[Property];
+};
+
+interface Circle {
+  kind: 'circle';
+  radius: number;
+}
+
+type KindlessCircle = RemoveKindField<Circle>;
+// type KindlessCircle = {
+//   radius: number;
+// };
+```
+
+You can map over arbitrary unions, not just unions of `string | number | symbol`, but unions of any type:
+
+```ts
+type EventConfig<Events extends {kind: string}> = {
+  [E in Events as E['kind']]: (event: E) => void; // in: loop union types
+};
+
+type SquareEvent = {kind: 'square'; x: number; y: number};
+type CircleEvent = {kind: 'circle'; radius: number};
+
+type Config = EventConfig<SquareEvent | CircleEvent>;
+// type Config = {
+//     square: (event: SquareEvent) => void;
+//     circle: (event: CircleEvent) => void;
+// }
+```
+
+## Further Exploration
+
+Mapped types work well with other features in this type manipulation section, for example here is a mapped type using a
+conditional type which returns either a true or false depending on whether an object has the property pii set to the
+literal true:
+
+```ts
+type ExtractPII<Type> = {
+  [Property in keyof Type]: Type[Property] extends {pii: true} ? true : false;
+};
+
+type DBFields = {
+  id: {format: 'incrementing'};
+  name: {type: string; pii: true};
+};
+
+type ObjectsNeedingGDPRDeletion = ExtractPII<DBFields>;
+// type ObjectsNeedingGDPRDeletion = {
+//     id: false;
+//     name: true;
+// }
+```
