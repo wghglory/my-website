@@ -1,0 +1,105 @@
+---
+title: Typescript template literal types
+topics:
+  - Typescript
+date: 2020-07-11
+excerpt: caveats for template literal types
+---
+
+The power in template literals comes when defining a new string based on information inside a type.
+
+Consider the case where a function (`makeWatchedObject`) adds a new function called `on()` to a passed object.
+
+```ts
+const passedObject = {
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+};
+```
+
+What we want to build is a function that has a `on` method that detects each property change event like below:
+
+```ts
+const person = makeWatchedObject({
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+});
+
+// this is what we want
+// makeWatchedObject has added `on` to the anonymous Object
+person.on('firstNameChanged', (newValue) => {
+  console.log(`firstName was changed to ${newValue}!`); // newValue should have the correct type
+});
+```
+
+Solution 1:
+
+```ts
+type PropEventSource<Type> = {
+  on(eventName: `${string & keyof Type}Changed`, callback: (newValue: any) => void): void;
+};
+
+// Create a "watched object" with an 'on' method
+// so that you can watch for changes to properties.
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+```
+
+With this, we can build something that errors when given the wrong property:
+
+```ts
+const person = makeWatchedObject({
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+});
+
+person.on('firstNameChanged', () => {});
+
+// Prevent easy human error (using the key instead of the event name)
+person.on('firstName', () => {});
+// Argument of type '"firstName"' is not assignable to parameter of type '"firstNameChanged" | "lastNameChanged" | "ageChanged"'.
+```
+
+### Inference with Template Literals
+
+Instead of `any` for newValue, let's make it more specific: we can use a function with a generic such that:
+
+1. The literal used in the first argument is captured as a literal type
+2. That literal type can be validated as being in the union of valid attributes in the generic
+3. The type of the validated attribute can be looked up in the generic’s structure using Indexed Access
+4. This typing information can then be applied to ensure the argument to the callback function is of the same type
+
+Solution 2:
+
+```ts
+type PropEventSource<Type> = {
+  on<Key extends string & keyof Type>(eventName: `${Key}Changed`, callback: (newValue: Type[Key]) => void): void;
+};
+
+declare function makeWatchedObject<Type>(obj: Type): Type & PropEventSource<Type>;
+
+const person = makeWatchedObject({
+  firstName: 'Saoirse',
+  lastName: 'Ronan',
+  age: 26,
+});
+
+person.on('firstNameChanged', (newName) => {
+  // (parameter) newName: string
+  console.log(`new name is ${newName.toUpperCase()}`);
+});
+
+person.on('ageChanged', (newAge) => {
+  // (parameter) newAge: number
+  if (newAge < 0) {
+    console.warn('warning! negative age');
+  }
+});
+```
+
+When a user calls with the string `"firstNameChanged"`, TypeScript will try to infer the right type for `Key`. To do
+that, it will match `Key` against the content prior to `"Changed"` and infer the string `"firstName"`. Once TypeScript
+figures that out, the `on` method can fetch the type of `firstName` on the original object, which is `string` in this
+case. Similarly, when called with `"ageChanged"`, TypeScript finds the type for the property `age` which is `number`.
