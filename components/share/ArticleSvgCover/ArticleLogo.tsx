@@ -63,6 +63,7 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
     case 'Architect':
       return <Architect />;
     default:
-      return <div>Please add logo</div>;
+      console.warn(`Please add logo for ${topic}.`);
+      return null;
   }
 }

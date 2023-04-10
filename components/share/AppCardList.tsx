@@ -7,7 +7,15 @@ export default function AppCardList({files, path}: {files: FileMeta[]; path?: st
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {files.map((f) => (
-        <AppCard key={f.title} title={f.title} path={path} slug={f.slug} excerpt={f.excerpt} date={f.date}>
+        <AppCard
+          key={f.title}
+          title={f.title}
+          path={path}
+          slug={f.slug}
+          excerpt={f.excerpt}
+          date={f.date}
+          topics={f.topics}
+        >
           {f.cover && <AppCardCover ArticleCover={f.cover} />}
         </AppCard>
       ))}

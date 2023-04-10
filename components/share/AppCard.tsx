@@ -3,11 +3,16 @@ import {useRouter} from 'next/router';
 import {ReactNode} from 'react';
 import {MdOutlineAccessTime} from 'react-icons/md';
 
+import {TopicType} from '@/models';
+
+import {ArticleLogo} from './ArticleSvgCover';
+
 export default function AppCard({
   title,
   excerpt,
   date,
   slug,
+  topics,
   path,
   children,
 }: {
@@ -15,6 +20,7 @@ export default function AppCard({
   excerpt: string;
   date: string;
   slug: string;
+  topics: string[];
   path?: string;
   children?: ReactNode;
 }) {
@@ -35,14 +41,25 @@ export default function AppCard({
           </header>
           <p className="text-gray-500 dark:text-gray-400">{excerpt}</p>
         </div>
-        <time className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-          <MdOutlineAccessTime size="18" />
-          {new Date(date).toLocaleDateString('en-us', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })}
-        </time>
+        <footer className="flex justify-between">
+          <time className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+            <MdOutlineAccessTime size="18" />
+            {new Date(date).toLocaleDateString('en-us', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            })}
+          </time>
+          {router.pathname === '/snippets' && (
+            <div className="flex gap-1">
+              {topics.map((t) => (
+                <span className="w-6" key={t}>
+                  <ArticleLogo topic={t as TopicType} />
+                </span>
+              ))}
+            </div>
+          )}
+        </footer>
       </div>
     </div>
   );
