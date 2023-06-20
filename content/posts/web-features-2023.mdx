@@ -1,0 +1,52 @@
+---
+title: Web features we might not know
+topics:
+  - Web
+date: 2023-06-14
+excerpt:
+  A breakdown of the most useful new features for web developers using HTML, CSS, and JavaScript. Learn about native
+  dialog windows, WebGPU, CSS container queries, and more.
+cover:
+  banner: https://martech.zone/wp-content/uploads/2020/10/website-features-checklist-1200x675.png?ezimgfmt=rs%3Adevice%2Frscb2-1
+  topic: Web
+  title: Web Features
+  subtitle: Web Features
+---
+
+## [Dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog#examples)
+
+<CodeFrame src="https://codepen.io/wghglory/embed/abQNeoY?default-tab=html%2Cresult" title="dialog example" />
+
+## Container Query
+
+<CodeFrame src="https://codepen.io/wghglory/embed/XWyKJbz?default-tab=html%2Cresult" title="container query example" />
+
+## Color Mix
+
+<CodeFrame src="https://codepen.io/wghglory/embed/wvQWBeG?default-tab=html%2Cresult" title="color mix example" />
+
+## :focus-visible
+
+accessibility friendly way handle focus for form inputs and buttons.
+
+```css
+.btn:focus-visible {
+  outline: 1px solid bisque;
+}
+
+.btn:focus:not(:focus-visible) {
+  outline: none;
+}
+```
+
+## Array Last Element
+
+```js
+arr.at(-1); // the last element
+```
+
+## Deep Clone
+
+```js
+const newObj = structuredClone(oldObj);
+```
