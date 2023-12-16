@@ -1,17 +1,19 @@
 # My Website
 
-Hello world 👋!
+Hello world! 👋
 
-[Welcome to my personal website made with Next.js](https://derekw.vercel.app/). I hosted a quite old one before 2017
-using some templates, however, I cannot fully control the UI. Since next.js came to the world, I have been thinking
-about creating a modern site to share my thoughts and record my personal working stuff.
+I'm thrilled to welcome you to my new and improved [personal website crafted with Next.js](https://derekw.netlify.app/).
+In the past, I hosted a rather outdated site with generic templates, limiting my control over the user interface.
+However, with the advent of Next.js, I've been inspired to create a contemporary space to share my thoughts and document
+my professional journey.
 
-My website includes the below aspects:
+Here's a glimpse into the key components of my website:
 
-- Home section introducing me a little bit
-- Experience section telling my skills
-- Project section listing some projects
-- Blog section, as the most important part, where I write posts periodically
-- Snippet section sharing some useful snippets
+- **Home Section**: Get to know me a little better.
+- **Experience Section**: Explore my skill set and professional background.
+- **Project Section**: Check out some of the exciting projects I've been working on.
+- **Blog Section**: Dive into the heart of my site, where I regularly share insightful posts.
+- **Snippet Section**: Discover and make use of handy code snippets I've curated.
 
-Please leave comments and share you feedbacks! Thank you ❤️🤝
+I invite you to explore, leave comments, and share your valuable feedback. Your input is greatly appreciated! Thank you
+for visiting! ❤️🤝
