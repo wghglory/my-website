@@ -7,4 +7,3 @@ Host: https://derekw.vercel.app
 
 # Sitemaps
 Sitemap: https://derekw.vercel.app/sitemap.xml
-Sitemap: https://derekw.vercel.app/sitemap-0.xml

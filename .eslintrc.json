@@ -6,7 +6,13 @@
     "import/extensions": [0, "never"],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "react/no-unknown-property": [
+      2,
+      {
+        "ignore": ["jsx", "global"]
+      }
+    ]
   },
   "overrides": [
     // Only uses Testing Library lint rules in test files
