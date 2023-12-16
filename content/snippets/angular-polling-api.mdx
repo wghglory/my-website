@@ -2,9 +2,11 @@
 title: Angular polling
 topics:
   - Angular
-date: 2022-07-29
+date: 2023-07-29
 excerpt: refresh data every X seconds
 ---
+
+## Simple auto polling
 
 ```ts
 import {Injectable} from '@angular/core';
@@ -45,3 +47,54 @@ export class PlayerService {
 ```
 
 [https://codesandbox.io/s/polling-api-call-zplybi?file=/src/app/app.component.html](https://codesandbox.io/s/polling-api-call-zplybi?file=/src/app/app.component.html)
+
+## Auto polling until response matches certain condition
+
+1. Use `expand`
+
+```ts
+// delay 2s, and recursive call, but expand doesn't control the interval to make a new request
+timer(2000).pipe(
+  switchMap(() =>
+    this.http.get<VcdTask>(taskUrl).pipe(
+      // make recursive http call until response.result is not null
+      expand((res) => {
+        return res.result === null
+          ? this.http.get<VcdTask>(taskUrl).pipe(catchError(() => of({result: null} as VcdTask)))
+          : EMPTY;
+      }),
+      catchError(() => of({result: null} as VcdTask)),
+      takeLast(1), // take the matching not-null result only
+    ),
+  ),
+);
+```
+
+2. Use `internal` and `takeWhile`
+
+```ts
+return interval(2000).pipe(
+  concatMap(() => this.http.get<VcdTask>(taskUrl)),
+  takeWhile((res) => res.result === null, true), // true is important!
+);
+```
+
+3. `throwError` and `retry`
+
+```ts
+this.http
+  .post(API, postData)
+  .pipe(
+    delay(2000),
+    concatMap((data) => {
+      this.saveData(data);
+      if (when_certain_condition) {
+        return throwError(() => new Error(''));
+      } else {
+        return of(data);
+      }
+    }),
+    retry(),
+  )
+  .subscribe();
+```
