@@ -1,0 +1,166 @@
+---
+title: Conditional Validator
+topics:
+  - Angular
+date: 2023-10-11
+excerpt:
+  Discover a streamlined approach to handling conditional validators in Angular reactive forms with the ifValidator
+  utility. Say goodbye to redundant code and complex subscription structures. This blog unveils an elegant solution for
+  cleaner, more maintainable code in scenarios where conditional validation is a necessity.
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Validator
+---
+
+## Introduction
+
+When working with Angular reactive forms, managing conditional validators for multiple controls can become cumbersome.
+Traditionally, developers subscribe to a control's valueChanges observable and manually add or remove validators based
+on certain conditions. This can lead to redundant and verbose code, especially as the number of controls increases.
+
+In this blog post, we'll explore a more elegant solution using a custom utility called `ifValidator`. This utility
+simplifies the process of applying validators conditionally, resulting in cleaner and more maintainable code.
+
+## The Traditional Approach
+
+Let's first examine the traditional approach to conditional validation in Angular reactive forms. In the example below,
+we have a form with a choice between installing a new operator or keeping the current one. Depending on the choice, we
+dynamically add or remove the "required" validator for the apiToken and clusterName controls.
+
+```html
+<form clrForm [formGroup]="form">
+  <clr-radio-container>
+    <label>{{ 'CHOOSE_OPTION' }}</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="choice" value="INSTALL" [formControl]="choice" />
+      <label>{{ 'INSTALL_NEW_OPERATOR' }}</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="choice" value="CURRENT" [formControl]="choice" />
+      <label>{{ 'KEEP_CURRENT_OPERATOR' }}</label>
+    </clr-radio-wrapper>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-radio-container>
+
+  <!-- omit apiToken and clusterName control code... -->
+</form>
+```
+
+```ts
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+
+export class ConfigureOperatorComponent {
+  private destroyRef = inject(DestroyRef);
+
+  choice = new FormControl<'CURRENT' | 'INSTALL' | null>(null, [Validators.required]);
+
+  form = new FormGroup({
+    apiToken: new FormControl(''),
+    clusterName: new FormControl(''),
+  });
+
+  ngOnInit() {
+    this.choice.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((choice) => {
+      if (choice === 'INSTALL') {
+        this.form.controls.apiToken.addValidators(Validators.required);
+        this.form.controls.clusterName.addValidators(Validators.required);
+      } else {
+        this.form.controls.apiToken.removeValidators(Validators.required);
+        this.form.controls.clusterName.removeValidators(Validators.required);
+      }
+
+      this.form.controls.apiToken.updateValueAndValidity();
+      this.form.controls.clusterName.updateValueAndValidity();
+    });
+  }
+}
+```
+
+## Simplifying with `ifValidator`
+
+To streamline the process, we introduce the `ifValidator` utility. This utility encapsulates the logic of conditionally
+applying validators based on a provided condition. Add a input listener like line 5 and line 9,
+`(change)="changeChoice()"`, we use it to trigger controls' `updateValueAndValidity` instead of `ngOnInit`.
+
+```html {5,9} showLineNumbers
+<form clrForm [formGroup]="form">
+  <clr-radio-container>
+    <label>{{ 'CHOOSE_OPTION' }}</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="choice" value="INSTALL" [formControl]="choice" (change)="changeChoice()" />
+      <label>{{ 'INSTALL_NEW_OPERATOR' }}</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="choice" value="CURRENT" [formControl]="choice" (change)="changeChoice()" />
+      <label>{{ 'KEEP_CURRENT_OPERATOR' }}</label>
+    </clr-radio-wrapper>
+    <clr-control-error> {{ 'REQUIRED' }} </clr-control-error>
+  </clr-radio-container>
+</form>
+```
+
+```ts {7, 14-17} showLineNumbers
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+
+export class ConfigureOperatorComponent {
+  choice = new FormControl<'CURRENT' | 'INSTALL' | null>(null, [Validators.required]);
+
+  // the first callback is your condition add invoke the second arg (validator)
+  private validator = ifValidator(() => this.choice.value === 'INSTALL', [Validators.required]);
+
+  form = new FormGroup({
+    apiToken: new FormControl('', this.validator),
+    clusterName: new FormControl('', this.validator),
+  });
+
+  changeChoice() {
+    this.form.controls.apiToken.updateValueAndValidity();
+    this.form.controls.clusterName.updateValueAndValidity();
+  }
+}
+```
+
+## `ifValidator` and `ifAsyncValidator` utils
+
+Here's the implementation of the `ifValidator` utility along with its async counterpart `ifAsyncValidator`. These
+utilities eliminate the need to manually add or remove validators, making your code more concise and maintainable.
+
+```ts
+/**
+ * Simple Validation with If condition
+ * The benefit is that no need to add/remove validators. Only need to trigger updateValueAndValidity.
+ */
+export function ifValidator(
+  condition: (control: FormControl) => boolean,
+  validatorFn: ValidatorFn | ValidatorFn[],
+): ValidatorFn {
+  return (control: AbstractControl) => {
+    if (!validatorFn || !condition(<FormControl>control)) {
+      return null;
+    }
+    const validatorFns = Array.isArray(validatorFn) ? (validatorFn as ValidatorFn[]) : [validatorFn];
+    return Validators.compose(validatorFns)?.(control) ?? null;
+  };
+}
+
+/**
+ * With Async Validation
+ */
+export function ifAsyncValidator(
+  condition: (control: FormControl) => boolean,
+  validatorFn: AsyncValidatorFn,
+): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    if (!validatorFn || !condition(<FormControl>control)) {
+      return of(null);
+    }
+
+    return validatorFn(control);
+  };
+}
+```
+
+By adopting the `ifValidator` utility, you can enhance the readability and maintainability of your Angular reactive
+forms, especially when dealing with complex validation scenarios. This approach ensures that your code remains concise,
+focused, and easy to understand.
