@@ -1,0 +1,300 @@
+---
+title: Render Global Alerts
+topics:
+  - Angular
+date: 2023-12-11
+excerpt:
+  Explore the complexities of integrating dynamic content like buttons into internationalized messages in Angular. This
+  blog guides you through building a robust global alert system using NgRx, offering insights into handling security
+  constraints and dynamically loading components.
+cover:
+  topic: Angular
+  title: Angular
+  subtitle: Sanitizer
+---
+
+## Rendering Global Alerts in Angular: A Comprehensive Guide
+
+Global alerts are a crucial aspect of any web application, providing users with important information and guidance.
+However, when dealing with Angular and internationalization (l10n), rendering alerts with dynamic content such as
+buttons can be challenging due to Angular's security measures. In this guide, we'll explore how to efficiently handle
+and render global alerts, addressing security concerns and providing a seamless user experience.
+
+## The Challenge: Escaping Buttons in Angular
+
+Consider the following scenario where you need to include dynamic content like buttons in l10n messages:
+
+**Example l10n message with a button**
+
+`'CERT_GUIDANCE.ALERT': 'Object Storage Extension service endpoint is found not accessible from your web browser. Please click <button data-action="dialog" data-file="cert-guidance" data-title="CERT_GUIDANCE.TITLE" data-size="xl" class="btn btn-sm btn-outline">View Instructions</button> to resolve the problem.'`
+
+The issue here is that Angular escapes the button, adhering to security practices. To overcome this challenge, we need a
+solution that allows us to render such dynamic content safely.
+
+## Building Global Alerts with NgRx
+
+To create a robust global alert system, we leverage NgRx, a state management library for Angular applications. The
+essential components include the NgRx store, actions, reducer, and selectors. Let's break down the NgRx code for
+managing alerts:
+
+```ts
+// alerts.model.ts
+import {SafeHtml} from '@angular/platform-browser';
+
+export type AlertType = 'success' | 'info' | 'warning' | 'danger';
+
+export type Alert = {
+  message: string | SafeHtml | [string | SafeHtml, unknown[]]; // translated message OR [l10n message key, args]
+  alertType?: AlertType; // default: danger
+  id?: symbol;
+  alertKey?: string; // default: global; or a action key like 'delete-bucket'
+};
+
+export type AlertContent = {
+  type: string;
+  value: string;
+  link?: string;
+};
+
+export const GLOBAL = 'global';
+```
+
+```ts
+// alerts action
+import {createAction, props} from '@ngrx/store';
+
+import {Alert} from './alerts.models';
+
+export const addAlert = createAction('[Alert/API] Add Alert', props<{alert: Alert}>());
+export const deleteAlert = createAction('[Alert/API] Delete Alert', props<{id: symbol}>());
+export const clearAlerts = createAction('[Alert/API] Clear Alerts');
+export const clearAllErrors = createAction('[Alert/API] Clear All Errors');
+```
+
+```ts
+// reducer
+import {Action, createReducer, on} from '@ngrx/store';
+
+import * as AlertsActions from './alerts.actions';
+import {Alert, GLOBAL} from './alerts.models';
+
+export const ALERTS_FEATURE_KEY = 'alerts';
+
+export interface AlertsPartialState {
+  readonly [ALERTS_FEATURE_KEY]: Alert[];
+}
+
+const initialState = [] as Alert[];
+
+const reducer = createReducer(
+  initialState,
+  on(AlertsActions.addAlert, (state, {alert}) => {
+    if (state.find((item) => item.alertKey === alert.alertKey && item.message === alert.message)) {
+      return state;
+    } else {
+      // by default add a danger global alert
+      // new alert added on top of array, so for loop will display the latest
+      return [{id: Symbol(), alertType: 'danger' as const, alertKey: GLOBAL, ...alert} as Alert, ...state];
+    }
+  }),
+  on(AlertsActions.deleteAlert, (state, {id}) => state.filter((alert) => alert.id !== id)),
+  on(AlertsActions.clearAlerts, () => initialState),
+  on(AlertsActions.clearAllErrors, (state) => state.filter((alert) => alert.alertType === 'success')),
+);
+
+export function alertsReducer(state: Alert[], action: Action) {
+  return reducer(state, action);
+}
+```
+
+```ts
+// selector
+import {createSelector} from '@ngrx/store';
+import {AppState} from '@oss-shared/states/app.state';
+
+const alertState = (state: AppState) => state.alerts;
+export const alertsSelector = createSelector(alertState, (alerts) => alerts);
+```
+
+### Alert Component
+
+The Angular component responsible for rendering alerts utilizes Clarity Design System's `clr-alerts` and `clr-alert`
+components. This component subscribes to the NgRx store for alert updates and dynamically renders the alerts, handling
+closures and interactions. It may contain strings that have a button inside:
+
+```html
+<clr-alerts>
+  <clr-alert
+    *ngFor="let alert of alerts$ | async"
+    [clrAlertClosable]="true"
+    [clrAlertType]="alert.alertType!"
+    [clrAlertAppLevel]="alert.alertKey === 'global'"
+    [clrCloseButtonAriaLabel]="'CLOSE' | vtranslate"
+    (clrAlertClosedChange)="onCloseAlert(alert)"
+  >
+    <clr-alert-item>
+      <span class="alert-text" role="alert" [innerHTML]="alert.message"></span>
+    </clr-alert-item>
+  </clr-alert>
+</clr-alerts>
+```
+
+This component not only displays alerts but also handles click events, supporting both internal navigation and dialog
+actions.
+
+The essential code is that `onclick` will bind the alert element. If `data-action` is `dialog`, invoke ngx modal
+service. We also need to provide `data-file` which dynamically loads the angular component. Since I'm using angular v17
+vite here, I can use `await import` to do so.
+
+```ts
+export class AdvancedAlertComponent {
+  constructor(
+    private store: Store<{alerts: Alert[]}>,
+    private l10nService: L10nService,
+    private router: Router,
+    private modalService: VmwNgxModalService,
+  ) {}
+
+  @Input() key = GLOBAL;
+
+  alerts$ = this.store.pipe(
+    select(alertsSelector),
+    map((alerts) => alerts.filter((item) => item.alertKey === this.key)),
+    map((filteredAlerts) =>
+      filteredAlerts.map((alert) => {
+        let message = alert.message;
+
+        // message can be a translated string OR [l10n key, args]
+        // if latter, calculate and return message
+        if (Array.isArray(message)) {
+          message = this.l10nService.getMessage(message[0], message[1]);
+        }
+
+        return {
+          ...alert,
+          message,
+        };
+      }),
+    ),
+  );
+
+  onCloseAlert({id}: Alert) {
+    if (id) {
+      this.store.dispatch(deleteAlert({id}));
+    } else {
+      throw new Error('no alert id provided');
+    }
+  }
+
+  /**
+   * case 1: <a data-action="dialog" data-file="cert-guidance" data-title="CERT_GUIDANCE.TITLE" data-size="xl" href="javascript:void(0)">Please click here and follow the instructions to resolve the problem</a>
+   * case 2: alert message could be a href which jumps internally. <a href="/user">User</a> will internally jump to user route
+   */
+  @HostListener('click', ['$event'])
+  async onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const action = target.getAttribute('data-action');
+
+    if (action === 'dialog') {
+      await this.openDialog(target);
+    } else if (target.tagName === 'A') {
+      this.navigate(target, event);
+    }
+  }
+
+  private async openDialog(target: HTMLElement) {
+    const fileName = target.getAttribute('data-file');
+    const title = target.getAttribute('data-title');
+    const size = (target.getAttribute('data-size') as VmwNgxModalSize) || VmwNgxModalSize.Medium;
+
+    if (!fileName || !title) {
+      throw new Error('Missing file name or dialog title key.');
+    }
+
+    // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
+    // must use relative path and extension for dynamic-import-vars
+    // const component = await import(`@oss-core/ui/cert-guidance/cert-guidance.component`); won't work with path var
+    const component = await import(`../../../../core/ui/${fileName}/${fileName}.component.ts`);
+
+    this.modalService.open(component.default, {
+      title: this.l10nService.getMessage(title),
+      size,
+    });
+  }
+
+  private navigate(target: HTMLElement, event: Event) {
+    const href = target.getAttribute('href');
+    if (!href) {
+      throw new Error('need provide href');
+    }
+
+    const DOMAIN_REGEX = new RegExp(
+      '^(https?://)?(((www\\.)?([-a-zA-Z0-9]{1,63}\\.)*?[a-zA-Z0-9][-a-zA-Z0-9]{0,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,63})|((\\d{1,3}\\.){3}\\d{1,3}))(:\\d{2,4})?(/[-\\w@\\+\\.~#\\?&/=%]*)?$',
+    );
+
+    if (!DOMAIN_REGEX.test(href)) {
+      event.preventDefault();
+      this.router.navigateByUrl(href);
+    }
+  }
+}
+```
+
+### Handling Dynamic Components with Lazy Loading
+
+To ensure that dynamically loaded components are included in the production build, we employ a strategy involving
+`APP_INITIALIZER`. This guarantees that the required components are available during the build process, overcoming
+tree-shaking issues:
+
+```ts
+// app.module.ts
+/**
+ * Important because cert-guidance will be tree-shaking without the below imports.
+ */
+export function lazyLoading(): () => Promise<void> {
+  return async () => {
+    // Dynamically import the module
+    await import('@oss-core/ui/cert-guidance/cert-guidance.component');
+
+    // Do other things if needed. For example, you might register it as a global custom element
+    // customElements.define('cert-guidance', CertGuidanceComponent);
+  };
+}
+
+@NgModule({
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: lazyLoading,
+      multi: true,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+## Implementing Global Alerts in a Component
+
+In a practical scenario, you can use global alerts within your Angular components. Here's an example of how to dispatch
+an alert in a component:
+
+```ts
+export class SetupWelcomeComponent {
+  private store = inject(Store);
+  private l10nService = inject(L10nService);
+  private sanitizer = inject(DomSanitizer);
+
+  notify() {
+    this.store.dispatch(
+      alertActions.addAlert({
+        alert: {
+          message: this.sanitizer.bypassSecurityTrustHtml(this.l10nService.getMessage('CERT_GUIDANCE.ALERT')),
+        },
+      }),
+    );
+  }
+}
+```
+
+By employing this comprehensive approach, you can effectively manage, render, and handle global alerts in your Angular
+application, providing users with a secure and dynamic experience.
