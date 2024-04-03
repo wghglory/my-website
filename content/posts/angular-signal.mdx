@@ -260,6 +260,14 @@ export class CoolCheckbox {
     this.checked.update((c) => !c);
   }
 }
+
+// consumer
+@Component({
+  template: `<checkbox [(checked)]="isAdmin" />`,
+})
+export class Profile {
+  isAdmin = signal(false);
+}
 ```
 
 ## Guidelines for Signal Adoption
