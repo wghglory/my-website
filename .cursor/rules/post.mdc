@@ -38,7 +38,8 @@ cover:
 ## Generation Guidelines
 
 - Date: Always use the current date (YYYY-MM-DD).
-- Topics: Infer relevant technical tags based on the prompt content.
+- Topics: Infer relevant technical tags based on the prompt content. All availabe topics are defined in
+  /models/index.ts's TopicType. You can add new topics if not existing.
 - Cover Image (Banner): Search for a relevant, high-quality image URL related to the topic (e.g., from Unsplash or a
   consistent placeholder service like https://placehold.co/600x400?text=Topic). Do not leave this blank.
 
