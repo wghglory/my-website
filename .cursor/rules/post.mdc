@@ -1,0 +1,62 @@
+---
+alwaysApply: true
+---
+
+# Rule: Create New Blog Post
+
+## Context
+
+When asked to create a new post, generate a `.mdx` file located in the `content/posts` directory.
+
+## File Naming Convention
+
+- Convert the provided title to kebab-case (e.g., "Framer Motion Examples" -> `framer-motion-examples.mdx`).
+
+## Content Structure
+
+Every post must start with the following YAML Frontmatter based on `a-temp.mdx.tmpl`. Do not omit any fields.
+
+```yaml
+---
+title: <Title of the post>
+topics:
+  - <Topic 1>
+  - <Topic 2>
+date: <Current date in YYYY-MM-DD format>
+excerpt: <A concise summary of the post content>
+cover:
+  banner: <A relevant, high-quality public image URL>
+  topic: <Primary Topic>
+  title: <Main Title or Shortened Title>
+  subtitle: <Subtitle or Hook>
+---
+## Body
+
+## References
+```
+
+## Generation Guidelines
+
+- Date: Always use the current date (YYYY-MM-DD).
+- Topics: Infer relevant technical tags based on the prompt content.
+- Cover Image (Banner): Search for a relevant, high-quality image URL related to the topic (e.g., from Unsplash or a
+  consistent placeholder service like https://placehold.co/600x400?text=Topic). Do not leave this blank.
+
+Cover Metadata:
+
+- cover.topic: Matches the primary topic from the topics list.
+- cover.title: usually matches the main title.
+- cover.subtitle: A short, catchy sub-header relevant to the post.
+
+Table Generation using below syntax instead of markdown table:
+
+```
+<Table
+  columns={['Feature', '`Partial<T>`', '`Sparse<T>`']}
+  data={[
+    ['Top Level Properties', 'Optional', 'Optional'],
+    ['Nested Objects', 'Required (Must be complete)', 'Optional (Can be partial)'],
+    ['Use Case', 'Simple object creation', 'Patches, deep updates, large forms'],
+  ]}
+/>
+```
