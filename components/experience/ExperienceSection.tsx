@@ -1,7 +1,10 @@
 import dynamic from 'next/dynamic';
 import {useTheme} from 'next-themes';
 
-const Player = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), {ssr: false});
+const Player = dynamic(
+  () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player) as Promise<React.ComponentType<any>>,
+  {ssr: false},
+);
 const SkillPlane = dynamic(() => import('./SkillPlane'), {ssr: false});
 const Sky = dynamic(() => import('./Sky'), {ssr: false});
 

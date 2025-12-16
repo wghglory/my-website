@@ -1,6 +1,9 @@
 import dynamic from 'next/dynamic';
 
-const Player = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), {ssr: false});
+const Player = dynamic(
+  () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player) as Promise<React.ComponentType<any>>,
+  {ssr: false},
+);
 
 export default function SectionLayout({
   children,
