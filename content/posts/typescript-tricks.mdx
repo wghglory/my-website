@@ -1,13 +1,13 @@
 ---
-title: Typescript Tricks
+title: TypeScript Tricks
 topics:
-  - Typescript
+  - TypeScript
 date: 2020-07-06
 excerpt: Some typescript tricks for angular developers
 cover:
-  topic: Typescript
-  title: Typescript
-  subtitle: Typescript Tricks
+  topic: TypeScript
+  title: TypeScript
+  subtitle: TypeScript Tricks
 ---
 
 ## Generate type data automatically
@@ -66,7 +66,7 @@ let myQuestion: Partial<Question> = {
 
 ## Union types instead of enums
 
-Enums aren't incredibly convenient in Typescript compared to other languages:
+Enums aren't incredibly convenient in TypeScript compared to other languages:
 
 ```ts
 enum GamePadInput {
@@ -114,7 +114,7 @@ if (value !== null && value !== undefined) {
 }
 ```
 
-Instead, since Typescript 3.7, we can do: `a = value ?? 'some default value';`
+Instead, since TypeScript 3.7, we can do: `a = value ?? 'some default value';`
 
 Smart Javascript developers have been doing this forever as an alternative: `a = value || 'some default value';`
 

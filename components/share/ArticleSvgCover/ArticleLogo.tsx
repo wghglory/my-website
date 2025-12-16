@@ -16,7 +16,7 @@ import PS from '/public/images/skills/ps.svg';
 import React from '/public/images/skills/react.svg';
 import RxJS from '/public/images/skills/rxjs.svg';
 import Tailwind from '/public/images/skills/tailwind.svg';
-import Typescript from '/public/images/skills/typescript.svg';
+import TypeScript from '/public/images/skills/typescript.svg';
 import Vue from '/public/images/skills/vue.svg';
 import {TopicType} from '@/models';
 
@@ -52,8 +52,8 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
       return <Nuxt />;
     case 'Tailwind':
       return <Tailwind />;
-    case 'Typescript':
-      return <Typescript />;
+    case 'TypeScript':
+      return <TypeScript />;
     case 'PS':
       return <PS />;
     case 'AE':

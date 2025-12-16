@@ -62,14 +62,14 @@ npx tsc --init
 ```
 
 That will create a `tsconfig.json` file for us in the root of our project that contains all the default configuration
-options for Typescript.
+options for TypeScript.
 
 <a href="https://www.typescriptlang.org/docs/handbook/tsconfig-json.html" target="_blank">
   https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 </a>
 
 You may notice depending on your IDE that immediately after initializing you begin to get errors in your project. There
-are two reasons for that: the first is that Typescript isn't configuration to understand React by default, and the
+are two reasons for that: the first is that TypeScript isn't configuration to understand React by default, and the
 second is that we haven't defined our method for handling modules yet: so it may not understand how to manage all of our
 exports.
 
@@ -117,7 +117,7 @@ Rollup is great to build libraries. We need other rollup plugins for additional 
 - Minifying the final bundle
 
 - @rollup/plugin-node-resolve - Uses the node resolution algorithm for third-party dependencies in node_modules
-- @rollup/plugin-typescript - Teaches rollup how to process Typescript files
+- @rollup/plugin-typescript - Teaches rollup how to process TypeScript files
 - @rollup/plugin-commonjs - Converts commonjs modules to ES6 modules
 - rollup-plugin-dts - rollup your .d.ts files
 
@@ -484,7 +484,7 @@ module.exports = {
 Now we can run our tests with: `npm test`.
 
 Unfortunately we are going to get an error! The error is when our JSX code is encountered. If you recall we used
-Typescript to handle JSX with our rollup config, and a Typescript plugin for rollup to teach it how to do that. We have
+TypeScript to handle JSX with our rollup config, and a TypeScript plugin for rollup to teach it how to do that. We have
 no such setup in place for Jest unfortunately.
 
 The error: Add `@babel/preset-react` (https://git.io/JfeDR) to the 'presets' section of your Babel config to enable

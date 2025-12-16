@@ -1,7 +1,7 @@
 ---
-title: Typescript Indexed Access Types
+title: TypeScript Indexed Access Types
 topics:
-  - Typescript
+  - TypeScript
 date: 2020-07-09
 excerpt: caveats for indexed access types
 ---
@@ -33,13 +33,13 @@ const MyArray = [
   {name: 'Eve', age: 38},
 ];
 
-type Person = typeof MyArray[number];
+type Person = (typeof MyArray)[number];
 // type Person = {
 //     name: string;
 //     age: number;
 // }
 
-type Age = typeof MyArray[number]['age'];
+type Age = (typeof MyArray)[number]['age'];
 // type Age = number
 
 type Age2 = Person['age'];

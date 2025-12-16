@@ -21,7 +21,7 @@ export default function TopicPage({topic, topics, files}: {topic: string; topics
         <title>Topic: {topic}</title>
       </Head>
       <section className="bg-white dark:bg-gray-900" id="project">
-        <div className="container m-auto space-y-6 py-10 px-6 lg:space-y-10 lg:py-20">
+        <div className="container m-auto space-y-6 px-6 py-10 lg:space-y-10 lg:py-20">
           <div className="space-y-4">
             <label className="text-xl">Search posts by topics</label>
             <TopicRadioList topics={topics} currentTopicChange={updateQuery} currentTopic={topic} />

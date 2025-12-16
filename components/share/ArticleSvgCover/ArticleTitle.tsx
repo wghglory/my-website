@@ -19,7 +19,7 @@ export function getColor(topic: string) {
     case 'Jest':
       return 'hsl(354deg 78% 43%)';
     case 'Docker':
-    case 'Typescript':
+    case 'TypeScript':
       return 'hsl(202deg 100% 48%)';
     case 'Flutter':
     case 'React':
