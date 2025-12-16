@@ -1,7 +1,7 @@
-import {Player} from '@lottiefiles/react-lottie-player';
 import {motion} from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const Player = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), {ssr: false});
 
 import AboutMe from '/public/images/aboutme.svg';
 import UMLogo from '/public/images/companies/um.svg';

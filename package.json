@@ -19,7 +19,7 @@
   "dependencies": {
     "@emailjs/browser": "^3.4.0",
     "@giscus/react": "^1.1.2",
-    "@lottiefiles/react-lottie-player": "^3.4.2",
+    "@lottiefiles/react-lottie-player": "^3.6.0",
     "classnames": "^2.3.1",
     "focus-trap-react": "^8.9.2",
     "framer-motion": "^6.2.8",

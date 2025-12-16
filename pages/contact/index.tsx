@@ -1,6 +1,8 @@
 import {sendForm} from '@emailjs/browser';
-import {Player} from '@lottiefiles/react-lottie-player';
+import dynamic from 'next/dynamic';
 import {FormEvent, useState} from 'react';
+
+const Player = dynamic(() => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player), {ssr: false});
 import {BsCheckCircle} from 'react-icons/bs';
 import {CgSpinner} from 'react-icons/cg';
 import {RiErrorWarningLine} from 'react-icons/ri';
