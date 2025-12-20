@@ -18,7 +18,7 @@ export default function Quote({
           'border-l-orange-600 bg-orange-200 dark:border-l-orange-400 dark:bg-orange-700': color === 'orange',
           'border-l-red-600 bg-red-200 dark:border-l-red-400 dark:bg-red-700': color === 'red',
         },
-        'my-6 rounded border-l-4  px-4 py-1',
+        'my-6 rounded border-l-4 px-4 py-1',
       )}
     >
       {title && <div className="py-4 text-3xl">{title}</div>}

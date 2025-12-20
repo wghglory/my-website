@@ -237,8 +237,8 @@ form.component.html:
 
 ]} />
 
-`form.getError("required", "category")` will return category control's required error message if any. But this is not
-very useful. Let's create a reusable and custom structural directives to display all errors for a control.
+`form.getError("required", "category")` will return the category control's required error message if any. However, this
+is not very useful. Let's create a reusable custom structural directive to display all errors for a control.
 
 ## Custom directive to display all errors for a control ❤️
 
@@ -519,9 +519,9 @@ export class FormComponent implements OnInit {
 </ng-container>
 ```
 
-We can create many keyword controls, when user submit the form, several keyword controls can be empty, we can use
-required validator to forbidden the submission. But I'd rather not force user to stop and hit delete button and allow
-empty values to be submitted. We can filter out empty strings from `form.value`.
+We can create many keyword controls. When the user submits the form, several keyword controls may be empty. We can use a
+required validator to prevent submission. However, I'd rather not force users to stop and hit the delete button, so we
+allow empty values to be submitted. We can filter out empty strings from `form.value`.
 
 The other way is to use the below FilteredFormArray:
 

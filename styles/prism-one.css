@@ -1,0 +1,31 @@
+/* Import One Light theme (default) */
+@import url('./prism-one-light.css');
+
+/* Import One Dark theme (only applies when .dark class is present) */
+@import url('./prism-one-dark.css');
+
+/* Code blocks styling */
+@media screen and (min-width: 640px) {
+  pre[class*='language-'] {
+    padding: 2em;
+  }
+}
+
+pre[class*='language-'] {
+  padding: 1em;
+  margin: 0.5em 0;
+  overflow: auto;
+  position: relative;
+}
+
+/* Light theme background override */
+:not(pre) > code[class*='language-'],
+pre[class*='language-'] {
+  border: 1px solid #e5e7eb;
+}
+
+/* Dark theme border override */
+.dark :not(pre) > code[class*='language-'],
+.dark pre[class*='language-'] {
+  border: none;
+}

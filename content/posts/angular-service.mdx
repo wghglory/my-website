@@ -51,7 +51,7 @@ export class DiscountService {
 
 ### Using Opaque Tokens
 
-Why? Avoid token duplicated name.
+Why? To avoid duplicate token names.
 
 ```ts
 import {Injectable, InjectionToken} from '@angular/core';
@@ -81,7 +81,7 @@ providers: [{ provide: LogService, useClass: LogService, multi: false }],
 
 When to use?
 
-Suppose we have a logger service, and we'd like to create a SpecialLoggerService, which extends LoggerService.
+Suppose we have a logger service, and we'd like to create a SpecialLoggerService that extends LoggerService.
 
 ```ts
 import {Injectable, InjectionToken} from '@angular/core';
@@ -168,7 +168,7 @@ export class DiscountService {
 
 The value provider is used when you want to take responsibility for creating the service objects yourself, rather than
 leaving it to the class provider. This can also be useful when services are simple types, such as string or number
-values, which can be a useful way of providing access to common configuration settings.
+values, which provides a useful way of accessing common configuration settings.
 
 ```ts
 let logger = new LogService();
@@ -278,7 +278,7 @@ export class AppModule {}
 ```
 
 The token for the new service is the string `debugLevel`, and it is aliased to the provider with the `LOG_LEVEL` token.
-Using either token will result in the dependency being resolved with the same value.
+Using either token will result in the dependency being resolved to the same value.
 
 ## Using Local Providers
 
@@ -293,7 +293,7 @@ Sometimes we don't want a single root service!
 - providers: create a provider used to resolve dependencies of view and content children.
 - viewProviders: create a provider used to resolve dependencies of view children.
 
-Use this LogService first, if not found, go up until root.
+Use this LogService first; if not found, search up the hierarchy until reaching the root.
 
 ```diff
 import {LogService} from './log.service';

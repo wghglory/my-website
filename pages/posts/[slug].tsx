@@ -10,7 +10,13 @@ export default function PostPage({file}: {file: MDXFile}) {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  return getMdxFileStaticProps('posts', slug);
+  const result = await getMdxFileStaticProps('posts', slug);
+  // Add ISR (Incremental Static Regeneration) for better performance
+  // Pages will be regenerated at most once per hour
+  return {
+    ...result,
+    revalidate: 3600, // 1 hour in seconds
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

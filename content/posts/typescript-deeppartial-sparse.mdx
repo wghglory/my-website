@@ -15,8 +15,8 @@ cover:
 ---
 
 This is a sophisticated TypeScript utility type. In the TypeScript community, this specific pattern is most commonly
-known as `DeepPartial<T>`. Here is the breakdown of how `Sparse<T>` works and a concrete example of how it applies to
-the specific function signature.
+known as `DeepPartial<T>`. Here is a breakdown of how `Sparse<T>` works and a concrete example of how it applies to a
+specific function signature.
 
 ## Breaking Down `Sparse<T>`
 
@@ -147,14 +147,11 @@ const patch = formStateToPartialDomainModel(currentFormState);
 
 ## Summary Table
 
-<Table
-  columns={['Feature', '`Partial<T>`', '`Sparse<T>`']}
-  data={[
-    ['Top Level Properties', 'Optional', 'Optional'],
-    ['Nested Objects', 'Required (Must be complete)', 'Optional (Can be partial)'],
-    ['Use Case', 'Simple object creation', 'Patches, deep updates, large forms'],
-  ]}
-/>
+| Feature              | `Partial<T>`                | `Sparse<T>`                        |
+| -------------------- | --------------------------- | ---------------------------------- |
+| Top Level Properties | Optional                    | Optional                           |
+| Nested Objects       | Required (Must be complete) | Optional (Can be partial)          |
+| Use Case             | Simple object creation      | Patches, deep updates, large forms |
 
 ## References
 

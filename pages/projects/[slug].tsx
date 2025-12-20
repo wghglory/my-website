@@ -10,7 +10,11 @@ export default function ProjectPage({file}: {file: MDXFile}) {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const {slug} = params as {slug: string};
-  return getMdxFileStaticProps('projects', slug);
+  const result = await getMdxFileStaticProps('projects', slug);
+  return {
+    ...result,
+    revalidate: 3600, // 1 hour in seconds
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

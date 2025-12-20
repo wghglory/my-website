@@ -55,10 +55,10 @@ export default function AppModal({
             role="dialog"
             aria-modal="true"
           >
-            <header className="basis-0 py-4 px-6 text-xl">{header}</header>
+            <header className="basis-0 px-6 py-4 text-xl">{header}</header>
             <button
               aria-label="Close"
-              className="absolute top-2 right-3 flex h-10 w-10 items-center justify-center"
+              className="absolute right-3 top-2 flex h-10 w-10 items-center justify-center"
               onClick={() => setIsOpen(false)}
             >
               <svg viewBox="0 0 24 24" focusable="false" className="h-4 w-4" aria-hidden="true">
@@ -69,7 +69,7 @@ export default function AppModal({
               </svg>
             </button>
             {/* body */}
-            <div className="flex-1 overflow-auto py-2 px-6">{children}</div>
+            <div className="flex-1 overflow-auto px-6 py-2">{children}</div>
             {/* footer */}
             <footer className="flex items-center justify-end gap-4 px-6 py-4">{footer}</footer>
           </section>

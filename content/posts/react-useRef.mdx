@@ -111,13 +111,14 @@ export default function CatFriends() {
             <img src="https://placekitten.com/g/250/200" alt="Jellylorum" />
           </li>
         </ul>
-      </div>​{' '}
+      </div>
+      ​{' '}
     </>
   );
 }
 ```
 
-### Play and pausing a video
+### Playing and pausing a video
 
 ```jsx
 import {useState, useRef} from 'react';
@@ -142,7 +143,8 @@ export default function VideoPlayer() {
       <button onClick={handleClick}>{isPlaying ? 'Pause' : 'Play'}</button>
       <video width="250" ref={ref} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)}>
         <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4" />
-      </video>​{' '}
+      </video>
+      ​{' '}
     </>
   );
 }

@@ -17,7 +17,8 @@ cover:
 
 When working with Angular reactive forms, managing conditional validators for multiple controls can become cumbersome.
 Traditionally, developers subscribe to a control's valueChanges observable and manually add or remove validators based
-on certain conditions. This can lead to redundant and verbose code, especially as the number of controls increases.
+on certain conditions. This approach can lead to redundant and verbose code, especially as the number of controls
+increases.
 
 In this blog post, we'll explore a more elegant solution using a custom utility called `ifValidator`. This utility
 simplifies the process of applying validators conditionally, resulting in cleaner and more maintainable code.
@@ -80,10 +81,10 @@ export class ConfigureOperatorComponent {
 ## Simplifying with `ifValidator`
 
 To streamline the process, we introduce the `ifValidator` utility. This utility encapsulates the logic of conditionally
-applying validators based on a provided condition. Add a input listener like line 5 and line 9,
+applying validators based on a provided condition. By adding an input listener like on lines 5 and 9,
 `(change)="changeChoice()"`, we use it to trigger controls' `updateValueAndValidity` instead of `ngOnInit`.
 
-```html {5,9} showLineNumbers
+```html {5,9}
 <form clrForm [formGroup]="form">
   <clr-radio-container>
     <label>{{ 'CHOOSE_OPTION' }}</label>
@@ -100,7 +101,7 @@ applying validators based on a provided condition. Add a input listener like lin
 </form>
 ```
 
-```ts {7, 14-17} showLineNumbers
+```ts {7, 14-17}
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 export class ConfigureOperatorComponent {
@@ -121,7 +122,7 @@ export class ConfigureOperatorComponent {
 }
 ```
 
-## `ifValidator` and `ifAsyncValidator` utils
+## `ifValidator` & `ifAsyncValidator`
 
 Here's the implementation of the `ifValidator` utility along with its async counterpart `ifAsyncValidator`. These
 utilities eliminate the need to manually add or remove validators, making your code more concise and maintainable.

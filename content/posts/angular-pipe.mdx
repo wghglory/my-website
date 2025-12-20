@@ -42,7 +42,7 @@ cover:
 - minFractionDigits: This value specifies the minimum number of fractional digits. The default value is 0.
 - maxFractionDigits: This value specifies the maximum number of fractional digits. The default value is 3.
 
-number pipe is locale sensitive, so if using French, the above number will be 048,87
+The number pipe is locale-sensitive, so if using French, the above number will be 048,87.
 
 ```ts
 import {LOCALE_ID} from '@angular/core';
@@ -244,5 +244,5 @@ export class PaDiscountPipe {
 }
 ```
 
-> this feature should be used with caution because it means that the transform method will be called after every change
+> This feature should be used with caution because it means that the transform method will be called after every change
 > in the application, not just when the service is changed.

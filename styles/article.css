@@ -7,6 +7,18 @@ pre {
   overflow-x: auto;
 }
 
+/* Remove backticks from inline code in prose */
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)):before,
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)):after {
+  content: '' !important;
+}
+
+/* Reduce spacing between list items */
+.prose ul li,
+.prose ol li {
+  margin: 0;
+}
+
 /**
  * code line highlight and show line numbers
  * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
@@ -39,7 +51,7 @@ pre {
 .highlight-line {
   margin-left: -16px;
   margin-right: -16px;
-  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color */
+  background-color: rgba(59, 130, 246, 0.15); /* Set highlight bg color for light theme */
   border-left-width: 4px;
   border-left-color: rgb(59, 130, 246); /* Set highlight accent border color */
 }
@@ -50,6 +62,15 @@ pre {
   text-align: right;
   margin-right: 16px;
   margin-left: -8px;
-  color: rgb(156, 163, 175); /* Line number color */
+  color: rgb(107, 114, 128); /* Line number color for light theme */
   content: attr(line);
+}
+
+/* Dark theme styles for code highlighting */
+.dark .highlight-line {
+  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color for dark theme */
+}
+
+.dark .line-number::before {
+  color: rgb(156, 163, 175); /* Line number color for dark theme */
 }

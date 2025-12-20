@@ -6,13 +6,11 @@ const Player = dynamic(
   {ssr: false},
 );
 
-import AboutMe from '/public/images/aboutme.svg';
-import UMLogo from '/public/images/companies/um.svg';
-import UnionbankLogo from '/public/images/companies/unionbank.svg';
-import UPMCLogo from '/public/images/companies/upmc.svg';
-import VMwareLogo from '/public/images/companies/vmware.svg';
-import DoorBg from '/public/images/door.svg';
-import {fadeInVariant, itemVariant, listVariant, rightToLeftVariant} from '@/lib/motion';
+import {itemVariant, listVariant, rightToLeftVariant} from '@/lib/motion';
+import UMLogo from '@/public/images/companies/um.svg';
+import UnionbankLogo from '@/public/images/companies/unionbank.svg';
+import UPMCLogo from '@/public/images/companies/upmc.svg';
+import VMwareLogo from '@/public/images/companies/vmware.svg';
 
 import SocialIcons from '../share/SocialIcons';
 
@@ -70,10 +68,10 @@ export default function HeroSection() {
       <motion.div className="bg" initial="hidden" animate="visible" variants={rightToLeftVariant}>
         <div className="container m-auto px-6 lg:px-20">
           <div className="flex h-28 items-center justify-center gap-4 lg:justify-start lg:gap-10">
-            <VMwareLogo className="h-4" />
-            <UnionbankLogo className="h-7" />
-            <UMLogo className="h-6" />
-            <UPMCLogo className="h-5" />
+            <VMwareLogo className="h-8 w-auto text-gray-900 dark:text-gray-100" />
+            <UnionbankLogo className="h-8 w-auto" />
+            <UMLogo className="h-8 w-auto" />
+            <UPMCLogo className="h-8 w-auto" />
           </div>
         </div>
       </motion.div>

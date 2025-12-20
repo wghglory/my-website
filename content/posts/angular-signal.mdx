@@ -15,21 +15,22 @@ cover:
 ## Signal's Role in Reactivity
 
 In the realm of UI libraries and frameworks such as Angular, React, and Vue, the concept of reactivity plays a pivotal
-role. Whether it's termed dirty check, diff check vDOM, or change detection, the efficiency of reactivity profoundly
-impacts a framework's performance. Until Angular v16, zone.js was instrumental in Angular's change detection mechanism.
-Despite the performance boost brought about by the OnPush strategy, there's always room for further optimization. This
-is where Signal steps in, **offering a nuanced and refined approach** to zone.js's change detection mechanism.
+role. Whether it's termed dirty checking, diff checking vDOM, or change detection, the efficiency of reactivity
+profoundly impacts a framework's performance. Until Angular v16, zone.js was instrumental in Angular's change detection
+mechanism. Despite the performance boost brought about by the OnPush strategy, there's always room for further
+optimization. This is where Signal steps in, **offering a nuanced and refined approach** to zone.js's change detection
+mechanism.
 
 <Quote color="sky">
   [Click here to watch a great video explaining Angular zone.js change
   detection](https://www.youtube.com/watch?v=WAu7omIoerM&t=494s)
 </Quote>
 
-Angular, while powerful, often poses a steeper learning curve compared to its counterparts like React and Vue.
+Angular, while powerful, often presents a steeper learning curve compared to its counterparts like React and Vue.
 Additionally, mastering RxJS, an advanced reactive library heavily utilized within Angular, can be daunting for many
-developers, hindering the adoption of the framework. In response to this challenge, the Angular team endeavors to
-streamline the framework, and Signal emerges as a compelling solution. **It stands out as a user-friendly,
-high-performance alternative that simplifies handling state changes** within Angular applications.
+developers, hindering framework adoption. In response to this challenge, the Angular team endeavors to streamline the
+framework, and Signal emerges as a compelling solution. **It stands out as a user-friendly, high-performance alternative
+that simplifies handling state changes** within Angular applications.
 
 Moreover, Signal's relevance transcends Angular; it finds application within other frameworks such as Solid.js and
 Preact. By not relying on zone.js, **Signal contributes to reduced bundle sizes in Angular applications, enhancing
@@ -37,20 +38,20 @@ overall performance**.
 
 ## Unlocking the Potential of Signals
 
-- **Reactive and Efficient**: Signals boast efficient reactivity, crucial for optimal performance.
+- **Reactive and Efficient**: Signals provide efficient reactivity, which is crucial for optimal performance.
 - **Simplicity at its Core**: They offer a straightforward approach to managing state changes, reducing complexity in
   codebases.
 - **Enhanced Maintainability**: Signal-based code tends to be more maintainable, facilitating smoother development
   workflows.
 - **Consistency Guaranteed**: Unlike observables, signals always carry a value, even if initially undefined, ensuring
   predictable behavior.
-- **Minimal Side Effects**: Reading a signal doesn't trigger additional changes, promoting cleaner code architecture
+- **Minimal Side Effects**: Reading a signal doesn't trigger additional changes, promoting cleaner code architecture.
 
 ## Signals vs RxJS
 
-- While RxJS observables excel in emitting multiple values over time, signals maintain a single value, simplifying data
+- While RxJS observables excel at emitting multiple values over time, signals maintain a single value, simplifying data
   display in templates.
-- Unlike observables that necessitate asynchronous handling via async pipes, signals promptly retrieve their value,
+- Unlike observables that require asynchronous handling via async pipes, signals promptly retrieve their value,
   eliminating concerns regarding duplicates and code complexity.
 - However, it's worth noting that RxJS remains indispensable for managing asynchronous operations like HTTP requests,
   with signals primarily serving the purpose of rendering data.
@@ -60,7 +61,7 @@ overall performance**.
 The integration of signals and RxJS is facilitated through `@angular/core/rxjs-interop`. By leveraging `toSignal`,
 observables can be seamlessly converted into signals, with automatic subscription management and value propagation.
 While signals and `BehaviorSubjects` share similar functionalities, signals offer a more streamlined syntax, albeit with
-some additional intricacies during integration with RxJS.
+some additional intricacies when integrating with RxJS.
 
 ## Signal Naming Conventions
 
@@ -97,7 +98,7 @@ effect(() => {
 ### `effect`
 
 Generally, refrain from changing the signal value inside the effect. The effect function executes when one or more
-dependent signals undergo a change.
+dependent signals change.
 
 When to Use Effect?
 
@@ -128,7 +129,7 @@ vehiclesState = toSignal(this.vehiclesState$, {
 vehiclesState$ = toObservable(this.vehiclesState);
 ```
 
-This function exposes the value of an Angular Signal as an RxJS Observable. Value propagation into the Observable's
+This function exposes the value of an Angular Signal as an RxJS Observable. Value propagation to the Observable's
 subscribers is facilitated through an effect. `toObservable` should be invoked in an injection context unless an
 injector is supplied via options.
 
@@ -150,7 +151,7 @@ export class MenuWithSignals {
 
 ### Signal Inputs
 
-```ts {7-9} showLineNumbers
+```ts {7-9}
 export class Checkbox {
   @Input() disabled = false;
   @Input({required: true}) checked!: boolean;
@@ -169,7 +170,7 @@ Outputs, albeit not signal-based, retain the familiar syntax style. Unlike the c
 `EventEmitter` inheriting from `Subject` in RxJS, the new output type is `OutputEmitterRef`, devoid of any association
 with RxJS.
 
-```ts {12-16,19,28} showLineNumbers
+```ts {12-16,19,28}
 export class CheckboxWithSignals {
   disabled = input(false);
   @Output() toggled = new EventEmitter<boolean>();
@@ -204,7 +205,7 @@ export class CheckboxWithSignals implements OnInit {
 
 ### Model Inputs
 
-In angular 16, it's hard to do a two-way binding using `signal`.
+In Angular 16, it's difficult to implement two-way binding using `signal`.
 
 ```ts
 @Component({
@@ -220,8 +221,8 @@ export class InputSignalExample {
 }
 ```
 
-Even without signal, a custom component supporting 2-way binding requires the below syntax. You need a input variable,
-and the output variable should be the input variable plus `Change`.
+Even without signals, a custom component supporting two-way binding requires the following syntax. You need an input
+variable, and the output variable should be the input variable plus `Change`.
 
 ```ts
 @Component({
@@ -280,5 +281,5 @@ export class Profile {
 
 ## Envisioning the Future
 
-In the long run, angular team aims to make RxJS dependency optional. When RxJS is opted for, seamless integration is
+In the long run, the Angular team aims to make RxJS dependency optional. When RxJS is opted for, seamless integration is
 promised, offering even better integration than ever before.

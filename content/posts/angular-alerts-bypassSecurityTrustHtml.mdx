@@ -16,9 +16,9 @@ cover:
 ## Rendering Global Alerts in Angular: A Comprehensive Guide
 
 Global alerts are a crucial aspect of any web application, providing users with important information and guidance.
-However, when dealing with Angular and internationalization (l10n), rendering alerts with dynamic content such as
+However, when working with Angular and internationalization (l10n), rendering alerts with dynamic content such as
 buttons can be challenging due to Angular's security measures. In this guide, we'll explore how to efficiently handle
-and render global alerts, addressing security concerns and providing a seamless user experience.
+and render global alerts while addressing security concerns and providing a seamless user experience.
 
 ## The Challenge: Escaping Buttons in Angular
 
@@ -28,7 +28,7 @@ Consider the following scenario where you need to include dynamic content like b
 
 `'CERT_GUIDANCE.ALERT': 'Object Storage Extension service endpoint is found not accessible from your web browser. Please click <button data-action="dialog" data-file="cert-guidance" data-title="CERT_GUIDANCE.TITLE" data-size="xl" class="btn btn-sm btn-outline">View Instructions</button> to resolve the problem.'`
 
-The issue here is that Angular escapes the button, adhering to security practices. To overcome this challenge, we need a
+The issue here is that Angular escapes the button to adhere to security practices. To overcome this challenge, we need a
 solution that allows us to render such dynamic content safely.
 
 ## Building Global Alerts with NgRx
@@ -142,9 +142,9 @@ closures and interactions. It may contain strings that have a button inside:
 This component not only displays alerts but also handles click events, supporting both internal navigation and dialog
 actions.
 
-The essential code is that `onclick` will bind the alert element. If `data-action` is `dialog`, invoke ngx modal
-service. We also need to provide `data-file` which dynamically loads the angular component. Since I'm using angular v17
-vite here, I can use `await import` to do so.
+The essential code binds the `onclick` event to the alert element. If `data-action` is `dialog`, it invokes the ngx
+modal service. We also need to provide `data-file`, which dynamically loads the Angular component. Since we're using
+Angular v17 with Vite here, we can use `await import` to accomplish this.
 
 ```ts
 export class AdvancedAlertComponent {

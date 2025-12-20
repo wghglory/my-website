@@ -1,4 +1,4 @@
-import {MDXRemoteSerializeResult} from 'next-mdx-remote';
+import {SerializeResult} from 'next-mdx-remote-client/serialize';
 
 import type {XOR} from '@/lib/typescript';
 
@@ -31,7 +31,7 @@ export interface FileContent {
 }
 
 export interface MDXFile {
-  source: MDXRemoteSerializeResult<Record<string, unknown>>;
+  source: SerializeResult<Record<string, unknown>>;
   meta: FileMeta;
 }
 

@@ -8,7 +8,7 @@ import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {useMedia} from 'react-use';
 
-import PlaneIcon from '/public/images/telegram-plane.svg';
+import PlaneIcon from '@/public/images/telegram-plane.svg';
 
 import AppLogo from '../share/AppLogo';
 import MenuButton from './MenuButton';
@@ -107,44 +107,37 @@ export default function TheHeader() {
             <nav className="hidden lg:block">
               <ul className="flex gap-x-4 sm:gap-x-6 md:gap-x-8">
                 <li className="hover:text-orange-600">
-                  <Link href="/">
-                    <a className="p-2">Home</a>
+                  <Link href="/" className="p-2">
+                    Home
                   </Link>
                 </li>
                 <li className="hover:text-orange-600">
-                  <Link href="/about">
-                    <a className="p-2">About</a>
+                  <Link href="/about" className="p-2">
+                    About
                   </Link>
                 </li>
                 <li className="hover:text-orange-600">
-                  <Link href="/#project">
-                    <a className="p-2">Projects</a>
+                  <Link href="/#project" className="p-2">
+                    Projects
                   </Link>
                 </li>
                 <li className="hover:text-orange-600">
-                  <Link href="/posts">
-                    <a className="p-2">Blog</a>
+                  <Link href="/posts" className="p-2">
+                    Blog
                   </Link>
                 </li>
                 <li className="hover:text-orange-600">
-                  <Link href="/notion">
-                    <a className="p-2">Notion</a>
-                  </Link>
-                </li>
-                <li className="hover:text-orange-600">
-                  <Link href="/snippets">
-                    <a className="p-2">Snippets</a>
+                  <Link href="/snippets" className="p-2">
+                    Snippets
                   </Link>
                 </li>
               </ul>
             </nav>
             <div className="hidden items-center gap-4 lg:flex">
               <ThemeChanger />
-              <Link href="/contact">
-                <a className="btn-primary">
-                  Contact
-                  <PlaneIcon className="w-5" />
-                </a>
+              <Link href="/contact" className="btn-primary">
+                Contact
+                <PlaneIcon className="w-5" />
               </Link>
             </div>
             <div className="inline-flex lg:hidden">
@@ -189,11 +182,6 @@ export default function TheHeader() {
                 <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
                   <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/posts')}>
                     Blog
-                  </button>
-                </li>
-                <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">
-                  <button className="w-full py-3 md:py-5" onClick={() => navigateTo('/notion')}>
-                    Notion
                   </button>
                 </li>
                 <li className="hover:bg-gray-100 hover:text-orange-600 hover:dark:bg-gray-800">

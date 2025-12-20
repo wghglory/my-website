@@ -13,12 +13,12 @@ cover:
 
 ## Introduction
 
-Standalone components, as the new feature introduced in `Angular v14`, **are not part of an NgModule and define their
-dependencies (like module imports) directly**. But this doesn't necessarily let us do anything that we couldn't do with
-the existing Angular, it just changes some of the architecture.
+Standalone components, a new feature introduced in `Angular v14`, **are not part of an NgModule and define their
+dependencies (like module imports) directly**. However, this doesn't necessarily enable us to do anything that we
+couldn't do with existing Angular; it just changes some of the architecture.
 
-React, Vue and other frameworks don't have NgModule concept. They can import components and use them directly. Angular
-community enables this feature so react developers can get hands-on experience easily.
+React, Vue, and other frameworks don't have the NgModule concept. They can import components and use them directly. The
+Angular community enables this feature so React developers can get hands-on experience easily.
 
 Let's review angular history.
 
@@ -28,8 +28,8 @@ A SharedModule, as recommended by the
 [Angular Coding Style Guide](https://angular.io/guide/styleguide#shared-feature-module), is a single Angular module with
 generic components, directives and pipes that are shared between feature modules in your Angular application.
 
-Creating a project global place for all common things, like widgets or pipes to transform values, makes sense. You can
-share them between multiple modules and every developer knows where to put new common components.
+Creating a project-wide place for all common things, like widgets or pipes to transform values, makes sense. You can
+share them between multiple modules, and every developer knows where to put new common components.
 
 <Quote color="sky">
   The approach also has drawbacks. In general, we want to create small, encapsulated and reusable units. Creating a
@@ -240,14 +240,14 @@ export const path: Routes = [
 
 ### Better than regular modules?
 
-Right now, standalone components don't really reduce any quantity of work. Yes, you don't need the module file anymore,
-but now each component needs each of these pieces and in a lot of cases, we're seeing that we have to duplicate things.
-We have to import the router module multiple times or the forms module multiple times, rather than just importing it
-once inside of the module and having it be available to the component. So right now, standalone components aren't
-reducing the quantity of work that we have to do.
+Right now, standalone components don't really reduce the quantity of work. Yes, you don't need the module file anymore,
+but now each component needs each of these pieces, and in many cases, we're seeing that we have to duplicate things. We
+have to import the router module multiple times or the forms module multiple times, rather than just importing it once
+inside the module and having it be available to the component. So right now, standalone components aren't reducing the
+quantity of work that we have to do.
 
 ### Lower learning curve?
 
-One thing that standalone components may have is a lower learning curve. Modules sometimes are confusing to people that
-are new to Angular and learning Angular, so having a application that doesn't have a route module might be slightly
-easier for somebody to learn.
+One thing that standalone components may offer is a lower learning curve. Modules can be confusing to people who are new
+to Angular and learning Angular, so having an application that doesn't have a route module might be slightly easier for
+somebody to learn.

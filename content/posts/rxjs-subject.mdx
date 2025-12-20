@@ -31,8 +31,8 @@ this.actionSubject.subscribe((item) => console.log(item));
 ```
 
 <Quote color="red" title="Limitations">
-  when a new subscriber is created using the subscribe method, it won’t receive an event until the next time the next
-  method is called. this can be unhelpful if you are creating instances of components or directives dynamically and you
+  When a new subscriber is created using the subscribe method, it won't receive an event until the next time the next
+  method is called. This can be unhelpful if you are creating instances of components or directives dynamically and you
   want them to have some context data as soon as they are created.
 </Quote>
 

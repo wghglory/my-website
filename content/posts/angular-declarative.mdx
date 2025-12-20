@@ -29,17 +29,17 @@ cover:
 Going Reactive:
 
 - Working with Observables
-- Leverage RxJS directly operators
+- Leverage RxJS operators directly
 - Improve performance
-- Simplify code, easy to read and understand
+- Simplify code, making it easier to read and understand
 
 Think RxJS like a conveyor.
 
-1. Conveyor Start (Emits items) -- `subscribe`
-1. Item passes through a set of operations -- `pipe`
-1. As an observer. Next item, process it -- `next()`; Error occurred, handle it -- `error()`; Complete, you're done --
+1. Conveyor Start (Emits items) — `subscribe`
+1. Item passes through a set of operations — `pipe`
+1. As an observer: Next item, process it — `next()`; Error occurred, handle it — `error()`; Complete, you're done —
    `complete()`
-1. Stop -- `unsubscribe`
+1. Stop — `unsubscribe`
 
 ## ChangeDetectionStrategy.OnPush
 
@@ -55,7 +55,7 @@ Component is only checked when:
 
 ```ts
 export class HomeComponent {
-  // this feels like a declarative, but we have to look at all the places that itemsLeftInStock to understand how the logic works.
+  // This feels declarative, but we have to look at all the places that itemsLeftInStock is used to understand how the logic works.
   itemsLeftInStock = this.itemService.getItemsLeftInStock();
 
   buyItem() {
@@ -111,7 +111,7 @@ products$ = this.productService.products$.pipe(
 
 ## Caveats
 
-1. Don't know `this.variable` too much in angular component function, because it's hard to trace where the variable get
-   changed. You need lots of context to understand what's going on. Unit Test is also harder.
+1. Avoid relying too heavily on `this.variable` in Angular component functions, because it's hard to trace where the variable gets
+   changed. You need lots of context to understand what's going on. Unit testing is also harder.
 
-   `subscribe` to variables and assign variables inside the subscribe next function is like this approach.
+   Subscribing to variables and assigning variables inside the subscribe next function follows this approach.

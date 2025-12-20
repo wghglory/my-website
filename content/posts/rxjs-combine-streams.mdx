@@ -89,8 +89,8 @@ productsWithCategory$ = forkJoin([this.products$, this.productCategories$]);
 // output: [product[], category[]]
 ```
 
-Bad example: Why cannot we use `withLatestFrom`? Because we are not sure if productCategories$ is returned earlier. If
-products$ returns earlier, at the emit time, productCategories$ is not complete, it never emits a value, the output
+Bad example: Why can't we use `withLatestFrom`? Because we are not sure if productCategories$ is returned earlier. If
+products$ returns earlier, at the emit time, productCategories$ is not complete, it never emits a value, and the output
 observable cannot be emitted.
 
 ```ts
@@ -130,7 +130,7 @@ products$ = combineLatest([this.productService.products$, this.action$]).pipe(
 
 ### Creating an Action Stream
 
-category dropdown selection will trigger to emit the categoryId.
+Category dropdown selection will trigger the emission of the categoryId.
 
 ```ts
 private categorySelectedSubject = new Subject<number>();

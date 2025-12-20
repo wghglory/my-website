@@ -1,4 +1,4 @@
-import MedalIcon from '/public/images/medal.svg';
+import MedalIcon from '@/public/images/medal.svg';
 
 export interface EventItem {
   year: string;
@@ -19,16 +19,16 @@ export default function TimelineEvents({eventList}: {eventList: EventItem[]}) {
               <div className="sm:hidden">{e.year}</div>
 
               {e.tags && (
-                <div className="space-x-2 pt-1">
+                <div className="flex min-h-[2rem] items-center gap-2 pt-1">
                   {e.tags.GPA && (
-                    <span className="mb-2 inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">
+                    <span className="inline-flex items-center rounded-md border border-gray-500 px-3 py-1 text-sm font-light leading-tight">
                       GPA&nbsp;<strong className="font-bold">{e.tags.GPA}</strong>
                     </span>
                   )}
 
                   {e.tags.medal && (
-                    <span className="mb-2 inline-block rounded-md border border-gray-500 px-3 py-1 text-sm font-light">
-                      <MedalIcon className="inline w-4" />
+                    <span className="inline-flex items-center gap-1 rounded-md border border-gray-500 px-3 py-1 text-sm font-light leading-tight">
+                      <MedalIcon className="h-4 w-4" />
                       <strong>{e.tags.medal}</strong>
                     </span>
                   )}

@@ -1,14 +1,14 @@
-import {sendForm} from '@emailjs/browser';
+import {EmailJSResponseStatus, sendForm} from '@emailjs/browser';
 import dynamic from 'next/dynamic';
 import {FormEvent, useState} from 'react';
+import {BsCheckCircle} from 'react-icons/bs';
+import {CgSpinner} from 'react-icons/cg';
+import {RiErrorWarningLine} from 'react-icons/ri';
 
 const Player = dynamic(
   () => import('@lottiefiles/react-lottie-player').then((mod) => mod.Player) as Promise<React.ComponentType<any>>,
   {ssr: false},
 );
-import {BsCheckCircle} from 'react-icons/bs';
-import {CgSpinner} from 'react-icons/cg';
-import {RiErrorWarningLine} from 'react-icons/ri';
 
 const inputClass =
   'w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-300 focus:outline-none focus:ring focus:ring-queen-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:focus:border-gray-500 dark:focus:ring-king-500';
@@ -19,25 +19,47 @@ export default function ContactPage() {
   const btnStatusClass =
     status === 'pending' ? 'btn-loading' : status === 'success' ? 'btn-success' : status === 'error' ? 'btn-error' : '';
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const form = event.currentTarget;
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+    const userId = process.env.NEXT_PUBLIC_EMAILJS_USER_ID;
+
+    // Validate environment variables
+    if (!serviceId || !templateId || !userId) {
+      console.error('EmailJS environment variables are not set');
+      setStatus('error');
+      return;
+    }
 
     setStatus('pending');
 
-    // Way1: https://www.emailjs.com/docs/examples/reactjs. Can define templates
-    sendForm(
-      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-      '#form',
-      process.env.NEXT_PUBLIC_EMAILJS_USER_ID!,
-    ).then(
-      (res) => {
+    try {
+      // Way1: https://www.emailjs.com/docs/examples/reactjs. Can define templates
+      // Use form element directly instead of selector for better reliability
+      const response = await sendForm(serviceId, templateId, form, userId);
+
+      console.log('EmailJS response:', response);
+
+      // Check for successful response (status 200-299)
+      if (response.status >= 200 && response.status < 300) {
         setStatus('success');
-      },
-      (err) => {
-        setStatus('error');
-      },
-    );
+        form.reset(); // Reset form after successful submission
+      } else {
+        throw new EmailJSResponseStatus(response.status, response.text || 'Unknown error');
+      }
+    } catch (err) {
+      console.error('EmailJS error:', err);
+
+      // Handle EmailJSResponseStatus errors
+      if (err instanceof EmailJSResponseStatus) {
+        console.error(`EmailJS error: ${err.status} - ${err.text}`);
+      }
+
+      setStatus('error');
+    }
 
     // Way2: https://formsubmit.co/ajax-documentation. No registration
     // const formData: any = {};
@@ -68,9 +90,9 @@ export default function ContactPage() {
 
       <div className="m-7">
         <form id="form" onSubmit={submit}>
-          <input type="hidden" name="_subject" value="New submission from guanghui website" />
-          <input type="hidden" name="_cc" value="wghglory89@gmail.com,guanghui-wang@foxmail.com" />
-          <input type="hidden" name="_captcha" value="true" />
+          {/* EmailJS template variables - these should match your EmailJS template */}
+          {/* Note: _subject, _cc, _captcha are formsubmit.co fields, not EmailJS fields */}
+          {/* If you need these, configure them in your EmailJS template instead */}
 
           <div className="mb-6">
             <label htmlFor="name" className="mb-2 block text-sm text-gray-600 dark:text-gray-400">

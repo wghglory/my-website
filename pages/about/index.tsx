@@ -7,27 +7,27 @@ export default function AboutPage() {
     {
       year: '2017 - present',
       title: 'Staff Engineer',
-      organization: 'VMware Inc. Shanghai',
+      organization: 'VMware by Broadcom, Shanghai',
     },
     {
       year: '2016 - 2017',
       title: 'Team Lead',
-      organization: 'MUFG Union Bank. San Diego, CA',
+      organization: 'MUFG Union Bank, San Diego, CA',
     },
     {
       year: '2015 - 2016',
       title: 'Senior Full Stack Developer',
-      organization: 'SNH Inc. San Diego, CA',
+      organization: 'SNH Inc, San Diego, CA',
     },
     {
       year: '2013 - 2015',
       title: 'Full Stack Developer',
-      organization: 'UPMC WorkPartners. Pittsburgh, PA',
+      organization: 'UPMC WorkPartners, Pittsburgh, PA',
     },
     {
       year: '2009 - 2012',
       title: '.Net Developer (Intern)',
-      organization: 'Chengguang Culture Inc. Dalian',
+      organization: 'Chengguang Culture Inc, Dalian',
     },
   ];
 
@@ -50,17 +50,17 @@ export default function AboutPage() {
     {
       title: 'Kindness',
       description:
-        "You can be the smartest and most skilled software engineer in the world, but if you're not kind to those with whom you interact, you'll never reach your full potential and you'll always be chasing the next thing to bring you happiness in life. Be kind.",
+        'Being the smartest engineer means little without kindness. Treating others with respect and empathy is essential for reaching your full potential and finding genuine fulfillment in your work and life.',
     },
     {
       title: 'Share',
       description:
-        "One of the biggest things that has helped me learn is by committing myself to sharing what I know with others. I force myself into situations where I have to be accountable to those I'm sharing to really know my stuff. And as a result, I gained a lot, so do others.",
+        'Sharing knowledge has been crucial to my growth. By teaching others, I hold myself accountable to truly understand what I know. This process benefits both me and those I share with, creating a cycle of continuous learning.',
     },
     {
       title: 'Collaborate',
       description:
-        "I've worked with many developers as a team member at companies I've worked at as well as in the open source community. I've found it to be invaluable to collaborate well with others. I value giving credit where it is due and celebrating the successes of others with them. We can accomplish much more together than separately.",
+        "Working with developers across companies and open source has shown me the power of collaboration. I believe in giving credit where it's due and celebrating shared successes. Together, we achieve far more than we could alone.",
     },
   ];
 
@@ -76,7 +76,7 @@ export default function AboutPage() {
         <Responsibilities />
       </SectionLayout>
       <SectionLayout title="My Values">
-        <div className="grid gap-y-8 gap-x-16 lg:grid-cols-3">
+        <div className="grid gap-x-16 gap-y-8 lg:grid-cols-3">
           {values.map((v) => (
             <div key={v.title} className="space-y-4">
               <div className="text-2xl">{v.title}</div>

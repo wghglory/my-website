@@ -17,8 +17,8 @@ Most of the examples we've looked at so far have focused on narrowing single var
 `boolean`, and `number`. While this is common, most of the time in JavaScript we'll be dealing with slightly more
 complex structures.
 
-Let's imagine we're trying to encode shapes like circles and squares for some motivation. Circles keep track of their
-radiuses and squares keep track of their side lengths. We'll use a field called `kind` to tell which shape we're dealing
+Let's imagine we're trying to encode shapes like circles and squares. Circles keep track of their
+radii and squares keep track of their side lengths. We'll use a field called `kind` to identify which shape we're dealing
 with. Here's a first attempt at defining `Shape`.
 
 ```ts
@@ -29,7 +29,7 @@ interface Shape {
 }
 ```
 
-We can write a `getArea` function that applies the right logic based on if it's dealing with a circle or square. We'll
+We can write a `getArea` function that applies the right logic based on whether it's dealing with a circle or square. We'll
 first try dealing with circles.
 
 ```ts
@@ -39,7 +39,7 @@ function getArea(shape: Shape) {
 }
 ```
 
-Under [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) that gives us an error - which is
+Under [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks), that gives us an error—which is
 appropriate since `radius` might not be defined. But what if we perform the appropriate checks on the `kind` property?
 
 ```ts
@@ -63,15 +63,15 @@ function getArea(shape: Shape) {
 }
 ```
 
-But this doesn't feel ideal. We had to shout a bit at the type-checker with those non-null assertions (`!`) to convince
-it that `shape.radius` was defined, but those assertions are error-prone if we start to move code around. Additionally,
-outside of [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) we're able to accidentally
+But this doesn't feel ideal. We had to use non-null assertions (`!`) to convince
+the type-checker that `shape.radius` was defined, but those assertions are error-prone if we start to move code around. Additionally,
+outside of [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks), we're able to accidentally
 access any of those fields anyway (since optional properties are just assumed to always be present when reading them).
 We can definitely do better.
 
-The problem with this encoding of `Shape` is that the type-checker doesn't have any way to know whether or not `radius`
+The problem with this encoding of `Shape` is that the type-checker doesn't have any way to know whether `radius`
 or `sideLength` are present based on the `kind` property. We need to communicate what _we_ know to the type checker.
-With that in mind, let's take another swing at defining `Shape`.
+With that in mind, let's take another approach to defining `Shape`.
 
 ```ts
 interface Circle {
@@ -121,11 +121,11 @@ That got rid of the error! When every type in a union contains a common property
 considers that to be a _discriminated union_, and can narrow out the members of the union.
 
 In this case, `kind` was that common property (which is what's considered a _discriminant_ property of `Shape`).
-Checking whether the `kind` property was `"circle"` got rid of every type in `Shape` that didn't have a `kind` property
+Checking whether the `kind` property was `"circle"` eliminated every type in `Shape` that didn't have a `kind` property
 with the type `"circle"`. That narrowed `shape` down to the type `Circle`.
 
-The same checking works with `switch` statements as well. Now we can try to write our complete `getArea` without any
-pesky `!` non-null assertions.
+The same checking works with `switch` statements as well. Now we can write our complete `getArea` without any
+non-null assertions.
 
 ```ts
 function getArea(shape: Shape) {
@@ -148,7 +148,7 @@ nothing left. In those cases, TypeScript will use a `never` type to represent a 
 The `never` type is assignable to every type; however, no type is assignable to `never` (except `never` itself). This
 means you can use narrowing and rely on `never` turning up to do exhaustive checking in a switch statement.
 
-For example, adding a `default` to our `getArea` function which tries to assign the shape to `never` will raise when
+For example, adding a `default` case to our `getArea` function that tries to assign the shape to `never` will raise an error when
 every possible case has not been handled.
 
 ```ts
@@ -167,7 +167,7 @@ function getArea(shape: Shape) {
 }
 ```
 
-Adding a new member to the `Shape` union, will cause a TypeScript error:
+Adding a new member to the `Shape` union will cause a TypeScript error:
 
 ```ts
 interface Triangle {
@@ -193,7 +193,7 @@ function getArea(shape: Shape) {
 
 ## Using type predicates
 
-We've worked with existing JavaScript constructs to handle narrowing so far, however sometimes you want more direct
+We've worked with existing JavaScript constructs to handle narrowing so far; however, sometimes you want more direct
 control over how types change throughout your code.
 
 To define a user-defined type guard, we simply need to define a function whose return type is a _type predicate_:
@@ -280,8 +280,8 @@ function printAll(strs: string | string[] | null) {
 }
 ```
 
-Keep in mind though that truthiness checking on primitives can often be error prone. As an example, consider a different
-attempt at writing `printAll`
+Keep in mind, though, that truthiness checking on primitives can often be error-prone. As an example, consider a different
+attempt at writing `printAll`.
 
 ```ts
 function printAll(strs: string | string[] | null) {

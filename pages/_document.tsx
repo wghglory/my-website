@@ -5,8 +5,8 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preload" href="/fonts/Poppins/Poppins-Regular.ttf" as="font" crossOrigin="true" />
-          <link rel="preload" href="/fonts/Poppins/Poppins-Medium.ttf" as="font" crossOrigin="true" />
+          <link rel="preload" href="/fonts/Poppins/Poppins-Regular.ttf" as="font" crossOrigin="anonymous" />
+          <link rel="preload" href="/fonts/Poppins/Poppins-Medium.ttf" as="font" crossOrigin="anonymous" />
           <link rel="icon" href="/favicon.ico" />
           <meta name="description" content="Guanghui Wang Website" key="desc" />
         </Head>

@@ -4,7 +4,9 @@ export default function Table({columns, data}: {columns: string[]; data: React.R
       <thead>
         <tr>
           {columns.map((column, index) => (
-            <th key={index}>{column}</th>
+            <th key={index} className={`!py-2`}>
+              {column}
+            </th>
           ))}
         </tr>
       </thead>
@@ -12,7 +14,9 @@ export default function Table({columns, data}: {columns: string[]; data: React.R
         {data.map((row, index) => (
           <tr key={index}>
             {row.map((cell, index) => (
-              <td key={index}>{cell}</td>
+              <td key={index} className={`!py-2`}>
+                {cell}
+              </td>
             ))}
           </tr>
         ))}
