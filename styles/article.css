@@ -51,7 +51,7 @@ pre {
 .highlight-line {
   margin-left: -16px;
   margin-right: -16px;
-  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color */
+  background-color: rgba(59, 130, 246, 0.15); /* Set highlight bg color for light theme */
   border-left-width: 4px;
   border-left-color: rgb(59, 130, 246); /* Set highlight accent border color */
 }
@@ -62,6 +62,15 @@ pre {
   text-align: right;
   margin-right: 16px;
   margin-left: -8px;
-  color: rgb(156, 163, 175); /* Line number color */
+  color: rgb(107, 114, 128); /* Line number color for light theme */
   content: attr(line);
+}
+
+/* Dark theme styles for code highlighting */
+.dark .highlight-line {
+  background-color: rgba(55, 65, 81, 0.5); /* Set highlight bg color for dark theme */
+}
+
+.dark .line-number::before {
+  color: rgb(156, 163, 175); /* Line number color for dark theme */
 }
