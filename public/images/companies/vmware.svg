@@ -6,13 +6,17 @@
         stroke-width: 0px;
       }
 
+      .cls-1 {
+        fill: currentColor;
+      }
+
       .cls-2 {
         fill: #fff;
         opacity: 0;
       }
 
       .cls-3 {
-        fill: #727175;
+        fill: currentColor;
       }
     </style>
   </defs>

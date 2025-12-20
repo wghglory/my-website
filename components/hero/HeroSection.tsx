@@ -68,7 +68,7 @@ export default function HeroSection() {
       <motion.div className="bg" initial="hidden" animate="visible" variants={rightToLeftVariant}>
         <div className="container m-auto px-6 lg:px-20">
           <div className="flex h-28 items-center justify-center gap-4 lg:justify-start lg:gap-10">
-            <VMwareLogo className="h-8 w-auto" />
+            <VMwareLogo className="h-8 w-auto text-gray-900 dark:text-gray-100" />
             <UnionbankLogo className="h-8 w-auto" />
             <UMLogo className="h-8 w-auto" />
             <UPMCLogo className="h-8 w-auto" />

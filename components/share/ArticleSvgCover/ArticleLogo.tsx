@@ -45,7 +45,7 @@ export default function ArticleLogo({topic}: {topic: TopicType}) {
     case 'Mongodb':
       return <Mongodb />;
     case 'Nextjs':
-      return <Nextjs />;
+      return <Nextjs className="text-gray-900 dark:text-gray-100" />;
     case 'Nodejs':
       return <Nodejs />;
     case 'Nuxt':
