@@ -1,3 +1,4 @@
+import 'gloryui-react/styles';
 import '../styles/globals.css';
 
 import {gsap} from 'gsap';
