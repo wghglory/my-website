@@ -29,14 +29,14 @@ export default function AppCard({
   const href = path ? `${path}/${slug}` : `${router.pathname}/${slug}`;
 
   return (
-    <div className="group flex flex-col bg-white dark:bg-gray-800 ">
+    <div className="group flex flex-col bg-white dark:bg-gray-800">
       {/* post cover image into children */}
       {children}
       <div className="flex flex-1 flex-col gap-4 px-8 py-6 shadow-xs">
         <div className="flex-1 space-y-6">
           <header className="text-2xl font-semibold group-hover:text-king-500">
-            <Link href={href}>
-              <a className="inline-block w-full">{title}</a>
+            <Link href={href} className="inline-block w-full">
+              {title}
             </Link>
           </header>
           <p className="text-gray-500 dark:text-gray-400">{excerpt}</p>
@@ -51,9 +51,9 @@ export default function AppCard({
             })}
           </time>
           {router.pathname === '/snippets' && (
-            <div className="flex gap-1">
+            <div className="flex items-center gap-2">
               {topics.map((t) => (
-                <span className="w-6" key={t}>
+                <span className="flex h-6 w-6 items-center justify-center" key={t}>
                   <ArticleLogo topic={t as TopicType} />
                 </span>
               ))}

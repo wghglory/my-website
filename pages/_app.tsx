@@ -1,11 +1,3 @@
-// core styles shared by all of react-notion-x (required)
-// import 'react-notion-x/src/styles.css';
-// // used for code syntax highlighting (optional)
-// import 'prismjs/themes/prism-tomorrow.css';
-// // used for collection views (optional)
-// import 'rc-dropdown/assets/index.css';
-// // used for rendering equations (optional)
-// import 'katex/dist/katex.min.css';
 import '../styles/globals.css';
 
 import {gsap} from 'gsap';
@@ -20,6 +12,7 @@ import {TextPlugin} from 'gsap/dist/TextPlugin';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
 import {ThemeProvider} from 'next-themes';
+import type {ErrorInfo} from 'react';
 import {ErrorBoundary} from 'react-error-boundary';
 
 import TheHeader from '@/components/header/TheHeader';
@@ -56,7 +49,7 @@ if (typeof window !== 'undefined') {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
-  const myErrorHandler = (error: Error, info: {componentStack: string}) => {
+  const myErrorHandler = (error: Error, info: ErrorInfo) => {
     // Do something with the error
     // E.g. log to an error logging client here
     console.log(error, 'error boundary error');

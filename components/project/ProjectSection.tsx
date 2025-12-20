@@ -5,18 +5,17 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 import Link from 'next/link';
-import {A11y, Autoplay, EffectCoverflow, Navigation, Pagination} from 'swiper';
+import {Autoplay, EffectCoverflow, Navigation, Pagination} from 'swiper/modules';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import resolveConfig from 'tailwindcss/resolveConfig';
+import colors from 'tailwindcss/colors';
 
 import {FileMeta} from '@/models';
 
 import CarouselCard from '../share/CarouselCard';
 import SectionLayout from '../share/SectionLayout';
 
-const tailwindConfig = require('/tailwind.config');
-const fullConfig = resolveConfig(tailwindConfig);
-const kingColor = (fullConfig.theme.colors as any).king;
+// king color is set to yellow in tailwind.config.js
+const kingColor = colors.yellow;
 
 export default function ProjectSection({projects}: {projects: FileMeta[]}) {
   return (
@@ -47,7 +46,7 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
             disableOnInteraction: false,
           }}
           navigation={true}
-          modules={[A11y, Pagination, Autoplay, EffectCoverflow, Navigation]}
+          modules={[Pagination, Autoplay, EffectCoverflow, Navigation]}
           className="mySwiper"
         >
           {projects.map((p) => (
@@ -97,24 +96,22 @@ export default function ProjectSection({projects}: {projects: FileMeta[]}) {
         </style>
       </div>
       <div className="flex justify-center">
-        <Link href="/projects">
-          <a className="btn-secondary group">
-            View more
-            <svg
-              className="w-5 -rotate-90 duration-200 group-hover:translate-x-2"
-              width="32"
-              height="32"
-              viewBox="0 0 32 32"
-              fill="none"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-          </a>
+        <Link href="/projects" className="btn-secondary group">
+          View more
+          <svg
+            className="w-5 -rotate-90 duration-200 group-hover:translate-x-2"
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M15.101 5.5V23.1094L9.40108 17.4095L8.14807 18.6619L15.9862 26.5L23.852 18.6342L22.5996 17.3817L16.8725 23.1094V5.5H15.101Z"
+              fill="currentColor"
+            ></path>
+          </svg>
         </Link>
       </div>
     </SectionLayout>

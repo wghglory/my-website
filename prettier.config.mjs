@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   arrowParens: 'always',
   bracketSameLine: false,
   bracketSpacing: false,
@@ -18,5 +18,6 @@ module.exports = {
   vueIndentScriptAndStyle: false,
   tailwindConfig: './tailwind.config.js',
   // pnpm and yarn pnp needs to config explicitly
-  plugins: [require('prettier-plugin-tailwindcss')],
+  plugins: ['prettier-plugin-tailwindcss'],
 };
+

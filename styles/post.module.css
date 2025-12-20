@@ -1,7 +1,7 @@
 /* use tailwind/typography instead */
 
 .post {
-  @apply container mx-auto mt-12 mb-20 w-[90%]  md:w-[60%];
+  @apply container mx-auto mb-20 mt-12 w-[90%] md:w-[60%];
 }
 
 .post h1 {

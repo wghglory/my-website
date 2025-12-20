@@ -1,8 +1,8 @@
 import React from 'react';
 
-import EmailIcon from '/public/images/social/email.svg';
-import GithubIcon from '/public/images/social/github.svg';
-import LinkedInIcon from '/public/images/social/linkedin.svg';
+import EmailIcon from '@/public/images/social/email.svg';
+import GithubIcon from '@/public/images/social/github.svg';
+import LinkedInIcon from '@/public/images/social/linkedin.svg';
 
 export default function SocialIcons({iconClass = 'btn-icon'}: {iconClass?: string}) {
   return (
@@ -15,7 +15,7 @@ export default function SocialIcons({iconClass = 'btn-icon'}: {iconClass?: strin
           className={iconClass}
           rel="noreferrer"
         >
-          <GithubIcon className="w-8" />
+          <GithubIcon className="h-8 w-8" />
         </a>
       </li>
       <li>
@@ -26,12 +26,12 @@ export default function SocialIcons({iconClass = 'btn-icon'}: {iconClass?: strin
           className={iconClass}
           rel="noreferrer"
         >
-          <LinkedInIcon className="w-8" />
+          <LinkedInIcon className="h-8 w-8" />
         </a>
       </li>
       <li>
         <a aria-label="send email" href="mailto:guanghui-wang@foxmail.com" className={iconClass}>
-          <EmailIcon className="w-8" />
+          <EmailIcon className="h-8 w-8" />
         </a>
       </li>
     </ul>

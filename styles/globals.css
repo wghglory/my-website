@@ -1,7 +1,5 @@
 @import url('./article.css');
 @import url('./prism-owl.css');
-@import url('./react-notion-x.css');
-@import url('./notion.css');
 
 @tailwind base;
 @tailwind components;
@@ -38,8 +36,21 @@ html {
 }
 
 body {
-  font-family: Poppins, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family:
+    Poppins,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    'Noto Sans',
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
 }
 
 /* fix post reference links not wrap */
@@ -69,7 +80,7 @@ p {
 @layer components {
   .btn-primary {
     @apply btn-layout;
-    @apply py-2 px-6;
+    @apply px-6 py-2;
     @apply bg-gray-900 text-gray-100 ring-gray-900;
     @apply dark:bg-gray-100 dark:text-gray-900 dark:ring-gray-100;
     @apply hover:bg-king-400 hover:text-gray-900 focus:bg-king-400 focus:text-gray-900;
@@ -84,17 +95,17 @@ p {
   }
 
   .btn-secondary {
-    @apply py-2 px-6;
+    @apply px-6 py-2;
     @apply btn-icon;
   }
 
   .btn-success {
-    @apply py-2 px-6;
+    @apply px-6 py-2;
     @apply btn-layout;
     @apply border border-green-600 bg-transparent text-green-600 dark:border-green-400 dark:bg-transparent dark:text-green-400;
   }
   .btn-error {
-    @apply py-2 px-6;
+    @apply px-6 py-2;
     @apply btn-layout;
     @apply border border-red-600 bg-transparent text-red-600 dark:border-red-400 dark:bg-transparent dark:text-red-400;
   }
@@ -110,7 +121,7 @@ p {
 
   /* accent used only in footer section where it has colorful background */
   .btn-accent {
-    @apply py-2 px-6;
+    @apply px-6 py-2;
     @apply btn-icon-accent;
   }
 }

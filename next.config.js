@@ -1,3 +1,5 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 module.exports = {
   reactStrictMode: true,
@@ -5,22 +7,32 @@ module.exports = {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
-      use: ['@svgr/webpack'],
+      use: [path.resolve(__dirname, 'svg-to-component-loader.js')],
     });
 
+    // Ensure path aliases work
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@/public': path.resolve(__dirname, 'public'),
+    };
+
     return config;
+  },
+  turbopack: {
+    root: __dirname,
+    resolveAlias: {
+      '@/public': './public',
+    },
+    rules: {
+      '*.svg': {
+        loaders: ['./svg-to-component-loader.js'],
+        as: '*.js',
+      },
+    },
   },
   staticPageGenerationTimeout: 300,
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'www.notion.so',
-      },
-      {
-        protocol: 'https',
-        hostname: 'notion.so',
-      },
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
