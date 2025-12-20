@@ -81,7 +81,7 @@ export const getMdxFileStaticProps = async (dir: ContentDirectory, slug: string)
             },
           ],
           [rehypeAutolinkHeadings, {behavior: 'prepend'}],
-          rehypePrism,
+          [rehypePrism, {showLineNumbers: true}],
         ] as any,
       },
     },

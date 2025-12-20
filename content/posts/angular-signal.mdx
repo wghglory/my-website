@@ -151,7 +151,7 @@ export class MenuWithSignals {
 
 ### Signal Inputs
 
-```ts {7-9} showLineNumbers
+```ts {7-9}
 export class Checkbox {
   @Input() disabled = false;
   @Input({required: true}) checked!: boolean;
@@ -170,7 +170,7 @@ Outputs, albeit not signal-based, retain the familiar syntax style. Unlike the c
 `EventEmitter` inheriting from `Subject` in RxJS, the new output type is `OutputEmitterRef`, devoid of any association
 with RxJS.
 
-```ts {12-16,19,28} showLineNumbers
+```ts {12-16,19,28}
 export class CheckboxWithSignals {
   disabled = input(false);
   @Output() toggled = new EventEmitter<boolean>();
