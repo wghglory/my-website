@@ -35,8 +35,29 @@ export default function HeroSection() {
                 </p>
               </h2>
               <p>
-                Hi 👋 ~ I’m Guanghui Wang, a web developer hailing from Shanghai, China. Love modern UI technologies and
-                also starting to fall in love with Solidjs, GSAP, framer motion!
+                Hi 👋 ~ I&apos;m Guanghui Wang, a web developer from Shanghai, China. I&apos;m passionate about modern
+                UI technologies and exploring emerging frameworks like Astro, SvelteKit, Qwik, and SolidJS. I&apos;m the
+                creator of{' '}
+                <a
+                  href="https://ngx-lift.netlify.app/ngx-lift"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md bg-red-100 px-2 py-0.5 font-semibold text-red-700 no-underline transition-all hover:scale-105 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50"
+                >
+                  <span>🚀</span>
+                  <span>ngx-lift</span>
+                </a>{' '}
+                and{' '}
+                <a
+                  href="https://ngx-lift.netlify.app/clr-lift"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md bg-blue-100 px-2 py-0.5 font-semibold text-blue-700 no-underline transition-all hover:scale-105 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+                >
+                  <span>✨</span>
+                  <span>clr-lift</span>
+                </a>
+                .
               </p>
             </motion.div>
             <motion.div className="lg:mb-14" variants={itemVariant}>
