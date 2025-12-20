@@ -1,13 +1,14 @@
 import fs from 'fs';
 import {sync} from 'glob';
 import matter from 'gray-matter';
-import {serialize} from 'next-mdx-remote/serialize';
+import {serialize} from 'next-mdx-remote-client/serialize';
 import path from 'path';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypePrism from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
 import rehypeToc from 'rehype-toc';
+import remarkGfm from 'remark-gfm';
 
 import {FileContent} from '@/models';
 
@@ -63,20 +64,26 @@ export function getMdxFilesStaticProps(dir: ContentDirectory) {
 
 export const getMdxFileStaticProps = async (dir: ContentDirectory, slug: string) => {
   const {content, meta} = getFileFromSlug(dir, slug);
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      rehypePlugins: [
-        rehypeSlug,
-        rehypeExternalLinks,
-        [
-          rehypeToc,
-          {
-            headings: ['h1', 'h2'],
-          },
+  const mdxSource = await serialize({
+    source: content,
+    options: {
+      mdxOptions: {
+        remarkPlugins: [
+          remarkGfm, // support markdown tables
         ],
-        [rehypeAutolinkHeadings, {behavior: 'prepend'}],
-        rehypePrism,
-      ] as any,
+        rehypePlugins: [
+          rehypeSlug,
+          rehypeExternalLinks,
+          [
+            rehypeToc,
+            {
+              headings: ['h1', 'h2'],
+            },
+          ],
+          [rehypeAutolinkHeadings, {behavior: 'prepend'}],
+          rehypePrism,
+        ] as any,
+      },
     },
   });
 

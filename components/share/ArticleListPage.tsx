@@ -1,6 +1,6 @@
-import {debounce} from 'lodash';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
+import {useDebouncedCallback} from 'use-debounce';
 
 import AppCardList from '@/components/share/AppCardList';
 import NoData from '@/components/share/NoData';
@@ -13,21 +13,22 @@ export default function ArticleListPage({files, topics, title}: {files: FileMeta
 
   const router = useRouter();
 
+  const debouncedFilter = useDebouncedCallback((query: string) => {
+    // filter by title or topics
+    const data = files.filter((p) => {
+      return p.title.match(new RegExp(query, 'i')) || p.topics?.includes(query);
+    });
+    setFilteredFiles(data);
+  }, 500);
+
   // if router q has value, setTerm and filteredFiles
   useEffect(() => {
     const q = router.query.q as string;
     if (q !== undefined) {
-      setTerm(q as string);
-
-      debounce(() => {
-        // filter by title or topics
-        const data = files.filter((p) => {
-          return p.title.match(new RegExp(q, 'i')) || p.topics?.includes(q);
-        });
-        setFilteredFiles(data);
-      }, 500)();
+      setTerm(q);
+      debouncedFilter(q);
     }
-  }, [files, router.query.q]);
+  }, [files, router.query.q, debouncedFilter]);
 
   function syncInputWithQuery(val: string) {
     setTerm(val);

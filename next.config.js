@@ -31,6 +31,11 @@ module.exports = {
     },
   },
   staticPageGenerationTimeout: 300,
+  // Increase page data size threshold for large MDX content
+  // This is acceptable since we're using static generation
+  experimental: {
+    largePageDataBytes: 512 * 1024, // 512 KB (default is 128 KB)
+  },
   images: {
     remotePatterns: [
       {

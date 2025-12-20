@@ -2,7 +2,7 @@ import Giscus from '@giscus/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {MDXRemote} from 'next-mdx-remote';
+import {MDXClient} from 'next-mdx-remote-client';
 import {useTheme} from 'next-themes';
 
 import TopicList from '@/components/share/TopicList';
@@ -28,9 +28,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
   return (
     <article className="container prose mx-auto max-w-7xl px-8 py-10 dark:prose-invert md:prose-lg lg:prose-xl prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:bg-[#011627] prose-img:rounded-xl dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 sm:px-10 lg:p-20">
       <Head>
-        <title>
-          {titlePrefix[parentPath as ContentDirectory]}: {file.meta.title}
-        </title>
+        <title>{`${titlePrefix[parentPath as ContentDirectory]}: ${file.meta.title}`}</title>
       </Head>
       <Link href={`/${parentPath}`} className="group mb-8 flex items-center gap-3">
         <svg
@@ -56,7 +54,16 @@ export default function ArticlePage({file}: {file: MDXFile}) {
           <img className="inline-block w-full" src={file.meta.cover.banner} alt="article cover" />
         </div>
       )}
-      <MDXRemote {...file.source} components={mdxComponents} />
+      {'error' in file.source ? (
+        <div>Error loading content: {file.source.error.message}</div>
+      ) : (
+        <MDXClient
+          compiledSource={file.source.compiledSource}
+          frontmatter={file.source.frontmatter}
+          scope={file.source.scope}
+          components={mdxComponents}
+        />
+      )}
       <div className="mb-4 mt-8 lg:mt-16">
         <Giscus
           repo="wghglory/my-website"
