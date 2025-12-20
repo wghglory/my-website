@@ -26,7 +26,7 @@ export default function ArticlePage({file}: {file: MDXFile}) {
   const [, parentPath] = router.pathname.split('/');
 
   return (
-    <article className="container prose mx-auto max-w-7xl px-8 py-10 dark:prose-invert md:prose-lg lg:prose-xl prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:border prose-pre:border-gray-200 prose-pre:bg-[#fafafa] prose-img:rounded-xl dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 dark:prose-pre:border-0 dark:prose-pre:bg-[#000000] sm:px-10 lg:p-20">
+    <article className="container prose mx-auto max-w-7xl px-8 py-10 dark:prose-invert md:prose-lg lg:prose-xl prose-a:text-queen-600 prose-a:no-underline hover:prose-a:text-queen-500 prose-pre:border prose-pre:border-gray-200 prose-img:rounded-xl dark:prose-a:text-queen-400 dark:hover:prose-a:text-queen-500 dark:prose-pre:border-0 sm:px-10 lg:p-20">
       <Head>
         <title>{`${titlePrefix[parentPath as ContentDirectory]}: ${file.meta.title}`}</title>
       </Head>
