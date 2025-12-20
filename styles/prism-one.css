@@ -15,6 +15,7 @@ pre[class*='language-'] {
   padding: 1em;
   margin: 0.5em 0;
   overflow: auto;
+  position: relative;
 }
 
 /* Light theme background override */
