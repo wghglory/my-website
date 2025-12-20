@@ -13,7 +13,7 @@ cover:
 ## Generate type data automatically
 
 Problem: In many cases, we have to work with JSON data received from a third-party API or a backend service that does
-not provide type information (and that isn't listed on DefinitelyTyped)
+not provide type information (and that isn't listed on DefinitelyTyped).
 
 Solution:
 
@@ -40,7 +40,7 @@ export interface Question {
 }
 ```
 
-Below code won't make the compiler happy:
+The following code won't make the compiler happy:
 
 ```ts
 let myQuestion: Question = {
@@ -54,7 +54,7 @@ We could make the `options` property optional in the `Question` interface, but t
 
 Solution:
 
-use te `Partial` type:
+Use the `Partial` type:
 
 ```ts
 let myQuestion: Partial<Question> = {
@@ -77,7 +77,7 @@ enum GamePadInput {
 }
 ```
 
-Enums get compiled into a big monster of javascript, which affects performance.
+Enums get compiled into a large JavaScript object, which affects performance.
 
 ```js
 var GamePadInput;
@@ -89,8 +89,8 @@ var GamePadInput;
 })(GamePadInput | (GamePadInput = {}));
 ```
 
-On the other hand, union types are shorter and leaner as they don't get compiled into anything - and in that example,
-they are just strings:
+On the other hand, union types are shorter and leaner as they don't get compiled into anything—and in that example, they
+are just strings:
 
 ```ts
 export type GamePadInput = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
@@ -116,7 +116,7 @@ if (value !== null && value !== undefined) {
 
 Instead, since TypeScript 3.7, we can do: `a = value ?? 'some default value';`
 
-Smart Javascript developers have been doing this forever as an alternative: `a = value || 'some default value';`
+Smart JavaScript developers have been doing this forever as an alternative: `a = value || 'some default value';`
 
 But `0`, `NaN`, and empty strings are falsy values, so if `value === 0` or `value === ''`, the default value would be
 assigned to a.

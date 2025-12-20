@@ -376,7 +376,8 @@ export default function App() {
 }
 ```
 
-CountLabel.js: The most important part if `set` function must be inside a condition, otherwise infinite loop.
+CountLabel.js: The most important part is that the `set` function must be inside a condition; otherwise, an infinite
+loop will occur.
 
 ```jsx {6-9} showLineNumbers
 import {useState} from 'react';

@@ -14,8 +14,8 @@ cover:
 
 ### Setting View Encapsulation
 
-By default, component-specific styles are implemented by writing the CSS that has been applied to the component so that
-it targets special attributes.
+By default, component-specific styles are implemented by writing CSS that targets special attributes applied to the
+component.
 
 ```html
 <style>
@@ -101,8 +101,7 @@ export class ProductFormComponent {}
 ```
 
 Some CSS style properties, such as `font-style`, are inherited by default, which means that setting such a property in a
-parent component will affect the elements in child component templates because the browser automatically applies the
-style.
+parent component will affect elements in child component templates because the browser automatically applies the style.
 
 Other properties, such as `border`, are not inherited by default, and setting such a property in a parent component does
 not affect child component templates unless the `/deep/` or `>>>` selector is used.

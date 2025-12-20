@@ -17,7 +17,8 @@ cover:
 
 When working with Angular reactive forms, managing conditional validators for multiple controls can become cumbersome.
 Traditionally, developers subscribe to a control's valueChanges observable and manually add or remove validators based
-on certain conditions. This can lead to redundant and verbose code, especially as the number of controls increases.
+on certain conditions. This approach can lead to redundant and verbose code, especially as the number of controls
+increases.
 
 In this blog post, we'll explore a more elegant solution using a custom utility called `ifValidator`. This utility
 simplifies the process of applying validators conditionally, resulting in cleaner and more maintainable code.
@@ -80,7 +81,7 @@ export class ConfigureOperatorComponent {
 ## Simplifying with `ifValidator`
 
 To streamline the process, we introduce the `ifValidator` utility. This utility encapsulates the logic of conditionally
-applying validators based on a provided condition. Add a input listener like line 5 and line 9,
+applying validators based on a provided condition. By adding an input listener like on lines 5 and 9,
 `(change)="changeChoice()"`, we use it to trigger controls' `updateValueAndValidity` instead of `ngOnInit`.
 
 ```html {5,9} showLineNumbers

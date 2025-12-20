@@ -12,9 +12,9 @@ cover:
 
 ## MicroKernel Architecture
 
-a.k.a plugin architecture. In VMware, vCD, as a core system, provides many plugins such as OSE and ALP. Some IDE like
-vscode, eclipse, provide a core system and plugins. Payment processing could be another example. Chrome and Firefox are
-another common product example. Suppose Payment Processing is the domain service representing the core system. Each
+Also known as plugin architecture. In VMware, vCD, as a core system, provides many plugins such as OSE and ALP. Some IDEs like
+VS Code and Eclipse provide a core system and plugins. Payment processing could be another example. Chrome and Firefox are
+other common product examples. Suppose Payment Processing is the domain service representing the core system. Each
 payment method (credit card, PayPal, store credit, gift card, and purchase order) would be separate plugin components
 specific to the payment domain.
 
@@ -67,9 +67,9 @@ partitioning aspect comes about mostly through a strong domain-to-architecture i
 Testability, deployability, and reliability rate a little above average (three stars), primarily because functionality
 can be isolated to independent plug-in components.
 
-Regarding performance, because microkernel applications are generally small and don’t grow as big as most layered
-architectures. Also, they don’t suffer as much from the architecture sinkhole antipattern discussed in Chapter 10.
-Finally, microkernel architectures can be streamlined by unplugging unneeded functionality, therefore making the
+Regarding performance, microkernel applications are generally small and don't grow as large as most layered
+architectures. Also, they don't suffer as much from the architecture sinkhole antipattern discussed in Chapter 10.
+Finally, microkernel architectures can be streamlined by unplugging unneeded functionality, making the
 application run faster.
 
 ## Reference

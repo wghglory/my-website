@@ -12,8 +12,8 @@ cover:
 
 ## Pipeline Architecture
 
-a.k.a pipes and filters architecture. As soon as developers and architects decided to split functionality into discrete
-parts, this pattern followed. Most developers know this architecture as this underlying principle behind Unix terminal
+Also known as pipes and filters architecture. As soon as developers and architects decided to split functionality into discrete
+parts, this pattern followed. Most developers know this architecture as the underlying principle behind Unix terminal
 shell languages, such as Bash and Zsh.
 
 ### Topology
@@ -57,7 +57,7 @@ The termination point for the pipeline flow. Consumers sometimes persist the fin
 database, or they may display the final results on a user interface screen.
 
 > The unidirectional nature and simplicity of each of the pipes and filters encourages compositional reuse. Many
-> developers have discovered this ability using shells
+> developers have discovered this ability using shells.
 
 ### Example
 
@@ -96,8 +96,8 @@ given change).
 
 Elasticity and scalability rate very low (one star) for the pipeline architecture, primarily due to monolithic
 deployments. Although it is possible to make certain functions within a monolith scale more than others, this effort
-usually requires very complex design techniques such as multithreading, internal messaging, and other parallel pro
-cessing practices, techniques this architecture isn’t well suited for. However, because the pipeline architecture is
+usually requires very complex design techniques such as multithreading, internal messaging, and other parallel
+processing practices, techniques this architecture isn't well suited for. However, because the pipeline architecture is
 always a single system quantum due to the monolithic user interface, backend processing, and monolithic database,
 applications can only scale to a certain point based on the single architecture quantum.
 

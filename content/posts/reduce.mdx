@@ -12,11 +12,11 @@ cover:
 ---
 
 The [reduce](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce) function of
-an `Array` is one of the most versatile functions in JavaScript. With it you can accomplish a lot of the functions from
+an `Array` is one of the most versatile functions in JavaScript. With it, you can accomplish many of the functions from
 the [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) and
-[Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) objects. It's job is to
-start with an array, and reduce those elements into some other type of data... which sounds vague, but you could use it
-to convert from an array to an object, an array to another array, an array to a number or an array to a boolean.
+[Math](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math) objects. Its job is to
+start with an array and reduce those elements into some other type of data... which sounds vague, but you could use it
+to convert from an array to an object, an array to another array, an array to a number, or an array to a boolean.
 Understanding how it works opens up a world of possibilities.
 
 <YouTube id="NiLUGy1Mh4U" />
@@ -35,13 +35,13 @@ A few of the Math/Array functions we will cover in this article:
 ## Let's Recreate Reduce
 
 Before we see all of reduce's flexibility, let's understand how it works! Reduce's job is to iterate over each element
-of an array, calling a function (callback), passing both the current element, and what is called an "accumulator" value.
-The callback's job is to take the accumulator and the array element, and return the new version of that accmulator.
+of an array, calling a function (callback), passing both the current element and what is called an "accumulator" value.
+The callback's job is to take the accumulator and the array element, and return the new version of that accumulator.
 
 <Image src="/images/posts/reduce.jpg" width={1703} height={980} />
 
-This may mean taking an accumulator that is a number and returning its value + 1, or taking an accumulator which is an
-array and returning that array with an additional element on the end. It's up to you, depending what type of data you
+This may mean taking an accumulator that is a number and returning its value + 1, or taking an accumulator that is an
+array and returning that array with an additional element on the end. It's up to you, depending on what type of data you
 would like to _reduce_ your array to.
 
 We also need an _initial value_, which will be the first value our accumulator takes before the callback is ever called.
@@ -114,8 +114,8 @@ result = people.reduce((acc, person) => {
 
 ## Find Max Value
 
-The `Math.max()` function can be immitated using reduce by checking if the current element's value is greater than the
-accumulator. If it is, that becomes (by returning the value) the new max value, otherwise the previous accumulator
+The `Math.max()` function can be imitated using reduce by checking if the current element's value is greater than the
+accumulator. If it is, that becomes (by returning the value) the new max value; otherwise, the previous accumulator
 (current max value) is returned.
 
 ```js
@@ -127,8 +127,8 @@ result = people.reduce((acc, person) => {
 
 ## Find Min Value
 
-The `Math.min()` function can be immitated using reduce by checking if the current element's value is less than the
-accumulator. If it is, that becomes (by returning the value) the new min value, otherwise the previous accumulator
+The `Math.min()` function can be imitated using reduce by checking if the current element's value is less than the
+accumulator. If it is, that becomes (by returning the value) the new min value; otherwise, the previous accumulator
 (current min value) is returned.
 
 ```js
@@ -140,7 +140,7 @@ result = people.reduce((acc, person) => {
 
 ## Find Matching Element
 
-The reduce callback function when immitating `Array.prototype.find()` contains three possibilities:
+The reduce callback function when imitating `Array.prototype.find()` contains three possibilities:
 
 - The accumulator is not null, meaning we have already found the value, so let's return it.
 - The current array element meets our criteria, so let's return it.
@@ -156,9 +156,9 @@ result = people.reduce((acc, person) => {
 
 ## Check If Every Value Matches
 
-When checking if every value matches a specific criteria, we will start with the assumption that every value will
-match... very optimistic!! If the accumulator becomes false, our callback will continue to return false, since every
-value must match, and otherwise will return `true` or `false` for the current element.
+When checking if every value matches specific criteria, we will start with the assumption that every value will
+match... very optimistic! If the accumulator becomes false, our callback will continue to return false, since every
+value must match; otherwise, it will return `true` or `false` for the current element.
 
 ```js
 result = people.reduce((acc, person) => {
@@ -170,8 +170,8 @@ result = people.reduce((acc, person) => {
 ## Check If Some Value Matches
 
 Checking if some value matches a condition in our array involves a bit of pessimism. We'll start off with the assumption
-of `false`, and our callback function will return true as soon as the accumulator is true for the first time, and
-otherwise will return `true` or `false` on the current element.
+of `false`, and our callback function will return true as soon as the accumulator is true for the first time; otherwise,
+it will return `true` or `false` for the current element.
 
 ```js
 result = people.reduce((acc, person) => {
@@ -201,11 +201,11 @@ result = orders.reduce((acc, order) => {
 
 ## Flatten Nested Arrays
 
-In this last example we will start with an array of nested arrays, and reduce it into a flattened array of values.
+In this last example, we will start with an array of nested arrays and reduce it into a flattened array of values.
 Because we will need to recursively reduce (flatten) arrays, we'll need to give our callback function a name (so it can
 be called within itself).
 
-If the current element is an `Array`, it means we must reduce it until we arrive at at an element that can be appended
+If the current element is an `Array`, it means we must reduce it until we arrive at an element that can be appended
 to the end of the array we are producing. The _initial_ value of our inner reduce call is the _current_ accumulator
 value.
 

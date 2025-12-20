@@ -18,8 +18,8 @@ pragmatic architecture styles, mostly due to its architectural flexibility. Alth
 
 ## Topology
 
-In most cases there is only a single instance of each domain service within a service-based architecture. However, based
-on scalability, fault tolerance, and throughput needs, multiple instances of a domain service can certainly exist
+In most cases, there is only a single instance of each domain service within a service-based architecture. However, based
+on scalability, fault tolerance, and throughput needs, multiple instances of a domain service can certainly exist.
 
 <Image src="/images/posts/service-based-topology.png" width={1000} height={500} />
 
@@ -30,7 +30,7 @@ on scalability, fault tolerance, and throughput needs, multiple instances of a d
 ### Database variants
 
 Similarly, opportunities may exist to break apart a single monolithic database into separate databases, even going as
-far as domain-scoped databases matching each domain service (similar to microservices). In these cases it is important
+far as domain-scoped databases matching each domain service (similar to microservices). In these cases, it is important
 to make sure the data in each separate database is not needed by another domain service.
 
 <Image src="/images/posts/service-based-topology2.png" width={1000} height={1200} />
