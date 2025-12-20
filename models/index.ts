@@ -23,6 +23,8 @@ export interface FileMeta {
   topics: string[];
   // cover can be either A or B, mutual.
   cover: ArticleCover;
+  // featured/pinned posts
+  featured?: boolean;
 }
 
 export interface FileContent {

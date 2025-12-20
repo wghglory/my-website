@@ -48,6 +48,7 @@ export const getFileFromSlug = (dir: ContentDirectory, slug: string): FileConten
       date: (data.date ?? new Date()).toString(),
       topics: (data.topics ?? []).sort(),
       cover: data.cover ?? null,
+      featured: data.featured ?? false,
     },
   };
 };
