@@ -7,6 +7,18 @@ pre {
   overflow-x: auto;
 }
 
+/* Remove backticks from inline code in prose */
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)):before,
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *)):after {
+  content: '' !important;
+}
+
+/* Reduce spacing between list items */
+.prose ul li,
+.prose ol li {
+  margin: 0;
+}
+
 /**
  * code line highlight and show line numbers
  * Inspired by gatsby remark prism - https://www.gatsbyjs.com/plugins/gatsby-remark-prismjs/
