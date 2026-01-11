@@ -33,10 +33,11 @@ export default defineConfig([
       'import/no-anonymous-default-export': 'off',
     },
   },
-  // Testing Library rules for test files
+  // Testing Library rules for test files (exclude e2e Playwright tests)
   {
     name: 'project/testing-library',
     files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    ignores: ['e2e/**'],
     plugins: {
       'testing-library': testingLibrary,
     },
