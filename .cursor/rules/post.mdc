@@ -1,5 +1,9 @@
 ---
 alwaysApply: true
+description:
+  Rules for creating and formatting blog posts in the content/posts directory. Ensures consistent frontmatter structure,
+  proper topic assignment, and correct file naming conventions.
+glob: content/posts/**/*.mdx
 ---
 
 # Rule: Create New Blog Post
