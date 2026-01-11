@@ -14,61 +14,40 @@ cover:
 
 ## Useful Basic FormControl Members
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    ['value', 'return the current value of the form control, defined using the any type.'],
-    ['setValue(value)', 'sets the value of the form control.'],
-    ['valueChanges', 'returns an Observable<any>, through which changes can be observed.'],
-    ['enabled', 'returns true if the form control is enabled.'],
-    ['disabled', 'returns true if the form control is disabled.'],
-    ['enable()', 'enables the form control.'],
-    ['disable()', 'disables the form control.'],
-    [
-      'reset(value)',
-      'resets the form control, with an optional value. The form control will be reset to its default state if the value argument is omitted.',
-    ],
-  ]}
-/>
+| Name              | Description                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`           | return the current value of the form control, defined using the any type.                                                              |
+| `setValue(value)` | sets the value of the form control.                                                                                                    |
+| `valueChanges`    | returns an `Observable<any>`, through which changes can be observed.                                                                   |
+| `enabled`         | returns true if the form control is enabled.                                                                                           |
+| `disabled`        | returns true if the form control is disabled.                                                                                          |
+| `enable()`        | enables the form control.                                                                                                              |
+| `disable()`       | disables the form control.                                                                                                             |
+| `reset(value)`    | resets the form control, with an optional value. The form control will be reset to its default state if the value argument is omitted. |
 
 ## Managing Control State
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    ['untouched', 'returns true if the HTML element is untouched, meaning that the element has not been selected.'],
-    [
-      'touched',
-      'This property returns true if the HTML element has been touched, meaning that the element has been selected.',
-    ],
-    ['markAsTouched()', 'marks the element as touched.'],
-    ['markAsUntouched()', 'marks the element as untouched.'],
-    ['pristine', 'returns true if the element contents have not been edited by the user.'],
-    ['dirty', 'returns true if the element contents have been edited by the user'],
-    ['markAsPristine()', 'marks the element as pristine.'],
-    ['markAsDirty()', 'marks the element as dirty'],
-  ]}
-/>
+| Name                | Description                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `untouched`         | returns true if the HTML element is untouched, meaning that the element has not been selected.               |
+| `touched`           | This property returns true if the HTML element has been touched, meaning that the element has been selected. |
+| `markAsTouched()`   | marks the element as touched.                                                                                |
+| `markAsUntouched()` | marks the element as untouched.                                                                              |
+| `pristine`          | returns true if the element contents have not been edited by the user.                                       |
+| `dirty`             | returns true if the element contents have been edited by the user                                            |
+| `markAsPristine()`  | marks the element as pristine.                                                                               |
+| `markAsDirty()`     | marks the element as dirty                                                                                   |
 
 ## FormControl Members for Managing Validators
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'validator',
-      'returns a function that combines all of the configured validators so that the form control can be validated with a single function call',
-    ],
-    ['hasValidator(v)', 'returns true if the form control has been configured with the specified validator.'],
-    [
-      'setValidators(v)',
-      'sets the form control validators. The argument can be a single validator or an array of validators',
-    ],
-    ['addValidators(v)', 'adds one or more validators to the form control'],
-    ['removeValidators(v)', 'removes one or more validators from the control'],
-    ['clearValidators()', 'removes all of the validators from the form control'],
-  ]}
-/>
+| Name                  | Description                                                                                                                             |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `validator`           | returns a function that combines all of the configured validators so that the form control can be validated with a single function call |
+| `hasValidator(v)`     | returns true if the form control has been configured with the specified validator.                                                      |
+| `setValidators(v)`    | sets the form control validators. The argument can be a single validator or an array of validators                                      |
+| `addValidators(v)`    | adds one or more validators to the form control                                                                                         |
+| `removeValidators(v)` | removes one or more validators from the control                                                                                         |
+| `clearValidators()`   | removes all of the validators from the form control                                                                                     |
 
 ## FormControl Members for Managing Validation State
 
@@ -180,62 +159,29 @@ form.component.html:
 
 ## FormGroup Members for Adding and Removing Controls
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'addControl(name, ctrl)',
-      'adds a control to the FormGroup with the specified name. No action is taken if there is already a control with this name',
-    ],
-    [
-      'setControl(name, ctrl)',
-      'adds a control to the FormGroup with the specified name, replacing any existing control with this name',
-    ],
-    ['removeControl(name)', 'removes the control with the specified name'],
-    ['controls', 'returns a map containing the controls in the group, using their names as keys'],
-    ['get(name)', 'returns the control with the specified name'],
-  ]}
-/>
+| Name                     | Description                                                                                                              |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `addControl(name, ctrl)` | adds a control to the FormGroup with the specified name. No action is taken if there is already a control with this name |
+| `setControl(name, ctrl)` | adds a control to the FormGroup with the specified name, replacing any existing control with this name                   |
+| `removeControl(name)`    | removes the control with the specified name                                                                              |
+| `controls`               | returns a map containing the controls in the group, using their names as keys                                            |
+| `get(name)`              | returns the control with the specified name                                                                              |
 
 ## FormGroup Methods for Managing Control Values
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'value',
-      'returns an object containing the values of the form controls in the group, using the names given to each control as the names of the properties.',
-    ],
-    [
-      'setValue(val)',
-      'sets the contents of the form controls using an object, whose property names correspond to the names given to each control. The specified value object must define properties for all the form controls in the group.',
-    ],
-    [
-      'patchValue(val)',
-      'sets the contents of the form controls using an object, whose property names correspond to the names given to each control. Unlike the setValue method, values are not required for all form controls.',
-    ],
-    [
-      'reset(val)',
-      'resets the form to its pristine and untouched state and uses the specified value to populate the form controls.',
-    ],
-  ]}
-/>
+| Name              | Description                                                                                                                                                                                                           |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`           | returns an object containing the values of the form controls in the group, using the names given to each control as the names of the properties.                                                                      |
+| `setValue(val)`   | sets the contents of the form controls using an object, whose property names correspond to the names given to each control. The specified value object must define properties for all the form controls in the group. |
+| `patchValue(val)` | sets the contents of the form controls using an object, whose property names correspond to the names given to each control. Unlike the setValue method, values are not required for all form controls.                |
+| `reset(val)`      | resets the form to its pristine and untouched state and uses the specified value to populate the form controls.                                                                                                       |
 
 ### Displaying Validation Messages with a Form Group
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'getError(v, path)',
-      'returns the error message, if there is one, for the specified validator. The optional path argument is used to identify the control.',
-    ],
-    [
-      'hasError(v, path)',
-      'returns true if the specified validator has generated an error message. The optional path argument is used to identify the control.',
-    ],
-
-]} />
+| Name                | Description                                                                                                                          |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `getError(v, path)` | returns the error message, if there is one, for the specified validator. The optional path argument is used to identify the control. |
+| `hasError(v, path)` | returns true if the specified validator has generated an error message. The optional path argument is used to identify the control.  |
 
 `form.getError("required", "category")` will return the category control's required error message if any. However, this
 is not very useful. Let's create a reusable custom structural directive to display all errors for a control.
