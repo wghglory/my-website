@@ -78,34 +78,16 @@ dateNumber: number = 1582156800000;
 <div>Date formatted from number: {{ dateNumber | date }}</div>
 ```
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'short',
-      'equivalent to the component string M/d/yy, h:mm a. It presents the date in a concise format, including the time component.',
-    ],
-    [
-      'medium',
-      'equivalent to the component string MMM d, y, h:mm:ss a. It presents the date as a more expansive format, including the time component.',
-    ],
-    [
-      'shortDate',
-      'equivalent to the component string M/d/yy. It presents the date in a concise format and excludes the time component.',
-    ],
-    [
-      'mediumDate',
-      'equivalent to the component string MMM d, y. It presents the date in a more expansive format and excludes the time component.',
-    ],
-    ['longDate', 'equivalent to the component string MMMM d, y. It presents the date and excludes the time component.'],
-    [
-      'fullDate',
-      'equivalent to the component string EEEE, MMMM d, y. It presents the date fully and excludes the date format.',
-    ],
-    ['shortTime', 'equivalent to the component string h:mm a.'],
-    ['mediumTime', 'equivalent to the component string h:mm:ss a.'],
-  ]}
-/>
+| Name         | Description                                                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `short`      | equivalent to the component string M/d/yy, h:mm a. It presents the date in a concise format, including the time component.             |
+| `medium`     | equivalent to the component string MMM d, y, h:mm:ss a. It presents the date as a more expansive format, including the time component. |
+| `shortDate`  | equivalent to the component string M/d/yy. It presents the date in a concise format and excludes the time component.                   |
+| `mediumDate` | equivalent to the component string MMM d, y. It presents the date in a more expansive format and excludes the time component.          |
+| `longDate`   | equivalent to the component string MMMM d, y. It presents the date and excludes the time component.                                    |
+| `fullDate`   | equivalent to the component string EEEE, MMMM d, y. It presents the date fully and excludes the date format.                           |
+| `shortTime`  | equivalent to the component string h:mm a.                                                                                             |
+| `mediumTime` | equivalent to the component string h:mm:ss a.                                                                                          |
 
 ```html
 <div>Date formatted from object: {{ dateObject | date:"shortDate" }}</div>

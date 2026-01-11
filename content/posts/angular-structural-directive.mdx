@@ -47,41 +47,17 @@ properties provided by the ViewContainerRef class.
 
 ## Useful ViewContainerRef Methods and properties
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'element',
-      <span>
-        returns an <code>ElementRef</code> object that represents the container element
-      </span>,
-    ],
-    [
-      'createEmbeddedView(template)',
-      'This method uses a template to create a new view. This method also accepts optional arguments for context data and an index position that specifies where the view should be inserted. The result is a ViewRef object that can be used with the other methods in this table',
-    ],
-    ['clear()', 'remove all views from the container'],
-    ['length', 'number of views in the container'],
-    [
-      'get(index)',
-      <span>
-        return the <code>viewRef</code> object representing the view at the specified index
-      </span>,
-    ],
-    [
-      'indexOf(view)',
-      <span>
-        return the index of the specified <code>ViewRef</code> object
-      </span>,
-    ],
-    ['insert(view, index)', 'insert a view at the specified index'],
-    ['remove(index)', 'remove and destroy the view at the specified index'],
-    [
-      'detach(index)',
-      'detach the view at the specified index without destroying it so that it can be repositioned with the insert method',
-    ],
-  ]}
-/>
+| Name                           | Description                                                                                                                                                                                                                                                                 |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `element`                      | returns an `ElementRef` object that represents the container element                                                                                                                                                                                                        |
+| `createEmbeddedView(template)` | This method uses a template to create a new view. This method also accepts optional arguments for context data and an index position that specifies where the view should be inserted. The result is a ViewRef object that can be used with the other methods in this table |
+| `clear()`                      | remove all views from the container                                                                                                                                                                                                                                         |
+| `length`                       | number of views in the container                                                                                                                                                                                                                                            |
+| `get(index)`                   | return the `viewRef` object representing the view at the specified index                                                                                                                                                                                                    |
+| `indexOf(view)`                | return the index of the specified `ViewRef` object                                                                                                                                                                                                                          |
+| `insert(view, index)`          | insert a view at the specified index                                                                                                                                                                                                                                        |
+| `remove(index)`                | remove and destroy the view at the specified index                                                                                                                                                                                                                          |
+| `detach(index)`                | detach the view at the specified index without destroying it so that it can be repositioned with the insert method                                                                                                                                                          |
 
 ## \*ngFor
 
@@ -302,29 +278,14 @@ export class PaIteratorDirective {
 }
 ```
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    ['forEachItem(func)', 'This method invokes the specified function for each object in the collection.'],
-    [
-      'forEachPreviousItem(func)',
-      'This method invokes the specified function for each object in the previous version of the collection.',
-    ],
-    ['forEachAddedItem(func)', 'This method invokes the specified function for each new object in the collection.'],
-    [
-      'forEachMovedItem(func)',
-      'This method invokes the specified function for each object whose position has changed.',
-    ],
-    [
-      'forEachRemovedItem(func)',
-      'This method invokes the specified function for each object that was removed from the collection.',
-    ],
-    [
-      'forEachIdentityChange(func)',
-      'This method invokes the specified function for each object whose identity has changed.',
-    ],
-  ]}
-/>
+| Name                          | Description                                                                                           |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `forEachItem(func)`           | This method invokes the specified function for each object in the collection.                         |
+| `forEachPreviousItem(func)`   | This method invokes the specified function for each object in the previous version of the collection. |
+| `forEachAddedItem(func)`      | This method invokes the specified function for each new object in the collection.                     |
+| `forEachMovedItem(func)`      | This method invokes the specified function for each object whose position has changed.                |
+| `forEachRemovedItem(func)`    | This method invokes the specified function for each object that was removed from the collection.      |
+| `forEachIdentityChange(func)` | This method invokes the specified function for each object whose identity has changed.                |
 
 Add delete functionality:
 
