@@ -53,15 +53,12 @@ Cover Metadata:
 - cover.title: usually matches the main title.
 - cover.subtitle: A short, catchy sub-header relevant to the post.
 
-Table Generation using below syntax instead of markdown table:
+Table Generation: Use standard markdown table syntax:
 
 ```
-<Table
-  columns={['Feature', '`Partial<T>`', '`Sparse<T>`']}
-  data={[
-    ['Top Level Properties', 'Optional', 'Optional'],
-    ['Nested Objects', 'Required (Must be complete)', 'Optional (Can be partial)'],
-    ['Use Case', 'Simple object creation', 'Patches, deep updates, large forms'],
-  ]}
-/>
+| Feature | `Partial<T>` | `Sparse<T>` |
+|---------|--------------|-------------|
+| Top Level Properties | Optional | Optional |
+| Nested Objects | Required (Must be complete) | Optional (Can be partial) |
+| Use Case | Simple object creation | Patches, deep updates, large forms |
 ```
