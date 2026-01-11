@@ -1,0 +1,281 @@
+---
+title: Mastering Cursor - From Chatbot to Pair Programmer
+topics:
+  - AI
+date: 2026-01-11
+excerpt:
+  A comprehensive guide on shifting from treating AI as a snippet generator to using it as a fully integrated Junior
+  Developer in Cursor.
+cover:
+  banner: https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80
+  topic: AI
+  title: Mastering Cursor
+  subtitle: From Chatbot to Pair Programmer
+---
+
+This guide outlines the shift from treating AI as a snippet generator to using it as a fully integrated Junior
+Developer.
+
+## 🧠 Phase 1: The Philosophy
+
+### The Mindset Shift
+
+- ❌ **The Old Way:** Treating AI as a "Chatbot" (Copy/Paste from ChatGPT).
+- ✅ **The Cursor Way:** Treating AI as a **Junior Developer** living inside your VS Code.
+  - **It has Eyes:** It sees your file structure, active tabs, and terminal.
+  - **It has Hands:** It can edit, create, and delete files.
+
+> ⭐️ Golden Rule: The AI is only as smart as the Context you give it.
+>
+> - **No Context** = It guesses (Risk of hallucinations).
+> - **Tagged Context** = It acts like a Senior Engineer.
+
+---
+
+## 🛠️ Phase 2: The Core Toolkit (Daily Drivers)
+
+Before diving deep, master the three primary interaction points.
+
+### 1. Tab (Copilot++)
+
+**What it is:** Auto-logic, not just auto-complete. It predicts your next cursor position and the next few lines of
+code.
+
+- **Usage:** Start typing. If the gray text looks right, hit `Tab`.
+- **Partial Accept:** Hold `Ctrl` (or `Cmd`) + `Right Arrow` to accept word-by-word.
+- **Jump Navigation:** If Cursor suggests a change in a different file (e.g., updating an import), hitting `Tab` will
+  physically move you to that file.
+
+### 2. Inline Edit (`Cmd + K` / `Ctrl + K`)
+
+**What it is:** Quick, localized edits without opening the chat sidebar.
+
+- **Workflow:** Highlight code → Press `Cmd + K` → Type instruction.
+- **Use Cases:** "Add error handling," "Convert to async/await," "Fix typo."
+
+### 3. Modes
+
+Cursor has distinct modes for different stages of development.
+
+| Mode  | Best Used For                  | Capabilities                                                  |
+| ----- | ------------------------------ | ------------------------------------------------------------- |
+| Agent | Building features, refactoring | Autonomous exploration, multi-file edits, terminal usage.     |
+| Ask   | Learning & questions           | Read-only exploration. No file changes.                       |
+| Plan  | Architecture & Strategy        | Creates implementation plans before coding.                   |
+| Debug | Tricky bugs                    | Hypothesis generation, log instrumentation, runtime analysis. |
+
+## 🧠 Phase 3: Context Mastery
+
+The most powerful feature of Cursor is explicit context tagging using the `@` symbol.
+
+### The `@` Symbol
+
+| Tag                | Purpose            | Best Use Case                                                 |
+| ------------------ | ------------------ | ------------------------------------------------------------- |
+| @Files and Folders | Specific Files     | Reference `@user.service.ts` to focus the AI.                 |
+| @Docs              | Live Documentation | Paste a URL (e.g., Next.js 15) to overcome knowledge cutoffs. |
+| @Browser           | Internet Search    | "What is the latest breaking change in React 19?"             |
+| @Branch            | Version Control    | "Analyze the diff between this branch and main."              |
+
+> 💡 Context Tip: You don't need to manually tag every file. If you know the exact file, tag it. If not, let the agent
+> find it. Over-tagging with irrelevant files can confuse the AI.
+
+## 🗺️ Phase 4: Planning & Design
+
+The most impactful change you can make is planning **before** coding.
+
+### Plan Mode (`Shift + Tab`)
+
+Toggle Plan Mode in the agent input. Instead of writing code immediately, the Agent will:
+
+1. Research your codebase.
+2. Ask clarifying questions.
+3. Create a Markdown plan with file paths.
+4. Wait for approval before building.
+
+> 💡 Click "Save to workspace" to store plans in `.cursor/plans/`. This creates documentation for your team, makes it
+> easy to resume interrupted work, and provides context for future agents working on the same feature.
+
+### Design to Code
+
+The agent can process images directly.
+
+- **Workflow:** Drag a screenshot or design file into the chat.
+- **Prompt:** "Implement this UI using our existing `@buttons.component.ts` and Tailwind colors."
+
+## ⚙️ Phase 5: Project Configuration (Rules)
+
+Move away from generic prompt engineering. Force the AI to follow your team's style guide automatically.
+
+### How to Set Up
+
+1. Create a folder in root: `.cursor/rules/`
+2. Create rule files (e.g., `angular-standards.mdc`).
+
+### Example Rule (`.cursor/rules/angular-standards.mdc`)
+
+```markdown
+---
+description: Standards for Angular Components
+globs: '*/.ts'
+---
+
+# Angular Standards
+
+- Use **Signals** for state.
+- Use `@if` syntax, not `*ngIf`.
+```
+
+### Best Practices for Rules
+
+- **Keep it brief:** Under 500 lines.
+- **Use Globs:** Ensure rules only load for relevant files (`*/*.ts` vs `*/*.py`).
+- **No Fluff:** Don't document generic things (the AI knows Python). Focus on _your_ specific patterns.
+- **Reference Files:** Instead of pasting large code blocks, refer to canonical examples in your codebase.
+
+Keep rules focused on the essentials: the commands to run, the patterns to follow, and pointers to canonical examples in
+your codebase. Reference files instead of copying their contents; this keeps rules short and prevents them from becoming
+stale as code changes.
+
+What to avoid in rules:
+
+- Copying entire style guides (use a linter instead)
+- Documenting every possible command (the agent knows common tools)
+- Adding instructions for edge cases that rarely apply
+
+> Tip: Start simple. Add rules only when you notice the agent making the same mistake repeatedly. Don't over-optimize
+> before you understand your patterns.
+
+> Check your rules into git so your whole team benefits. When you see the agent make a mistake, update the rule. You can
+> even tag `@cursor` on a GitHub issue or PR to have the agent update the rule for you.
+
+## 🚀 Phase 6: Advanced Workflows
+
+Once you have the basics, use these workflows to speed up complex tasks.
+
+### 🧪 Test-Driven Development (TDD)
+
+Agents perform best when they have a clear target (a failing test) to iterate against.
+
+1. **Write Tests:** "Write a test for `auth.ts` covering the logout edge case. Do not implement the logic yet."
+2. **Confirm Failure:** Run the test to ensure it fails.
+3. **Implement:** "Write the code to pass the test. Do not modify the test file."
+4. **Refactor:** Once green, ask the agent to optimize.
+
+### 🐛 Debug Mode
+
+When standard chat fails, toggle **Debug Mode**.
+
+- It generates hypotheses.
+- It adds logging statements automatically.
+- It analyzes runtime data to pinpoint root causes.
+- It makes targeted fixes based on evidence
+
+### 🤖 Custom Commands
+
+Store frequent workflows in `.cursor/commands/`.
+
+**Example: The `/pr` Command**
+
+> Prompt: "Look at staged changes. Write a commit message. Push to current branch. Use gh pr create to open a pull
+> request with a summary."
+
+Commands are ideal for workflows you run many times per day. Store them as Markdown files in `.cursor/commands/` and
+check them into git so your whole team can use them.
+
+Other examples of commands we use:
+
+- `/fix-issue [number]`: Fetch issue details with `gh issue view`, find relevant code, implement a fix, and open a PR
+- `/review`: Run linters, check for common issues, and summarize what might need attention
+- `/update-deps`: Check for outdated dependencies and update them one by one, running tests after each
+
+The agent can use these commands autonomously, so you can delegate multi-step workflows with a single `/` invocation.
+
+## 🤝 Phase 7: Team Collaboration
+
+### **Architecture diagrams**
+
+For significant changes, ask the agent to generate architecture diagrams. Try prompting: "Create a Mermaid diagram
+showing the data flow for our authentication system, including OAuth providers, session management, and token refresh."
+These diagrams are useful for documentation and can reveal architectural issues before code review.
+
+### **Speeding Up Pull Requests**
+
+Stop writing manual descriptions.
+
+1. Stage your changes (`git add .`).
+2. Prompt: _"@Branch(Diff with Main) Write a PR description including Summary, Breaking Changes, and Testing
+   Instructions."_
+
+### **The "Auto-Reviewer" (Self-Correction)**
+
+Before pushing code, run your own code review.
+
+1. Prompt: _"@Branch(Diff) Review my staged changes. Look for memory leaks, console.logs, and adherence to project
+   rules."_
+
+### Code Review
+
+AI-generated code requires _more_ review, not less.
+
+1. **Agent Review:** Click `Review` → `Find Issues` to have the AI critique its own work before you see it.
+2. **Self-Correction:** Before pushing, prompt: _"@Branch(Diff) Review my staged changes. Look for memory leaks and
+   console.logs."_
+3. **Architecture Diagrams:** For big changes, ask: _"Create a Mermaid diagram showing the data flow for our new auth
+   system."_
+
+### **Bugbot for pull requests**
+
+Push to source control to get automated reviews on pull requests. Bugbot applies advanced analysis to catch issues early
+and suggest improvements on every PR.
+
+### Onboarding
+
+New to a codebase? Use Cursor to ramp up.
+
+- _"How does logging work in this project?"_
+- _"Why are we calling **`setUser()`** instead of **`createUser()`** on line 1738?"_
+
+## ⚡ Phase 8: Quick Recipes
+
+Copy-paste these prompt patterns for immediate results.
+
+| Role     | Task         | Prompt Recipe                                                                         |
+| -------- | ------------ | ------------------------------------------------------------------------------------- |
+| UI Dev   | Clone UI     | Screenshot table → _"Recreate this UI using our existing **`@buttons`** component."_  |
+| Backend  | Refactor SQL | Highlight SQL → _"Convert to TypeORM query builder. Ensure injection protection."_    |
+| QA       | Unit Tests   | Open file → _"@Codebase Write a test that fails when API returns 500."_               |
+| Migrator | Update Libs  | _"@Web What are the breaking changes in Lucide v0.4? Update icons in **`@folder`**."_ |
+
+## 🏆 Habits of Power Users: **Developing your workflow**
+
+The developers who get the most from agents share a few traits:
+
+**They write specific prompts.** The agent's success rate improves significantly with specific instructions. Compare
+"add tests for auth.ts" with "Write a test case for auth.ts covering the logout edge case, using the patterns in
+`__tests__/` and avoiding mocks."
+
+**They iterate on their setup.** Start simple. Add rules only when you notice the agent making the same mistake
+repeatedly. Add commands only after you've figured out a workflow you want to repeat. Don't over-optimize before you
+understand your patterns.
+
+**They review carefully.** AI-generated code can look right while being subtly wrong. Read the diffs and carefully
+review. The faster the agent works, the more important your review process becomes.
+
+**They provide verifiable goals.** Agents can't fix what they don't know about. Use typed languages, configure linters,
+and write tests. Give the agent clear signals for whether changes are correct.
+
+**They treat agents as capable collaborators.** Ask for plans. Request explanations. Push back on approaches you don't
+like.
+
+## References
+
+- [Cursor Documentation](https://cursor.com/docs)
+- [Tab Suggestions](https://cursor.com/docs/tab/overview#suggestions)
+- [Tab Auto-import](https://cursor.com/docs/tab/overview#auto-import)
+- [Tab in Peek](https://cursor.com/docs/tab/overview#tab-in-peek)
+- [Agent Mode](https://cursor.com/docs/agent/modes#agent)
+- [Ask Mode](https://cursor.com/docs/agent/modes#ask)
+- [Plan Mode](https://cursor.com/docs/agent/modes#plan)
+- [Debug Mode](https://cursor.com/docs/agent/modes#debug)
+- [Bugbot](https://cursor.com/docs/bugbot)
