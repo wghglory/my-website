@@ -40,23 +40,11 @@ component.
   known as the shadow DOM.
 </Quote>
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [
-      'Emulated',
-      'When this value is specified, Angular emulates the shadow DOM by writing content and styles to add attributes, as described earlier. This is the default behavior if no encapsulation value is specified in the @Component decorator.',
-    ],
-    [
-      'ShadowDom',
-      'When this value is specified, Angular uses the browser’s shadow DOM feature. This will work only if the browser implements the shadow DOM.',
-    ],
-    [
-      'None',
-      'When this value is specified, Angular simply adds the unmodified CSS styles to the head section of the HTML document and lets the browser figure out how to apply the styles using the normal CSS precedence rules.',
-    ],
-  ]}
-/>
+| Name      | Description                                                                                                                                                                                                                           |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Emulated  | When this value is specified, Angular emulates the shadow DOM by writing content and styles to add attributes, as described earlier. This is the default behavior if no encapsulation value is specified in the @Component decorator. |
+| ShadowDom | When this value is specified, Angular uses the browser's shadow DOM feature. This will work only if the browser implements the shadow DOM.                                                                                            |
+| None      | When this value is specified, Angular simply adds the unmodified CSS styles to the head section of the HTML document and lets the browser figure out how to apply the styles using the normal CSS precedence rules.                   |
 
 > The ShadowDom and None values should be used with caution. Browser support for the shadow DOM feature is improving but
 > has been patchy and was made more complex because there was an earlier version of the shadow DOM feature that was
@@ -81,17 +69,11 @@ export class ProductFormComponent {}
 
 ### Using the Shadow DOM CSS Selectors
 
-<Table
-  columns={['Name', 'Description']}
-  data={[
-    [':host', 'match the component’s host element.'],
-    [':host-context(.classSelector)', 'match ancestors of the host element that have a specific class'],
-    [
-      '/deep/ , >>>, or ::ng-deep',
-      'used by a parent component to define styles that affect the elements in child component templates. This selector should be used only when the @Component decorator’s encapsulation property is set to emulated.',
-    ],
-  ]}
-/>
+| Name                            | Description                                                                                                                                                                                                     |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `:host`                         | match the component's host element.                                                                                                                                                                             |
+| `:host-context(.classSelector)` | match ancestors of the host element that have a specific class                                                                                                                                                  |
+| `/deep/ , >>>, or ::ng-deep`    | used by a parent component to define styles that affect the elements in child component templates. This selector should be used only when the @Component decorator's encapsulation property is set to emulated. |
 
 ```css
 /* find the current host's ancestors which has .angularApp class, and all input under that */

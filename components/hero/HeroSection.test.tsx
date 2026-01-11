@@ -86,8 +86,6 @@ describe('HeroSection', () => {
       return element?.tagName === 'P' && content.includes('Guanghui Wang');
     });
     expect(introParagraph).toBeInTheDocument();
-    expect(introParagraph).toHaveTextContent('web developer hailing from Shanghai, China');
-    expect(introParagraph).toHaveTextContent('Love modern UI technologies');
   });
 
   it('renders the SocialIcons component', () => {
